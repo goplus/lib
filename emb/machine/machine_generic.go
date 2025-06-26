@@ -4,6 +4,7 @@ package machine
 
 import (
 	"crypto/rand"
+	_ "unsafe"
 )
 
 // Dummy machine package that calls out to external functions.
@@ -39,13 +40,13 @@ func (p Pin) Get() bool {
 	return gpioGet(p)
 }
 
-//export __tinygo_gpio_configure
+//go:linkname gpioConfigure __llgo_gpio_configure
 func gpioConfigure(pin Pin, config PinConfig)
 
-//export __tinygo_gpio_set
+//go:linkname gpioSet __llgo_gpio_set
 func gpioSet(pin Pin, value bool)
 
-//export __tinygo_gpio_get
+//go:linkname gpioGet __llgo_gpio_get
 func gpioGet(pin Pin) bool
 
 // Generic PWM/timer peripheral. Properties can be configured depending on the
@@ -136,13 +137,13 @@ func (t *timerType) Top() uint32 {
 	return t.top
 }
 
-//export __tinygo_pwm_configure
+//go:linkname pwmConfigure __llgo_pwm_configure
 func pwmConfigure(instance int32, frequency float64, top uint32)
 
-//export __tinygo_pwm_channel_configure
+//go:linkname pwmChannelConfigure __llgo_pwm_channel_configure
 func pwmChannelConfigure(instance, channel int32, pin Pin)
 
-//export __tinygo_pwm_channel_set
+//go:linkname pwmChannelSet __llgo_pwm_channel_set
 func pwmChannelSet(instance int32, channel uint8, value uint32)
 
 type SPI struct {
@@ -199,13 +200,13 @@ func (spi *SPI) Tx(w, r []byte) error {
 	return nil
 }
 
-//export __tinygo_spi_configure
+//go:linkname spiConfigure __llgo_spi_configure
 func spiConfigure(bus uint8, sck Pin, SDO Pin, SDI Pin)
 
-//export __tinygo_spi_transfer
+//go:linkname spiTransfer __llgo_spi_transfer
 func spiTransfer(bus uint8, w uint8) uint8
 
-//export __tinygo_spi_tx
+//go:linkname spiTX __llgo_spi_tx
 func spiTX(bus uint8, wptr *byte, wlen int, rptr *byte, rlen int) uint8
 
 // InitADC enables support for ADC peripherals.
@@ -222,7 +223,7 @@ func (adc ADC) Get() uint16 {
 	return adcRead(adc.Pin)
 }
 
-//export __tinygo_adc_read
+//go:linkname adcRead __llgo_adc_read
 func adcRead(pin Pin) uint16
 
 // I2C is a generic implementation of the Inter-IC communication protocol.
@@ -266,13 +267,13 @@ func (i2c *I2C) Tx(addr uint16, w, r []byte) error {
 	return nil
 }
 
-//export __tinygo_i2c_configure
+//go:linkname i2cConfigure __llgo_i2c_configure
 func i2cConfigure(bus uint8, scl Pin, sda Pin)
 
-//export __tinygo_i2c_set_baud_rate
+//go:linkname i2cSetBaudRate __llgo_i2c_set_baud_rate
 func i2cSetBaudRate(bus uint8, br uint32)
 
-//export __tinygo_i2c_transfer
+//go:linkname i2cTransfer __llgo_i2c_transfer
 func i2cTransfer(bus uint8, w *byte, wlen int, r *byte, rlen int) int
 
 type UART struct {
@@ -312,13 +313,13 @@ func (uart *UART) WriteByte(b byte) error {
 	return nil
 }
 
-//export __tinygo_uart_configure
+//go:linkname uartConfigure __llgo_uart_configure
 func uartConfigure(bus uint8, tx Pin, rx Pin)
 
-//export __tinygo_uart_read
+//go:linkname uartRead __llgo_uart_read
 func uartRead(bus uint8, buf *byte, bufLen int) int
 
-//export __tinygo_uart_write
+//go:linkname uartWrite __llgo_uart_write
 func uartWrite(bus uint8, buf *byte, bufLen int) int
 
 var (
