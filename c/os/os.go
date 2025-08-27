@@ -16,19 +16,11 @@
 
 package os
 
-// #include <sys/stat.h>
-// #include <limits.h>
-import "C"
-
 import (
 	_ "unsafe"
 
 	"github.com/goplus/lib/c"
 	"github.com/goplus/lib/c/syscall"
-)
-
-const (
-	PATH_MAX = C.PATH_MAX
 )
 
 const (
@@ -59,14 +51,6 @@ const (
 )
 
 type (
-	ModeT C.mode_t
-	UidT  C.uid_t
-	GidT  C.gid_t
-	OffT  C.off_t
-	DevT  C.dev_t
-)
-
-type (
 	StatT = syscall.Stat_t
 )
 
@@ -94,29 +78,20 @@ func Readlink(path *c.Char, buf c.Pointer, bufsize uintptr) int
 //go:linkname Unlink C.unlink
 func Unlink(path *c.Char) c.Int
 
+//go:linkname Unlinkat C.unlinkat
+func Unlinkat(dirfd c.Int, path *c.Char, flags c.Int) c.Int
+
 //go:linkname Remove C.remove
 func Remove(path *c.Char) c.Int
 
 //go:linkname Rename C.rename
 func Rename(oldpath *c.Char, newpath *c.Char) c.Int
 
-//go:linkname Stat C.stat
-func Stat(path *c.Char, buf *StatT) c.Int
-
-//go:linkname Lstat C.lstat
-func Lstat(path *c.Char, buf *StatT) c.Int
-
 //go:linkname Truncate C.truncate
 func Truncate(path *c.Char, length OffT) c.Int
 
 //go:linkname Chmod C.chmod
 func Chmod(path *c.Char, mode ModeT) c.Int
-
-//go:linkname Chown C.chown
-func Chown(path *c.Char, owner UidT, group GidT) c.Int
-
-//go:linkname Lchown C.lchown
-func Lchown(path *c.Char, owner UidT, group GidT) c.Int
 
 // -----------------------------------------------------------------------------
 
@@ -160,9 +135,6 @@ func Fchmodat(dirfd c.Int, path *c.Char, mode ModeT, flags c.Int) c.Int
 //go:linkname Fchownat C.fchownat
 func Fchownat(dirfd c.Int, path *c.Char, owner UidT, group GidT, flags c.Int) c.Int
 
-//go:linkname Fstatat C.fstatat
-func Fstatat(dirfd c.Int, path *c.Char, buf *StatT, flags c.Int) c.Int
-
 // -----------------------------------------------------------------------------
 
 //go:linkname Open C.open
@@ -183,15 +155,8 @@ func Dup(fd c.Int) c.Int
 //go:linkname Dup2 C.dup2
 func Dup2(oldfd c.Int, newfd c.Int) c.Int
 
-/* TODO(xsw):
-On Alpha, IA-64, MIPS, SuperH, and SPARC/SPARC64, pipe() has the following prototype:
-struct fd_pair {
-	long fd[2];
-};
-struct fd_pair pipe(void);
-*/
-//go:linkname Pipe C.pipe
-func Pipe(fds *[2]c.Int) c.Int
+//go:linkname Dup3 C.dup3
+func Dup3(oldfd c.Int, newfd c.Int, flags c.Int) c.Int
 
 //go:linkname Mkfifo C.mkfifo
 func Mkfifo(path *c.Char, mode ModeT) c.Int
@@ -222,9 +187,6 @@ func Fchmod(fd c.Int, mode ModeT) c.Int
 
 //go:linkname Fchown C.fchown
 func Fchown(fd c.Int, owner UidT, group GidT) c.Int
-
-//go:linkname Fstat C.fstat
-func Fstat(fd c.Int, buf *StatT) c.Int
 
 //go:linkname Isatty C.isatty
 func Isatty(fd c.Int) c.Int
@@ -264,17 +226,25 @@ func Execvp(file *c.Char, argv **c.Char) c.Int
 
 type PidT c.Int
 
-//go:linkname Fork C.fork
-func Fork() PidT
-
 //go:linkname Getpid C.getpid
 func Getpid() PidT
 
 //go:linkname Getppid C.getppid
 func Getppid() PidT
 
-//go:linkname Kill C.kill
-func Kill(pid PidT, sig c.Int) c.Int
+// Invoke `system call' number SYSNO, passing it the remaining arguments.
+// This is completely system-dependent, and not often useful.
+
+// In Unix, `syscall' sets `errno' for all errors and most calls return -1
+// for errors; in many systems you cannot pass arguments or get return
+// values for all system calls (`pipe', `fork', and `getppid' typically
+// among them).
+
+// In Mach, all system calls take normal arguments and always return an
+// error code (zero for success).
+//
+//go:linkname Syscall C.syscall
+func Syscall(sysno c.Long, __llgo_va_list ...any) c.Long
 
 // If wait() returns due to a stopped or terminated child process, the process ID
 // of the child is returned to the calling process.  Otherwise, a value of -1 is
@@ -293,9 +263,6 @@ func Wait(statLoc *c.Int) PidT
 //go:linkname Wait3 C.wait3
 func Wait3(statLoc *c.Int, options c.Int, rusage *syscall.Rusage) PidT
 
-//go:linkname Wait4 C.wait4
-func Wait4(pid PidT, statLoc *c.Int, options c.Int, rusage *syscall.Rusage) PidT
-
 //go:linkname Waitpid C.waitpid
 func Waitpid(pid PidT, statLoc *c.Int, options c.Int) PidT
 
@@ -304,29 +271,9 @@ func Waitpid(pid PidT, statLoc *c.Int, options c.Int) PidT
 //go:linkname Exit C.exit
 func Exit(c.Int)
 
-//go:linkname Getuid C.getuid
-func Getuid() UidT
-
-//go:linkname Geteuid C.geteuid
-func Geteuid() UidT
-
-//go:linkname Getgid C.getgid
-func Getgid() GidT
-
-//go:linkname Getegid C.getegid
-func Getegid() GidT
-
 // -----------------------------------------------------------------------------
 
-//go:linkname Getrlimit C.getrlimit
-func Getrlimit(resource c.Int, rlp *syscall.Rlimit) c.Int
-
-//go:linkname Setrlimit C.setrlimit
-func Setrlimit(resource c.Int, rlp *syscall.Rlimit) c.Int
-
-// -----------------------------------------------------------------------------
-
-// Upon successful completion, the value 0 is returned; otherwise the value -1
+// Upon successful completion, the value 0 is returned; otherwise the value -1
 // is returned and the global variable errno is set to indicate the error.
 //
 //go:linkname Sysctl C.sysctl

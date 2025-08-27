@@ -1,5 +1,3 @@
-//go:build linux
-
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
  *
@@ -18,12 +16,28 @@
 
 package os
 
-import "C"
+import (
+	_ "unsafe"
+
+	"github.com/goplus/lib/c"
+)
 
 const (
 	LLGoFiles   = "_os/os.c"
 	LLGoPackage = "link"
 )
 
-//go:linkname Clearenv C.clearenv
-func Clearenv()
+const (
+	PATH_MAX = 1024
+)
+
+type (
+	ModeT uint16
+	UidT  uint32
+	GidT  uint32
+	OffT  int64
+	DevT  int32
+)
+
+//go:linkname Clearenv C.llgoClearenv
+func Clearenv() c.Int
