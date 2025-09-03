@@ -18,7 +18,7 @@ package volatile
 import _ "unsafe"
 
 const (
-	LLGoPackage = "decl"
+	LLGoPackage = "link"
 )
 
 // LoadUint8 loads the volatile value *addr.
