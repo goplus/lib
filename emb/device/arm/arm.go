@@ -32,8 +32,9 @@ package arm
 import "C"
 import (
 	"errors"
-	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
+
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 var errCycleCountTooLarge = errors.New("requested cycle count is too large, overflows 24 bit counter")
