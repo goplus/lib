@@ -1,13 +1,43 @@
 #include <stdlib.h>
 #include <stdarg.h>
 #include <stdio.h>
+#include <string.h>
 
 // example:
-// llgoLoadPyModSyms(mod, "name1", &func1, "name2", &func2, NULL)
+// llgoLoadPyModSyms(mod, "name1", &func1, "name2.attr.__get__", &func2, NULL)
 
 typedef struct PyObject PyObject;
 
 PyObject* PyObject_GetAttrString(PyObject* mod, const char* attrName);
+void Py_IncRef(PyObject* o);
+void Py_DecRef(PyObject* o);
+
+PyObject* get_nested_attribute(PyObject* mod, const char* path) {
+    PyObject* current = mod;
+    Py_IncRef(current);
+    const char* start = path;
+    const char* end;
+
+    while ((end = strchr(start, '.')) != NULL) {
+        int size = end - start;
+        char attr_name[size + 1];
+        memcpy(attr_name, start, size);
+        attr_name[size] = '\0';
+
+        PyObject* next = PyObject_GetAttrString(current, attr_name);
+        Py_DecRef(current);
+        if (next == NULL) {
+            return NULL;
+        }
+
+        current = next;
+        start = end + 1;
+    }
+
+    PyObject* result = PyObject_GetAttrString(current, start);
+    Py_DecRef(current);
+    return result;
+}
 
 void llgoLoadPyModSyms(PyObject* mod, ...) {
     va_list ap;
@@ -19,7 +49,7 @@ void llgoLoadPyModSyms(PyObject* mod, ...) {
         }
         PyObject** pfunc = va_arg(ap, PyObject**);
         if (*pfunc == NULL) {
-            *pfunc = PyObject_GetAttrString(mod, name);
+            *pfunc = get_nested_attribute(mod, name);
         }
     }
     va_end(ap);
