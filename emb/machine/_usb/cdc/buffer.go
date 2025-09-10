@@ -1,7 +1,7 @@
 package cdc
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const rxRingBufferSize = 128

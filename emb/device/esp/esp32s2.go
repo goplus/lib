@@ -10,7 +10,7 @@
 package esp
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

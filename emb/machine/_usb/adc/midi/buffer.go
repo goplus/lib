@@ -1,7 +1,7 @@
 package midi
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const bufferSize = 128

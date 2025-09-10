@@ -11,7 +11,7 @@ package machine
 
 import (
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

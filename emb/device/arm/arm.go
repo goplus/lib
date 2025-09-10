@@ -32,7 +32,7 @@ package arm
 import "C"
 import (
 	"errors"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 
