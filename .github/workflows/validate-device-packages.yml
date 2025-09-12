@@ -1,0 +1,33 @@
+name: Device Package Validation
+
+on:
+  push:
+    branches: ["**"]
+  pull_request:
+    branches: ["**"]
+jobs:
+  validate-device-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+      - name: Setup LLGO
+        run: |
+          echo "Setting up LLGO from specific commit..."
+          # Clone LLGO repository
+          git clone https://github.com/goplus/llgo.git
+          cd llgo
+          # Checkout specific commit
+          git checkout d5ad4d997d03bea0c08788e63dfcd93a25abbdcd
+          # Install LLGO
+          ./install.sh
+          # Verify LLGO is available
+          which llgo || echo "LLGO not found in PATH"
+          llgo version || echo "Failed to get LLGO version"
+      - name: Run Device Package Validation
+        run: |
+          ./.github/scripts/validate_device_packages.sh
+    # Note: Clean up is handled by the bash script automatically
