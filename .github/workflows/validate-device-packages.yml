@@ -16,17 +16,17 @@ jobs:
           go-version: "1.21"
       - name: Setup LLGO
         run: |
-          echo "Setting up LLGO from specific commit..."
-          # Clone LLGO repository
-          git clone https://github.com/goplus/llgo.git
-          cd llgo
-          # Checkout specific commit
-          git checkout d5ad4d997d03bea0c08788e63dfcd93a25abbdcd
-          # Install LLGO
-          ./install.sh
+          echo "Setting up LLGO from precompiled release..."
+          # Download precompiled LLGO
+          wget https://github.com/luoliwoshang/llgo/releases/download/v0.0.1-test-espclang-5/llgo0.0.1-test-espclang-5.linux-amd64.tar.gz
+          # Create llgo directory and extract the archive
+          mkdir -p llgo
+          tar -xzf llgo0.0.1-test-espclang-5.linux-amd64.tar.gz -C llgo
+          # Add llgo/bin to PATH
+          echo "$PWD/llgo/bin" >> $GITHUB_PATH
           # Verify LLGO is available
-          which llgo || echo "LLGO not found in PATH"
-          llgo version || echo "Failed to get LLGO version"
+          chmod +x llgo/bin/llgo
+          ./llgo/bin/llgo version || echo "Failed to get LLGO version"
       - name: Run Device Package Validation
         run: |
           ./.github/scripts/validate_device_packages.sh
