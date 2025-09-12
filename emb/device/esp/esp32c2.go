@@ -10,8 +10,9 @@
 package esp
 
 import (
-	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
+
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 // Some information about this device.
