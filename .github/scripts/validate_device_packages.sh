@@ -103,13 +103,16 @@ validate_target() {
     # Ensure cleanup
     trap "rm -f '$test_file'" EXIT
     
-    # Run llgo build
-    if llgo build -target "$target" "$test_file" &>/dev/null; then
+    # Run llgo build with real-time output
+    if llgo build -target "$target" "$test_file" 2>&1; then
         printf " ${GREEN}✅ SUCCESS${NC}\n"
         rm -f "$test_file"
         return 0
     else
         printf " ${RED}❌ FAILED${NC}\n"
+        echo -e "${RED}Error details for $device_package -> $target:${NC}"
+        llgo build -target "$target" "$test_file" 2>&1 | sed 's/^/  /'
+        echo ""
         rm -f "$test_file"
         return 1
     fi
