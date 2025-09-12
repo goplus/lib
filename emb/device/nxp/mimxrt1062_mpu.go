@@ -7,7 +7,7 @@
 package nxp
 
 import (
-	"device/arm"
+	"github.com/goplus/lib/emb/device/arm"
 	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
