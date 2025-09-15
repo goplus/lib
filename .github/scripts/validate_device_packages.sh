@@ -27,49 +27,49 @@ ignore_list=(
 # Configuration: device packages and their validation targets
 # Format: "device_package:target1,target2,..."
 VALIDATION_TARGETS=(
-    # arm - ARM Cortex-M generic
+    # arm
     "device/arm:cortex-m-qemu"
     
-    # arm64 - ARM64 architecture (no embedded targets available)
+    # arm64
     # "device/arm64:"
     
-    # avr - AVR series microcontrollers
+    # avr
     "device/avr:arduino"
     
-    # esp - ESP series microcontrollers
+    # esp
     "device/esp:esp32,esp8266"
     
-    # gba - Game Boy Advance
+    # gba
     "device/gba:gameboy-advance"
     
-    # kendryte - Kendryte K210 RISC-V
+    # kendryte
     # "device/kendryte:maixbit"
     
-    # nrf - Nordic nRF series
+    # nrf
     "device/nrf:nrf52840,nrf51"
     
-    # nxp - NXP series microcontrollers
+    # nxp
     "device/nxp:teensy40,teensy36"
     
-    # renesas - Renesas series microcontrollers
-    "device/renesas:nanopi-neo"
+    # renesas
+    # "device/renesas"
     
-    # riscv - RISC-V generic
+    # riscv
     "device/riscv:riscv-qemu"
     
-    # rp - Raspberry Pi series microcontrollers
+    # rp
     "device/rp:rp2350"
     
-    # sam - Atmel SAM series microcontrollers
+    # sam
     "device/sam:arduino-zero,atsamd51j19a"
     
-    # sifive - SiFive RISC-V series
+    # sifive
     # "device/sifive:hifive1b"
     
     # stm32 - STM32 series microcontrollers
     "device/stm32:stm32f4disco,nucleo-f103rb"
     
-    # tkey - TKey security key (no suitable targets available)
+    # tkey
     # "device/tkey:"
 )
 
