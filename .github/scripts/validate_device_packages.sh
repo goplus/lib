@@ -2,6 +2,10 @@
 
 # validate_device_packages.sh
 # Validates device packages compilation with different LLGO targets
+#
+# Usage:
+#   ./validate_device_packages.sh                      # Run all validations
+#   ./validate_device_packages.sh device/arm:cortex-m-qemu  # Run single validation
 
 set -e
 
@@ -80,6 +84,18 @@ create_test_file() {
 package main
 
 import _ "github.com/goplus/lib/emb/$device_package"
+
+// Placeholder functions to resolve undefined symbols from LLGO targets
+// Similar to github.com/goplus/llgo/_demo/embed/targetsbuild/C/c.go
+
+//export handleHardFault
+func handleHardFault() {}
+
+//export handleInterrupt  
+func handleInterrupt() {}
+
+//export Reset_Handler
+func Reset_Handler() {}
 
 func main() {}
 EOF
@@ -184,6 +200,36 @@ validate_all_packages() {
     return 0
 }
 
+# Validate single target from command line
+validate_single() {
+    local input="$1"
+    
+    # Parse format: device/package:target
+    if [[ ! "$input" =~ ^([^:]+):([^:]+)$ ]]; then
+        echo -e "${RED}❌ Invalid format. Expected: device/package:target${NC}" >&2
+        echo -e "${YELLOW}💡 Example: device/arm:cortex-m-qemu${NC}" >&2
+        return 1
+    fi
+    
+    local device_package="${BASH_REMATCH[1]}"
+    local target="${BASH_REMATCH[2]}"
+    
+    echo -e "${BLUE}🎯 Single target validation${NC}"
+    echo -e "${BLUE}Package: $device_package${NC}"
+    echo -e "${BLUE}Target: $target${NC}"
+    echo ""
+    
+    if validate_target "$device_package" "$target" "1" "1"; then
+        echo ""
+        echo -e "${GREEN}🎉 Single validation passed!${NC}"
+        return 0
+    else
+        echo ""
+        echo -e "${RED}❌ Single validation failed${NC}" >&2
+        return 1
+    fi
+}
+
 # Main script
 main() {
     # Check if llgo is available
@@ -196,7 +242,20 @@ main() {
     # Clean up any existing test files
     rm -f test_*.go
     
-    # Run validation
+    # Check for single target mode
+    if [[ $# -eq 1 ]]; then
+        if validate_single "$1"; then
+            exit 0
+        else
+            exit 1
+        fi
+    elif [[ $# -gt 1 ]]; then
+        echo -e "${RED}❌ Too many arguments${NC}" >&2
+        echo -e "${YELLOW}💡 Usage: $0 [device/package:target]${NC}" >&2
+        exit 1
+    fi
+    
+    # Run full validation
     if validate_all_packages; then
         exit 0
     else
@@ -211,5 +270,5 @@ cleanup() {
 }
 trap cleanup EXIT
 
-# Run main function
-main
+# Run main function with all arguments
+main "$@"
