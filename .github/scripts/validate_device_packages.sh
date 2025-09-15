@@ -9,6 +9,21 @@
 
 set -e
 
+# Define ignore list - targets not supported by LLGO
+# Reference: https://github.com/goplus/llgo/blob/18e036568de0b8d3f1284b975402e44a5ab7c248/_demo/embed/targetsbuild/build.sh
+ignore_list=(
+	"atmega1280"
+	"atmega2560"
+	"atmega328p"
+	"atmega32u4"
+	"attiny85"
+	"fe310"
+	"k210"
+	"riscv32"
+	"riscv64"
+	"rp2040"
+)
+
 # Configuration: device packages and their validation targets
 # Format: "device_package:target1,target2,..."
 VALIDATION_TARGETS=(
@@ -19,7 +34,7 @@ VALIDATION_TARGETS=(
     # "device/arm64:"
     
     # avr - AVR series microcontrollers
-    "device/avr:arduino,atmega328p"
+    "device/avr:arduino"
     
     # esp - ESP series microcontrollers
     "device/esp:esp32,esp8266"
@@ -28,7 +43,7 @@ VALIDATION_TARGETS=(
     "device/gba:gameboy-advance"
     
     # kendryte - Kendryte K210 RISC-V
-    "device/kendryte:maixbit"
+    # "device/kendryte:maixbit"
     
     # nrf - Nordic nRF series
     "device/nrf:nrf52840,nrf51"
@@ -43,13 +58,13 @@ VALIDATION_TARGETS=(
     "device/riscv:riscv-qemu"
     
     # rp - Raspberry Pi series microcontrollers
-    "device/rp:rp2040,rp2350"
+    "device/rp:rp2350"
     
     # sam - Atmel SAM series microcontrollers
     "device/sam:arduino-zero,atsamd51j19a"
     
     # sifive - SiFive RISC-V series
-    "device/sifive:hifive1b"
+    # "device/sifive:hifive1b"
     
     # stm32 - STM32 series microcontrollers
     "device/stm32:stm32f4disco,nucleo-f103rb"
@@ -103,12 +118,31 @@ EOF
     echo "$filename"
 }
 
+# Check if target is in ignore list
+check_ignore_list() {
+    local target="$1"
+    for ignored in "${ignore_list[@]}"; do
+        if [[ "$target" == "$ignored" ]]; then
+            return 0  # Found in ignore list
+        fi
+    done
+    return 1  # Not in ignore list
+}
+
 # Validate single target
 validate_target() {
     local device_package="$1"
     local target="$2"
     local current="$3"
     local total="$4"
+    
+    # Check if target is in ignore list
+    if check_ignore_list "$target"; then
+        printf "${YELLOW}[$current/$total]${NC} ⚠️  Skipping $device_package with target $target (not supported by LLGO)\n"
+        echo "    📋 Target '$target' is in LLGO ignore list"
+        echo "    🔗 Reference: https://github.com/goplus/llgo/blob/18e036568de0b8d3f1284b975402e44a5ab7c248/_demo/embed/targetsbuild/build.sh"
+        return 0
+    fi
     
     printf "${BLUE}[$current/$total]${NC} 🔄 Validating $device_package with target $target..."
     
