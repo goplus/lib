@@ -193,8 +193,11 @@ const (
 // Pseudo function call that is replaced by the compiler with the actual
 // functions registered through interrupt.New.
 //
-//go:linkname callHandlers runtime/interrupt.callHandlers
-func callHandlers(num int)
+// NOTE(zzy): runtime/interrupt.callHandlers is not yet implemented in LLGO
+// Original linkname: //go:linkname callHandlers runtime/interrupt.callHandlers
+func callHandlers(num int){
+	// TODO: implement interrupt handler dispatch mechanism
+}
 
 //export PIO0_0_IRQHandler
 func interruptPIO0_0() {
