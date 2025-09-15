@@ -34,8 +34,8 @@ VALIDATION_TARGETS=(
     "device/arm64:esp32"
     
     # avr
-    "device/avr:arduino"
-    
+    "device/avr:arduino,arduino-leonardo,atmega1284p,atmega328pb,attiny1616,simavr"
+
     # esp
     "device/esp:esp32,esp8266"
     
