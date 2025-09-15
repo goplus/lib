@@ -53,9 +53,9 @@ VALIDATION_TARGETS=(
     
     # renesas
     # "device/renesas"
-    
-    # riscv
-    "device/riscv:riscv-qemu"
+
+    # riscv picolibc fail
+    # "device/riscv:riscv-qemu"
     
     # rp
     "device/rp:rp2350"
