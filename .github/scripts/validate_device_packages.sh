@@ -43,7 +43,8 @@ VALIDATION_TARGETS=(
     "device/gba:gameboy-advance"
     
     # kendryte
-    # "device/kendryte:maixbit"
+    # riscv64 current not support at llgo
+    # "device/kendryte"
     
     # nrf
     "device/nrf:nrf52840,nrf51"
@@ -64,13 +65,14 @@ VALIDATION_TARGETS=(
     "device/sam:arduino-zero,atsamd51j19a"
     
     # sifive
-    # "device/sifive:hifive1b"
+    # riscv32 current not support at llgo
+    # "device/sifive"
     
     # stm32 - STM32 series microcontrollers
     "device/stm32:stm32f4disco,nucleo-f103rb"
     
-    # tkey
-    # "device/tkey:"
+    # riscv32 current not support at llgo
+    # "device/tkey"
 )
 
 # Colors for output
