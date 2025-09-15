@@ -3,7 +3,8 @@ package avr
 // Run the given assembly code. The code will be marked as having side effects,
 // as it doesn't produce output and thus would normally be eliminated by the
 // optimizer.
-func Asm(asm string)
+//llgo:link Asm llgo.asm
+func Asm(asm string) {}
 
 // Run the given inline assembly. The code will be marked as having side
 // effects, as it would otherwise be optimized away. The inline assembly string
@@ -18,4 +19,7 @@ func Asm(asm string)
 //
 // You can use {} in the asm string (which expands to a register) to set the
 // return value.
-func AsmFull(asm string, regs map[string]interface{}) uintptr
+//llgo:link AsmFull llgo.asm
+func AsmFull(asm string, regs map[string]interface{}) uintptr {
+	return 0
+}
