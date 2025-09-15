@@ -18,10 +18,10 @@ jobs:
         run: |
           echo "Setting up LLGO from precompiled release..."
           # Download precompiled LLGO
-          wget https://github.com/luoliwoshang/llgo/releases/download/v0.0.1-test-espclang-5/llgo0.0.1-test-espclang-5.linux-amd64.tar.gz
+          wget https://github.com/luoliwoshang/llgo/releases/download/v0.0.1-clang-withemb-runtime/llgo0.0.1-clang-withemb-runtime.linux-amd64.tar.gz
           # Create llgo directory and extract the archive
           mkdir -p llgo
-          tar -xzf llgo0.0.1-test-espclang-5.linux-amd64.tar.gz -C llgo
+          tar -xzf llgo0.0.1-clang-withemb-runtime.linux-amd64.tar.gz -C llgo
           # Add llgo/bin to PATH
           echo "$PWD/llgo/bin" >> $GITHUB_PATH
           # Verify LLGO is available
