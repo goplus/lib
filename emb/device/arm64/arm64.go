@@ -25,16 +25,36 @@ func AsmFull(asm string, regs map[string]interface{}) uintptr {
 }
 
 // Run the following system call (SVCall) with 0 arguments.
-func SVCall0(num uintptr) uintptr
+func SVCall0(num uintptr) uintptr {
+	// TODO(zzy): implement system call (SVCall) functionality for ARM Cortex-M
+	// TinyGo compiler implementation: tinygo/compiler/inlineasm.go emitSV64Call function
+	panic("TODO: SVCall0")
+}
 
 // Run the following system call (SVCall) with 1 argument.
-func SVCall1(num uintptr, a1 interface{}) uintptr
+func SVCall1(num uintptr, a1 interface{}) uintptr {
+	// TODO(zzy): implement system call (SVCall) functionality for ARM Cortex-M
+	// TinyGo compiler implementation: tinygo/compiler/inlineasm.go emitSV64Call function
+	panic("TODO: SVCall1")
+}
 
 // Run the following system call (SVCall) with 2 arguments.
-func SVCall2(num uintptr, a1, a2 interface{}) uintptr
+func SVCall2(num uintptr, a1, a2 interface{}) uintptr {
+	// TODO(zzy): implement system call (SVCall) functionality for ARM Cortex-M
+	// TinyGo compiler implementation: tinygo/compiler/inlineasm.go emitSV64Call function
+	panic("TODO: SVCall2")
+}
 
 // Run the following system call (SVCall) with 3 arguments.
-func SVCall3(num uintptr, a1, a2, a3 interface{}) uintptr
+func SVCall3(num uintptr, a1, a2, a3 interface{}) uintptr {
+	// TODO(zzy): implement system call (SVCall) functionality for ARM Cortex-M
+	// TinyGo compiler implementation: tinygo/compiler/inlineasm.go emitSV64Call function
+	panic("TODO: SVCall3")
+}
 
 // Run the following system call (SVCall) with 4 arguments.
-func SVCall4(num uintptr, a1, a2, a3, a4 interface{}) uintptr
+func SVCall4(num uintptr, a1, a2, a3, a4 interface{}) uintptr {
+	// TODO(zzy): implement system call (SVCall) functionality for ARM Cortex-M
+	// TinyGo compiler implementation: tinygo/compiler/inlineasm.go emitSV64Call function
+	panic("TODO: SVCall4")
+}

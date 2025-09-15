@@ -31,7 +31,7 @@ VALIDATION_TARGETS=(
     "device/arm:cortex-m-qemu"
     
     # arm64
-    # "device/arm64:"
+    "device/arm64:esp32"
     
     # avr
     "device/avr:arduino"
