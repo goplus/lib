@@ -1,5 +1,7 @@
 package arm
 
+import _ "unsafe"
+
 // Semihosting commands.
 // http://infocenter.arm.com/help/index.jsp?topic=/com.arm.doc.dui0471c/Bgbjhiea.html
 const (

@@ -29,7 +29,13 @@
 //	POSSIBILITY OF SUCH DAMAGE.
 package arm
 
-import "C"
+// NOTE(zzy): import "C" is not needed here and causes compilation errors.
+// The .c and .S files are already stored in LLGO at /llgo/targets/device/,
+// including import "C" will cause undefined symbol errors like:
+// - undefined: SCS_BASE
+// - undefined: Asm
+// when building with: llgo build -target cortex-m-qemu .
+
 import (
 	"errors"
 	"unsafe"
@@ -207,14 +213,18 @@ func SetPriority(irq uint32, priority uint32) {
 
 // DisableInterrupts disables all interrupts, and returns the old interrupt
 // state.
+// NOTE(zzy): Implementation available at llgo/targets/device/arm/interrupts.c
+// Currently not linked - needs to be connected to use the C implementation
 //
-//export DisableInterrupts
+//go:linkname DisableInterrupts DisableInterrupts
 func DisableInterrupts() uintptr
 
 // EnableInterrupts enables all interrupts again. The value passed in must be
 // the mask returned by DisableInterrupts.
+// NOTE(zzy): Implementation available at llgo/targets/device/arm/interrupts.c
+// Currently not linked - needs to be connected to use the C implementation
 //
-//export EnableInterrupts
+//go:linkname EnableInterrupts EnableInterrupts
 func EnableInterrupts(mask uintptr)
 
 // Set up the system timer to generate periodic tick events.
