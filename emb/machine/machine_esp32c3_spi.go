@@ -11,7 +11,7 @@ package machine
 import (
 	"github.com/goplus/lib/emb/device/esp"
 	"errors"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

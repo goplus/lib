@@ -7,7 +7,7 @@ import (
 	"errors"
 	"internal/binary"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

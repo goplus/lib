@@ -10,7 +10,7 @@ import (
 	"internal/binary"
 	"math/bits"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

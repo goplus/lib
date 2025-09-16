@@ -7,7 +7,7 @@ import (
 	"errors"
 	"math"
 	"math/bits"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

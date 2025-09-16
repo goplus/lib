@@ -5,7 +5,7 @@ package machine
 import (
 	"github.com/goplus/lib/emb/device/arm"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const numTimers = 4

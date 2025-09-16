@@ -6,7 +6,7 @@ import (
 	"github.com/goplus/lib/emb/device/gba"
 
 	"image/color"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

@@ -8,7 +8,7 @@ package machine
 
 import (
 	"errors"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"sync"
 	"unsafe"
 )

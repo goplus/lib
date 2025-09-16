@@ -6,7 +6,7 @@ import (
 	"github.com/goplus/lib/emb/device/nxp"
 	"math/bits"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 // Peripheral abstraction layer for the MIMXRT1062

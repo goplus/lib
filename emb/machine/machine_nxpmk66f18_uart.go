@@ -36,7 +36,7 @@ import (
 	"github.com/goplus/lib/emb/device/nxp"
 	"errors"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 
 	_ "unsafe" // for go:linkname
 )
