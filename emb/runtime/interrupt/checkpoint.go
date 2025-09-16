@@ -32,7 +32,10 @@ type Checkpoint struct {
 // true) and once after jumping (returning false).
 //
 // This function is a compiler intrinsic, it is not implemented in Go.
-func (c *Checkpoint) Save() bool
+// TODO(zzy): implement Save
+func (c *Checkpoint) Save() bool {
+	panic("todo:Checkpoint.Save")
+}
 
 // Returns whether a jump point was saved (and not erased due to a jump).
 func (c *Checkpoint) Saved() bool {
@@ -58,5 +61,5 @@ func (c *Checkpoint) Jump() {
 	checkpointJump(jumpSP, jumpPC)
 }
 
-//export tinygo_checkpointJump
+//go:linkname checkpointJump __llgo_checkpointJump
 func checkpointJump(jumpSP, jumpPC uintptr)
