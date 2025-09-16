@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/nxp"
+	"github.com/goplus/lib/emb/device/nxp"
 	"runtime/interrupt"
 	"runtime/volatile"
 )

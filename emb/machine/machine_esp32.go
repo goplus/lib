@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/esp"
+	"github.com/goplus/lib/emb/device/esp"
 	"errors"
 	"runtime/volatile"
 	"unsafe"

@@ -7,8 +7,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/sam"
+	"github.com/goplus/lib/emb/device/arm"
+	"github.com/goplus/lib/emb/device/sam"
 	"errors"
 	"internal/binary"
 	"runtime/interrupt"

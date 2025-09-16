@@ -6,7 +6,7 @@
 package machine
 
 import (
-	"device/stm32"
+	"github.com/goplus/lib/emb/device/stm32"
 	"runtime/interrupt"
 )
 

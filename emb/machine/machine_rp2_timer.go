@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/arm"
+	"github.com/goplus/lib/emb/device/arm"
 	"runtime/interrupt"
 	"runtime/volatile"
 )

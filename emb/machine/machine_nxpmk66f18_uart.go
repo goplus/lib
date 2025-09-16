@@ -32,8 +32,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/nxp"
+	"github.com/goplus/lib/emb/device/arm"
+	"github.com/goplus/lib/emb/device/nxp"
 	"errors"
 	"runtime/interrupt"
 	"runtime/volatile"

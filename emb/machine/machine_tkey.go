@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/tkey"
+	"github.com/goplus/lib/emb/device/tkey"
 	"errors"
 	"strconv"
 )

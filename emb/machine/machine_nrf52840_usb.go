@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/nrf"
+	"github.com/goplus/lib/emb/device/arm"
+	"github.com/goplus/lib/emb/device/nrf"
 	"machine/usb"
 	"runtime/interrupt"
 	"runtime/volatile"

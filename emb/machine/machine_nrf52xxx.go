@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/nrf"
+	"github.com/goplus/lib/emb/device/nrf"
 	"runtime/volatile"
 	"unsafe"
 )

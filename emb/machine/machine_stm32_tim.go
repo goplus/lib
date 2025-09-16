@@ -6,7 +6,7 @@ package machine
 // depending on the size of that register in the MCU's TIM_Type structure.
 
 import (
-	"device/stm32"
+	"github.com/goplus/lib/emb/device/stm32"
 	"runtime/interrupt"
 	"runtime/volatile"
 )

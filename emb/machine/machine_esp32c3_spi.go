@@ -9,7 +9,7 @@ package machine
 // https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-reference/peripherals/spi_master.html
 
 import (
-	"device/esp"
+	"github.com/goplus/lib/emb/device/esp"
 	"errors"
 	"runtime/volatile"
 	"unsafe"

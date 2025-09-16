@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/sifive"
+	"github.com/goplus/lib/emb/device/sifive"
 	"runtime/interrupt"
 	"unsafe"
 )

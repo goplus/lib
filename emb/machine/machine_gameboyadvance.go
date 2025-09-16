@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/gba"
+	"github.com/goplus/lib/emb/device/gba"
 
 	"image/color"
 	"runtime/volatile"

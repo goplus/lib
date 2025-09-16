@@ -2,7 +2,7 @@
 
 package machine
 
-import "device/stm32"
+import "github.com/goplus/lib/emb/device/stm32"
 
 var (
 	Watchdog = &watchdogImpl{}

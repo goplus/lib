@@ -3,7 +3,7 @@
 package machine
 
 import (
-	"device/sam"
+	"github.com/goplus/lib/emb/device/sam"
 	"machine/usb"
 	"runtime/interrupt"
 	"unsafe"

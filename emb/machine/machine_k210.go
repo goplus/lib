@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/kendryte"
-	"device/riscv"
+	"github.com/goplus/lib/emb/device/kendryte"
+	"github.com/goplus/lib/emb/device/riscv"
 	"errors"
 	"runtime/interrupt"
 	"unsafe"

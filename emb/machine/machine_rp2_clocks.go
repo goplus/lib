@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/rp"
+	"github.com/goplus/lib/emb/device/arm"
+	"github.com/goplus/lib/emb/device/rp"
 	"runtime/volatile"
 	"unsafe"
 )

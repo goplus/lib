@@ -5,7 +5,7 @@ package machine
 // Peripheral abstraction layer for the stm32f4
 
 import (
-	"device/stm32"
+	"github.com/goplus/lib/emb/device/stm32"
 	"errors"
 	"internal/binary"
 	"math/bits"
