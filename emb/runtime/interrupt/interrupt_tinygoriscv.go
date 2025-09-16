@@ -2,7 +2,7 @@
 
 package interrupt
 
-import "device/riscv"
+import "github.com/goplus/lib/emb/device/riscv"
 
 // State represents the previous global interrupt state.
 type State uintptr

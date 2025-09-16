@@ -3,8 +3,8 @@
 package interrupt
 
 import (
-	"device/kendryte"
-	"device/riscv"
+	"github.com/goplus/lib/emb/device/kendryte"
+	"github.com/goplus/lib/emb/device/riscv"
 )
 
 // Enable enables this interrupt. Right after calling this function, the

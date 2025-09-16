@@ -5,7 +5,7 @@ package interrupt
 // This is good documentation of the GBA: https://www.akkit.org/info/gbatek.htm
 
 import (
-	"device/gba"
+	"github.com/goplus/lib/emb/device/gba"
 )
 
 // Enable enables this interrupt. Right after calling this function, the
