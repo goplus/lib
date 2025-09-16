@@ -5,7 +5,7 @@ package machine
 import (
 	"github.com/goplus/lib/emb/device/nxp"
 	"math/bits"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 )
 

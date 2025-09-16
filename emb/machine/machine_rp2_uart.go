@@ -4,7 +4,7 @@ package machine
 
 import (
 	"github.com/goplus/lib/emb/device/rp"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 // UART on the RP2040.

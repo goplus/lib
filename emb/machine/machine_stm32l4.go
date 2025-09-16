@@ -6,7 +6,7 @@ import (
 	"github.com/goplus/lib/emb/device/stm32"
 	"errors"
 	"internal/binary"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )

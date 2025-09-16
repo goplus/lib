@@ -4,7 +4,7 @@ package machine
 
 import (
 	"github.com/goplus/lib/emb/device/stm32"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 // Pins printed on the silkscreen

@@ -6,7 +6,7 @@ import (
 	"github.com/goplus/lib/emb/device/arm"
 	"github.com/goplus/lib/emb/device/nrf"
 	"machine/usb"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )

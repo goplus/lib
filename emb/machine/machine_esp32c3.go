@@ -6,7 +6,7 @@ import (
 	"github.com/goplus/lib/emb/device/esp"
 	"github.com/goplus/lib/emb/device/riscv"
 	"errors"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 	"sync"
 	"unsafe"

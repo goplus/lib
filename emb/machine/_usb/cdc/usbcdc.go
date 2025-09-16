@@ -4,7 +4,7 @@ import (
 	"errors"
 	"machine"
 	"machine/usb"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 var (

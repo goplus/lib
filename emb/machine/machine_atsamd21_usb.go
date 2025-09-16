@@ -5,7 +5,7 @@ package machine
 import (
 	"github.com/goplus/lib/emb/device/sam"
 	"machine/usb"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"unsafe"
 )
 

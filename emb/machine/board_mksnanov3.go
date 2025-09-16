@@ -7,7 +7,7 @@ package machine
 
 import (
 	"github.com/goplus/lib/emb/device/stm32"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 // LED is also wired to the SD card card detect (CD) pin.

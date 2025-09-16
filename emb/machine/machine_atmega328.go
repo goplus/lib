@@ -4,7 +4,7 @@ package machine
 
 import (
 	"github.com/goplus/lib/emb/device/avr"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
