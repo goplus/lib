@@ -19,7 +19,10 @@ type Interrupt struct {
 // it only once, and must pass constant parameters to it. That means that the
 // interrupt ID must be a Go constant and that the handler must be a simple
 // function: closures are not supported.
-func New(id int, handler func(Interrupt)) Interrupt
+// TODO(zzy): implement New
+func New(id int, handler func(Interrupt)) Interrupt {
+	panic("todo:interrupt.New")
+}
 
 // handle is used internally, between IR generation and interrupt lowering. The
 // frontend will create runtime/interrupt.handle objects, cast them to an int,
