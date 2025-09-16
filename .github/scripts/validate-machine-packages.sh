@@ -5,13 +5,6 @@
 
 set -e
 
-# Color definitions
-RED='\033[0;31m'
-GREEN='\033[0;32m'
-YELLOW='\033[1;33m'
-BLUE='\033[0;34m'
-NC='\033[0m' # No Color
-
 # Statistics variables
 TOTAL_TARGETS=0
 PASSED_TARGETS=0
@@ -22,7 +15,7 @@ FAILED_LIST=()
 TEST_DIR="_demo/emptycheck"
 TEST_FILE="$TEST_DIR/main.go"
 
-echo -e "${BLUE}🚀 Starting Machine package compilation compatibility validation${NC}"
+echo "🚀 Starting Machine package compilation compatibility validation"
 echo "Test file: $TEST_FILE"
 echo ""
 
@@ -56,19 +49,19 @@ validate_target() {
     echo -n "... "
     
     # Run llgo build test
-    if llgo build -target="$target" "$TEST_FILE" 2>&1; then
-        echo -e "${GREEN}✅ PASS${NC}"
+    if llgo build -tags nogc -target="$target" "$TEST_FILE" 2>&1; then
+        echo "✅ PASS"
         PASSED_TARGETS=$((PASSED_TARGETS + 1))
         return 0
     else
-        echo -e "${RED}❌ FAIL${NC}"
+        echo "❌ FAIL"
         FAILED_TARGETS=$((FAILED_TARGETS + 1))
         FAILED_LIST+=("$target")
         return 1
     fi
 }
 
-echo -e "${YELLOW}📋 Starting target validation one by one...${NC}"
+echo "📋 Starting target validation one by one..."
 echo ""
 
 # Define all test targets list
@@ -201,23 +194,23 @@ for target in "${TARGETS[@]}"; do
 done
 
 # ==================== Final Statistics ====================
-echo -e "${BLUE}📊 Validation Results Statistics${NC}"
+echo "📊 Validation Results Statistics"
 echo "========================================"
-echo -e "Total test targets: ${BLUE}$TOTAL_TARGETS${NC}"
-echo -e "Passed count: ${GREEN}$PASSED_TARGETS${NC}"
-echo -e "Failed count: ${RED}$FAILED_TARGETS${NC}"
+echo "Total test targets: $TOTAL_TARGETS"
+echo "Passed count: $PASSED_TARGETS"
+echo "Failed count: $FAILED_TARGETS"
 
 if [ $FAILED_TARGETS -gt 0 ]; then
     echo ""
-    echo -e "${RED}❌ Failed targets:${NC}"
+    echo "❌ Failed targets:"
     for target in "${FAILED_LIST[@]}"; do
         echo "  - $target"
     done
     echo ""
-    echo -e "${YELLOW}⚠️  There are compilation failures, please check related issues${NC}"
+    echo "⚠️  There are compilation failures, please check related issues"
     exit 1
 else
     echo ""
-    echo -e "${GREEN}🎉 All targets validated successfully! Machine package compatibility is good${NC}"
+    echo "🎉 All targets validated successfully! Machine package compatibility is good"
     exit 0
 fi
