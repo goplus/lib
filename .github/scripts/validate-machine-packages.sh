@@ -28,6 +28,15 @@ import (
     _ "github.com/goplus/lib/emb/machine"
 )
 
+//export handleHardFault
+func handleHardFault() {}
+
+//export handleInterrupt
+func handleInterrupt() {}
+
+//export Reset_Handler
+func Reset_Handler() {}
+
 func main(){
 
 }
