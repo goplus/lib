@@ -179,7 +179,10 @@ TARGETS=(
     "makerfabs-esp32c3spi35"
     "hifive1b"
     "maixbit"
-    "tkey"
+
+    # "tkey" 
+    # picolibc symbol notfound like vfprintf,stdout,srandom ...
+
     "elecrow-rp2040"
     "elecrow-rp2350"
     "hw-651"
