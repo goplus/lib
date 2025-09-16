@@ -1,5 +1,7 @@
 package interrupt
 
+import _ "unsafe"
+
 // A checkpoint is a setjmp like buffer, that can be used as a flag for
 // interrupts.
 //

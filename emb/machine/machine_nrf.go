@@ -4,7 +4,7 @@ package machine
 
 import (
 	"github.com/goplus/lib/emb/device/nrf"
-	"internal/binary"
+	"github.com/goplus/lib/emb/internal/binary"
 	"github.com/goplus/lib/emb/runtime/interrupt"
 	"unsafe"
 )

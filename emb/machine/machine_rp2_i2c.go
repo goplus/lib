@@ -3,9 +3,10 @@
 package machine
 
 import (
-	"github.com/goplus/lib/emb/device/rp"
 	"errors"
-	"internal/itoa"
+
+	"github.com/goplus/lib/emb/device/rp"
+	"github.com/goplus/lib/emb/internal/itoa"
 )
 
 // I2C on the RP2040/RP2350

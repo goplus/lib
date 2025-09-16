@@ -10,7 +10,7 @@ import (
 	"github.com/goplus/lib/emb/device/arm"
 	"github.com/goplus/lib/emb/device/sam"
 	"errors"
-	"internal/binary"
+	"github.com/goplus/lib/emb/internal/binary"
 	"github.com/goplus/lib/emb/runtime/interrupt"
 	"unsafe"
 )
