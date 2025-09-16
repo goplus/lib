@@ -2,8 +2,8 @@ package cdc
 
 import (
 	"errors"
-	"machine"
-	"machine/usb"
+	"github.com/goplus/lib/emb/machine"
+	"github.com/goplus/lib/emb/machine/_usb"
 	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 

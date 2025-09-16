@@ -1,7 +1,7 @@
 package joystick
 
 import (
-	"machine/usb/descriptor"
+	"github.com/goplus/lib/emb/machine/_usb/descriptor"
 
 	"encoding/binary"
 )

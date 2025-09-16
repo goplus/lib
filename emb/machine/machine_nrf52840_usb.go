@@ -5,7 +5,7 @@ package machine
 import (
 	"github.com/goplus/lib/emb/device/arm"
 	"github.com/goplus/lib/emb/device/nrf"
-	"machine/usb"
+	"github.com/goplus/lib/emb/machine/_usb"
 	"github.com/goplus/lib/emb/runtime/interrupt"
 	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
