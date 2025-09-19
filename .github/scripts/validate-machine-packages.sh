@@ -173,17 +173,28 @@ TARGETS=(
     # "stm32l0x1"
     # TODO: llgo sync this 0.39.0 target
 
-    "atmega328pb"
-    "atmega1284p"
-    "arduino"
-    "arduino-leonardo"
-    "arduino-mega1280"
-    "arduino-nano"
-    "attiny1616"
-    "digispark"
-    "esp32-mini32"
+    # "atmega328pb"
+    # "atmega1284p"
+    # "arduino"
+    # "arduino-leonardo"
+    # "arduino-mega1280"
+    # "arduino-nano"
+    # "attiny1616"
+    # "digispark"
+    # error: ran out of registers during register allocation
+    # 2 errors generated.
+    # panic: export object of internal/abi failed: exit status 1
+
+
+    
+    # "esp32-mini32"
+    # ld.lld: error: section 'text' will not fit in region 'iram_seg': overflowed by 13157 bytes
+    # binaray too large https://github.com/goplus/llgo/issues/1317
+
     "esp32c3-supermini"
-    "nodemcu"
+    # "nodemcu"
+    # compile picolibcnewlib/libc/tinystdio/puts.c fail
+
     "esp-c3-32s-kit"
     "qtpy-esp32c3"
     "m5stamp-c3"
@@ -191,9 +202,9 @@ TARGETS=(
     "esp32-c3-devkit-rust-1"
     "esp32c3-12f"
     "makerfabs-esp32c3spi35"
-    "hifive1b"
-    "maixbit"
 
+    # "hifive1b"
+    # "maixbit"
     # "tkey" 
     # picolibc symbol notfound like vfprintf,stdout,srandom ...
 
