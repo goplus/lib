@@ -3,9 +3,10 @@
 package machine
 
 import (
+	"unsafe"
+
 	"github.com/goplus/lib/emb/device/avr"
 	"github.com/goplus/lib/emb/runtime/volatile"
-	"unsafe"
 )
 
 const deviceName = avr.DEVICE
@@ -144,7 +145,9 @@ func (a ADC) Get() uint16 {
 }
 
 // linked from runtime.adjustMonotonicTimer
-func adjustMonotonicTimer()
+// TODO(zzy): implement at runtime
+func adjustMonotonicTimer() {}
 
+// TODO(zzy): implement at runtime
 // linked from runtime.initMonotonicTimer
-func initMonotonicTimer()
+func initMonotonicTimer() {}
