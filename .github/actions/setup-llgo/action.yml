@@ -1,0 +1,24 @@
+name: "Setup LLGO"
+description: "Download and setup LLGO from precompiled release"
+inputs:
+  platform:
+    description: "Platform to download for"
+    required: false
+    default: "linux-amd64"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup LLGO
+      shell: bash
+      run: |
+        echo "Setting up LLGO from precompiled release..."
+        # Download precompiled LLGO
+        wget https://github.com/luoliwoshang/llgo/releases/download/v0.0.1-clang-withemb-runtime/llgo0.0.1-clang-withemb-runtime.${{ inputs.platform }}.tar.gz
+        # Create llgo directory and extract the archive
+        mkdir -p llgo
+        tar -xzf llgo0.0.1-clang-withemb-runtime.${{ inputs.platform }}.tar.gz -C llgo
+        # Add llgo/bin to PATH
+        echo "$PWD/llgo/bin" >> $GITHUB_PATH
+        # Verify LLGO is available
+        chmod +x llgo/bin/llgo
+        ./llgo/bin/llgo version || echo "Failed to get LLGO version"
