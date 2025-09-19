@@ -95,7 +95,9 @@ TARGETS=(
     "circuitplay-express"
     "circuitplay-bluefruit"
     "clue-alpha"
-    "gameboy-advance"
+    # "gameboy-advance"
+    # some picolibc symbol missed
+
     "grandcentral-m4"
     "itsybitsy-m4"
     "feather-m4"
@@ -148,7 +150,8 @@ TARGETS=(
     "pico2"
     "tiny2350"
     "pico-plus2"
-    "metro-rp2350"
+    # "metro-rp2350"
+    # TODO: llgo sync this 0.39.0 target
     "waveshare-rp2040-tiny"
     "nrf52840-s140v6-uf2-generic"
     "bluepill"
@@ -167,7 +170,9 @@ TARGETS=(
     "lorae5"
     "swan"
     "mksnanov3"
-    "stm32l0x1"
+    # "stm32l0x1"
+    # TODO: llgo sync this 0.39.0 target
+
     "atmega328pb"
     "atmega1284p"
     "arduino"
