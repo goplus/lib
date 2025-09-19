@@ -16,18 +16,18 @@ func (irq Interrupt) Enable() {
 
 var inInterrupt bool
 
-//export handleInterrupt
-func handleInterrupt() {
-	inInterrupt = true
-	flags := gba.INTERRUPT.IF.Get()
-	for i := 0; i < 14; i++ {
-		if flags&(1<<uint(i)) != 0 {
-			gba.INTERRUPT.IF.Set(1 << uint(i)) // acknowledge interrupt
-			callInterruptHandler(i)
-		}
-	}
-	inInterrupt = false
-}
+//TODO(zzy): origin with export handleInterrupt
+// func handleInterrupt() {
+// 	inInterrupt = true
+// 	flags := gba.INTERRUPT.IF.Get()
+// 	for i := 0; i < 14; i++ {
+// 		if flags&(1<<uint(i)) != 0 {
+// 			gba.INTERRUPT.IF.Set(1 << uint(i)) // acknowledge interrupt
+// 			callInterruptHandler(i)
+// 		}
+// 	}
+// 	inInterrupt = false
+// }
 
 // Pseudo function call that is replaced by the compiler with the actual
 // functions registered through interrupt.New. If there are none, calls will be
