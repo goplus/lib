@@ -320,7 +320,7 @@ validate_device_package() {
         test_file=$(create_device_test_file "$package_path" "$target")
 
         # Run llgo build test
-        if llgo build -tags nogc -target "$target" "$test_file" 2>&1; then
+        if llgo build -v -tags nogc -target "$target" "$test_file" 2>&1; then
             echo "PASS"
             rm -f "$test_file"
             ((PASSED_TESTS++))
@@ -346,7 +346,7 @@ validate_machine_target() {
     echo -n "[$test_number] Testing $target... "
 
     # Run llgo build test
-    if llgo build -tags nogc -target="$target" "$test_file" 2>&1; then
+    if llgo build -v -tags nogc -target="$target" "$test_file" 2>&1; then
         echo "PASS"
         ((PASSED_TESTS++))
         PASSED_LIST+=("$target")
