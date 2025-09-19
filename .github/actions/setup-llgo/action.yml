@@ -34,7 +34,7 @@ runs:
 name: 'Setup LLGO'
 description: 'Setup LLGO from precompiled release'
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Setup LLGO
       shell: bash
