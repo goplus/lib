@@ -14,15 +14,22 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: "1.21"
-      - name: Verify Device Generation
-        run: |
-          go install ./_tools/gen-device-avr
-          go install ./_tools/gen-device-svd
-          bash ./.github/scripts/device-gen.sh verify
       - name: Setup LLGO
         uses: ./.github/actions/setup-llgo
-        with:
-          commit-hash: c4223df0877e2a85d361cdcc73076cdcf312a3b0
       - name: Run Device Package Validation
         run: |
-          ./.github/scripts/validate_embed_packages.sh device
+          ./.github/scripts/validate_device_packages.sh device
+
+  validate-machine-packages:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Go
+        uses: actions/setup-go@v4
+        with:
+          go-version: "1.21"
+      - name: Setup LLGO
+        uses: ./.github/actions/setup-llgo
+      - name: Run Machine Package Validation
+        run: |
+          ./.github/scripts/validate_embed_packages.sh machine
