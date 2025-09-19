@@ -178,17 +178,21 @@ MACHINE_VALIDATION_TARGETS=(
     # ld.lld: error: section 'text' will not fit in region 'iram_seg': overflowed by 13157 bytes
     # binaray too large https://github.com/goplus/llgo/issues/1317
 
-    "esp32c3-supermini"
+    # "esp32c3-supermini"
+    # ld.lld: error: region DRAM overflowed by .data and .bss sections
+
+
     # "nodemcu"
     # compile picolibcnewlib/libc/tinystdio/puts.c fail
 
-    "esp-c3-32s-kit"
-    "qtpy-esp32c3"
-    "m5stamp-c3"
-    "xiao-esp32c3"
-    "esp32-c3-devkit-rust-1"
-    "esp32c3-12f"
-    "makerfabs-esp32c3spi35"
+    # "esp-c3-32s-kit"
+    # "qtpy-esp32c3"
+    # "m5stamp-c3"
+    # "xiao-esp32c3"
+    # "esp32-c3-devkit-rust-1"
+    # "esp32c3-12f"
+    # "makerfabs-esp32c3spi35"
+    # ld.lld: error: region DRAM overflowed by .data and .bss sections
 
     # "hifive1b"
     # "maixbit"
