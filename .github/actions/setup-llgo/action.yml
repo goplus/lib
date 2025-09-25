@@ -1,6 +1,9 @@
 name: "Setup LLGO"
-description: "Download and setup LLGO from precompiled release"
+description: "Checkout and build LLGO from specific commit hash"
 inputs:
+  commit-hash:
+    description: "Commit hash to checkout"
+    required: true
   platform:
     description: "Platform to download for"
     required: false
@@ -8,17 +11,22 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Setup LLGo Dependencies
+      uses: goplus/llgo/.github/actions/setup-deps@8959c83397617dacb18a8de54c3a738303b66141
+    - name: Checkout LLGo Repository
+      uses: actions/checkout@v4
+      with:
+        repository: goplus/llgo
+        ref: ${{ inputs.commit-hash }}
+        path: llgo-source
     - name: Setup LLGO
       shell: bash
       run: |
-        echo "Setting up LLGO from precompiled release..."
-        # Download precompiled LLGO
-        wget https://github.com/luoliwoshang/llgo/releases/download/v0.0.1-clang-withemb-runtime/llgo0.0.1-clang-withemb-runtime.${{ inputs.platform }}.tar.gz
-        # Create llgo directory and extract the archive
-        mkdir -p llgo
-        tar -xzf llgo0.0.1-clang-withemb-runtime.${{ inputs.platform }}.tar.gz -C llgo
-        # Add llgo/bin to PATH
-        echo "$PWD/llgo/bin" >> $GITHUB_PATH
+        echo "Setting up LLGO from commit hash ${{ inputs.commit-hash }}..."
+        cd llgo-source
+        # Install LLGO from source
+        bash ./install.sh
+        # Set LLGO_ROOT to the source directory
+        echo "LLGO_ROOT=$PWD" >> $GITHUB_ENV
         # Verify LLGO is available
-        chmod +x llgo/bin/llgo
-        ./llgo/bin/llgo version || echo "Failed to get LLGO version"
+        llgo version || echo "Failed to get LLGO version"
