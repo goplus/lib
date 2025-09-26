@@ -12,7 +12,7 @@ runs:
   using: "composite"
   steps:
     - name: Setup LLGo Dependencies
-      uses: goplus/llgo/.github/actions/setup-deps@8959c83397617dacb18a8de54c3a738303b66141
+      uses: goplus/llgo/.github/actions/setup-deps@c4223df0877e2a85d361cdcc73076cdcf312a3b0
     - name: Checkout LLGo Repository
       uses: actions/checkout@v4
       with:
