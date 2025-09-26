@@ -122,4 +122,14 @@ func (o *Object) VectorcallMethod(name *Object, args **Object, nargs uintptr, kw
 	return nil
 }
 
+type Kwargs map[string]*Object
+
+func KwargsToDict(kw Kwargs) *Object {
+	dict := NewDict()
+	for k, v := range kw {
+		dict.DictSetItem(FromGoString(k), v)
+	}
+	return dict
+}
+
 // -----------------------------------------------------------------------------
