@@ -185,14 +185,13 @@ MACHINE_VALIDATION_TARGETS=(
     # "nodemcu"
     # compile picolibcnewlib/libc/tinystdio/puts.c fail
 
-    # "esp-c3-32s-kit"
-    # "qtpy-esp32c3"
-    # "m5stamp-c3"
-    # "xiao-esp32c3"
-    # "esp32-c3-devkit-rust-1"
-    # "esp32c3-12f"
-    # "makerfabs-esp32c3spi35"
-    # ld.lld: error: region DRAM overflowed by .data and .bss sections
+    "esp-c3-32s-kit"
+    "qtpy-esp32c3"
+    "m5stamp-c3"
+    "xiao-esp32c3"
+    "esp32-c3-devkit-rust-1"
+    "esp32c3-12f"
+    "makerfabs-esp32c3spi35"
 
     # "hifive1b"
     # "maixbit"
