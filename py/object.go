@@ -29,6 +29,11 @@ type Object struct {
 	Unused [8]byte
 }
 
+// PyObj return self
+func (o *Object) PyObj() *Object {
+	return o
+}
+
 // llgo:link (*Object).DecRef C.Py_DecRef
 func (o *Object) DecRef() {}
 
