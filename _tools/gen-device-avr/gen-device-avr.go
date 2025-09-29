@@ -659,16 +659,14 @@ func processFile(filepath, outdir string) error {
 	if err != nil {
 		return err
 	}
-	err = writeGo(outdir, device)
-	if err != nil {
-		return err
-	}
 	// current define in llgo
 	// err = writeAsm(outdir, device)
 	// if err != nil {
 	// 	return err
 	// }
-	return writeLD(outdir, device)
+	// current define in llgo
+	// return writeLD(outdir, device)
+	return writeGo(outdir, device)
 }
 
 func generate(indir, outdir string) error {
