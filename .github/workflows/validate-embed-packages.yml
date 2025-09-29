@@ -14,6 +14,10 @@ jobs:
         uses: actions/setup-go@v4
         with:
           go-version: "1.21"
+      - name: Verify Device Generation
+        run: |
+          go install ./_tools/gen-device-avr
+          bash ./.github/scripts/device-gen.sh verify
       - name: Setup LLGO
         uses: ./.github/actions/setup-llgo
         with:
