@@ -57,12 +57,26 @@ declare_nxp_config() {
     generator="gen-device-svd"
 }
 
+declare_sam_config() {
+    name="sam"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Atmel lib/cmsis-svd/data/Atmel/"
+    )
+    ignore_list="atsamd51x-bitfields.go atsame5x-bitfields.go"
+    target="emb/device/sam"
+    generator="gen-device-svd"
+}
+
 # List of device configuration functions
 DEVICE_CONFIGS=(
     "declare_avr_config"
     "declare_esp_config"
     "declare_nrf_config"
     "declare_nxp_config"
+    "declare_sam_config"
 )
 
 # Generate device files from all tasks to specified directory
