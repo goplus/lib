@@ -77,7 +77,7 @@ const (
 //
 // NOTE(zzy): runtime/interrupt.callHandlers is not yet implemented in LLGO
 // Original linkname: //go:linkname callHandlers runtime/interrupt.callHandlers
-func callHandlers(num int){
+func callHandlers(num int) {
 	// TODO: implement interrupt handler dispatch mechanism
 }
 
