@@ -44,11 +44,25 @@ declare_nrf_config() {
     generator="gen-device-svd"
 }
 
+declare_nxp_config() {
+    name="nxp"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/NXP lib/cmsis-svd/data/NXP/"
+    )
+    ignore_list="hardfault.go mimxrt1062_clock.go mimxrt1062_hardfault.go mimxrt1062_mpu.go"
+    target="emb/device/nxp"
+    generator="gen-device-svd"
+}
+
 # List of device configuration functions
 DEVICE_CONFIGS=(
     "declare_avr_config"
     "declare_esp_config"
     "declare_nrf_config"
+    "declare_nxp_config"
 )
 
 # Generate device files from all tasks to specified directory
