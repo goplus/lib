@@ -70,6 +70,19 @@ declare_sam_config() {
     generator="gen-device-svd"
 }
 
+declare_sifive_config() {
+    name="sifive"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/SiFive-Community -interrupts=software lib/cmsis-svd/data/SiFive-Community/"
+    )
+    ignore_list=""
+    target="emb/device/sifive"
+    generator="gen-device-svd"
+}
+
 # List of device configuration functions
 DEVICE_CONFIGS=(
     "declare_avr_config"
@@ -77,6 +90,7 @@ DEVICE_CONFIGS=(
     "declare_nrf_config"
     "declare_nxp_config"
     "declare_sam_config"
+    "declare_sifive_config"
 )
 
 # Generate device files from all tasks to specified directory
