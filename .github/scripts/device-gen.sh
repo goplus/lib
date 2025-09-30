@@ -31,10 +31,24 @@ declare_esp_config() {
     generator="gen-device-svd"
 }
 
+declare_nrf_config() {
+    name="nrf"
+    repo="https://github.com/NordicSemiconductor/nrfx"
+    lib_path="lib/nrfx"
+    git_hash="d779b49fc59c7a165e7da1d7cd7d57b28a059f16"
+    tasks=(
+        "-source=https://github.com/NordicSemiconductor/nrfx/tree/master/mdk lib/nrfx/mdk/"
+    )
+    ignore_list="README.markdown"
+    target="emb/device/nrf"
+    generator="gen-device-svd"
+}
+
 # List of device configuration functions
 DEVICE_CONFIGS=(
     "declare_avr_config"
     "declare_esp_config"
+    "declare_nrf_config"
 )
 
 # Generate device files from all tasks to specified directory

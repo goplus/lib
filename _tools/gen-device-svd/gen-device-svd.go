@@ -1482,10 +1482,11 @@ func generate(indir, outdir, sourceURL, interruptSystem string) error {
 		case "software":
 			// Nothing to do.
 		case "hardware":
-			err = writeAsm(outdir, device)
-			if err != nil {
-				return fmt.Errorf("failed to write assembly file: %w", err)
-			}
+			// current define in llgo
+			// err = writeAsm(outdir, device)
+			// if err != nil {
+			// 	return fmt.Errorf("failed to write assembly file: %w", err)
+			// }
 		default:
 			return fmt.Errorf("unknown interrupt system: %s", interruptSystem)
 		}
