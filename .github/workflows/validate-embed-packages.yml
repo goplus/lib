@@ -20,7 +20,7 @@ jobs:
           commit-hash: c4223df0877e2a85d361cdcc73076cdcf312a3b0
       - name: Run Device Package Validation
         run: |
-          ./.github/scripts/validate_device_packages.sh device
+          ./.github/scripts/validate_embed_packages.sh device
 
   validate-machine-packages:
     runs-on: ubuntu-latest

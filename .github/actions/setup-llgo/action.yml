@@ -30,28 +30,3 @@ runs:
         echo "LLGO_ROOT=$PWD" >> $GITHUB_ENV
         # Verify LLGO is available
         llgo version || echo "Failed to get LLGO version"
-
-name: 'Setup LLGO'
-description: 'Setup LLGO from precompiled release'
-runs:
-  using: "composite"
-  steps:
-    - name: Setup LLGo Dependencies
-      uses: goplus/llgo/.github/actions/setup-deps@8959c83397617dacb18a8de54c3a738303b66141
-    - name: Checkout LLGo Repository
-      uses: actions/checkout@v4
-      with:
-        repository: goplus/llgo
-        ref: ${{ inputs.commit-hash }}
-        path: llgo-source
-    - name: Setup LLGO
-      shell: bash
-      run: |
-        echo "Setting up LLGO from commit hash ${{ inputs.commit-hash }}..."
-        cd llgo-source
-        # Install LLGO from source
-        bash ./install.sh
-        # Set LLGO_ROOT to the source directory
-        echo "LLGO_ROOT=$PWD" >> $GITHUB_ENV
-        # Verify LLGO is available
-        llgo version || echo "Failed to get LLGO version"
