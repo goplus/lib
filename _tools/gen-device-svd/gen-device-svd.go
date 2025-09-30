@@ -916,7 +916,7 @@ func writeGo(outdir string, device *Device, interruptSystem string) error {
 package {{.pkgName}}
 
 import (
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 
@@ -947,8 +947,12 @@ const (
 
 // Pseudo function call that is replaced by the compiler with the actual
 // functions registered through interrupt.New.
-//go:linkname callHandlers runtime/interrupt.callHandlers
-func callHandlers(num int)
+//
+// NOTE(zzy): runtime/interrupt.callHandlers is not yet implemented in LLGO
+// Original linkname: //go:linkname callHandlers runtime/interrupt.callHandlers
+func callHandlers(num int){
+	// TODO: implement interrupt handler dispatch mechanism
+}
 
 {{- if eq .interruptSystem "hardware"}}
 {{- range .interruptHandlers}}
