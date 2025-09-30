@@ -3,36 +3,57 @@ set -e
 
 # .ld,.s current not need generate at emb/device/avr,they are in llgo
 
-# Device configurations (key-value style for better readability)
 declare_avr_config() {
     name="avr"
     repo="https://github.com/avr-rust/avr-mcu"
     lib_path="lib/avr"
     git_hash="6624554c02b237b23dc17d53e992bf54033fc228"
-    packs_path=("packs/atmega" "packs/tiny")
+    tasks=(
+        "lib/avr/packs/atmega"
+        "lib/avr/packs/tiny"
+    )
     ignore_list="avr.go avr_tiny85.go"
     target="emb/device/avr"
     generator="gen-device-avr"
 }
 
-# List of device configuration functions
-DEVICE_CONFIGS=("declare_avr_config")
+declare_esp_config() {
+    name="esp"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Espressif-Community -interrupts=software lib/cmsis-svd/data/Espressif-Community/"
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/Espressif -interrupts=software lib/cmsis-svd/data/Espressif/"
+    )
+    ignore_list=""
+    target="emb/device/esp"
+    generator="gen-device-svd"
+}
 
-# Generate device files from all packs to specified directory
+# List of device configuration functions
+DEVICE_CONFIGS=(
+    "declare_avr_config"
+    "declare_esp_config"
+)
+
+# Generate device files from all tasks to specified directory
 generate_device_files() {
     local device_name="$1"
-    local lib_path="$2"
-    local packs_path_array=("${@:3:$#-3}")
+    shift
     local generator="${@: -2:1}"
     local target_dir="${@: -1}"
+    # Remove generator and target_dir from args to get tasks
+    set -- "${@:1:$#-2}"
+    local tasks_array=("$@")
 
-    echo "[$device_name] Generating devices from ${#packs_path_array[@]} packs..."
-    for pack in "${packs_path_array[@]}"; do
-        echo "[$device_name] Processing pack: $pack"
-        "$generator" "$lib_path/$pack" "$target_dir/"
-        echo "[$device_name] Generated devices from $lib_path/$pack to $target_dir"
+    echo "[$device_name] Processing ${#tasks_array[@]} tasks..."
+    for task in "${tasks_array[@]}"; do
+        echo "[$device_name] Processing task: $task"
+        "$generator" $task "$target_dir/"
+        echo "[$device_name] Generated to $target_dir"
     done
-    echo "[$device_name] All packs processed successfully"
+    echo "[$device_name] All tasks processed successfully"
 
     # Format Go files in target directory
     echo "[$device_name] Formatting Go files in $target_dir..."
@@ -49,7 +70,7 @@ generate_devices() {
     $config_func
 
     # Validate configuration
-    if [[ -z "$repo" || -z "$lib_path" || -z "$git_hash" || -z "$generator" || -z "$target" || ${#packs_path[@]} -eq 0 ]]; then
+    if [[ -z "$repo" || -z "$lib_path" || -z "$git_hash" || -z "$generator" || -z "$target" || ${#tasks[@]} -eq 0 ]]; then
         echo "Error: Missing configuration for device '$name'"
         return 1
     fi
@@ -96,7 +117,7 @@ generate_devices() {
 
         # Generate files to temporary directory
         echo "[$name] Generating files to temporary directory..."
-        generate_device_files "$name" "$lib_path" "${packs_path[@]}" "$generator" "$temp_target"
+        generate_device_files "$name" "${tasks[@]}" "$generator" "$temp_target"
 
         # Copy ignore list files to temporary directory
         if [ -n "$ignore_list" ]; then
@@ -154,8 +175,8 @@ generate_devices() {
         rm -rf "$TEMP_DIR"
     fi
 
-    # Generate device files from all packs
-    generate_device_files "$name" "$lib_path" "${packs_path[@]}" "$generator" "$target_dir"
+    # Generate device files from all tasks
+    generate_device_files "$name" "${tasks[@]}" "$generator" "$target_dir"
 }
 
 # Parse command line arguments

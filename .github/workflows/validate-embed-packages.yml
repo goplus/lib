@@ -17,6 +17,7 @@ jobs:
       - name: Verify Device Generation
         run: |
           go install ./_tools/gen-device-avr
+          go install ./_tools/gen-device-svd
           bash ./.github/scripts/device-gen.sh verify
       - name: Setup LLGO
         uses: ./.github/actions/setup-llgo
