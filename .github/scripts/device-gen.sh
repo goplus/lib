@@ -109,6 +109,32 @@ declare_stm32_config() {
     generator="gen-device-svd"
 }
 
+declare_rp_config() {
+    name="rp"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/posborne/cmsis-svd/tree/master/data/RaspberryPi lib/cmsis-svd/data/RaspberryPi/"
+    )
+    ignore_list="rp2040-extra.go rp2350-extra.go"
+    target="emb/device/rp"
+    generator="gen-device-svd"
+}
+
+declare_renesas_config() {
+    name="renesas"
+    repo="https://github.com/cmsis-svd/cmsis-svd-data"
+    lib_path="lib/cmsis-svd"
+    git_hash="05a9562ec59b87945a8d7177a4b08b7aa2f2fd58"
+    tasks=(
+        "-source=https://github.com/cmsis-svd/cmsis-svd-data/tree/master/data/Renesas lib/cmsis-svd/data/Renesas/"
+    )
+    ignore_list=""
+    target="emb/device/renesas"
+    generator="gen-device-svd"
+}
+
 # List of device configuration functions
 DEVICE_CONFIGS=(
     "declare_avr_config"
@@ -119,6 +145,8 @@ DEVICE_CONFIGS=(
     "declare_sifive_config"
     "declare_kendryte_config"
     "declare_stm32_config"
+    "declare_rp_config"
+    "declare_renesas_config"
 )
 
 # Generate device files from all tasks to specified directory
