@@ -121,11 +121,8 @@ const (
 // functions registered through interrupt.New.
 //
 // NOTE(zzy): runtime/interrupt.callHandlers is not yet implemented in LLGO
-// Original linkname: // NOTE(zzy): runtime/interrupt.callHandlers is not yet implemented in LLGO
 // Original linkname: //go:linkname callHandlers runtime/interrupt.callHandlers
 func callHandlers(num int) {
-	// TODO: implement interrupt handler dispatch mechanism
-}{
 	// TODO: implement interrupt handler dispatch mechanism
 }
 
