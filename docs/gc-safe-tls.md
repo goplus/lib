@@ -19,22 +19,32 @@ pthread-specific area, which Boehm does not scan by default.
 ## Example
 
 ```go
-var deferHeadTLS = tls.Alloc[*runtime.Defer](func(head **runtime.Defer) {
-    if head != nil {
-        *head = nil
+type stats struct {
+    handled int
+}
+
+var threadStats = tls.Alloc[*stats](func(s **stats) {
+    // Destructor runs when the thread exits.
+    if s != nil && *s != nil {
+        log.Printf("thread handled %d requests", (*s).handled)
     }
 })
 
-func pushDefer(head *runtime.Defer) {
-    deferHeadTLS.Set(head)
+func recordRequest() {
+    cur := threadStats.Get()
+    if cur == nil {
+        cur = &stats{}
+    }
+    cur.handled++
+    threadStats.Set(cur)
 }
 
-func popDefer() *runtime.Defer {
-    return deferHeadTLS.Get()
+func resetStats() {
+    threadStats.Clear()
 }
 ```
 
 In GC builds the slot is automatically registered as a root, which prevents
-Boehm from prematurely reclaiming the defer nodes. In builds that use
-`-tags nogc`, the helper still uses pthread TLS but simply skips the root
-registration.
+Boehm from reclaiming any GC-managed memory reachable from the `stats`
+instances. In builds that use `-tags nogc`, the helper still relies on pthread
+TLS but simply skips the root registration step.
