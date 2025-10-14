@@ -6,7 +6,7 @@ package tls
 import (
 	"unsafe"
 
-	c "github.com/goplus/lib/c"
+	"github.com/goplus/lib/c"
 	"github.com/goplus/lib/c/pthread"
 )
 
