@@ -19,13 +19,21 @@ pthread-specific area, which Boehm does not scan by default.
 ## Example
 
 ```go
+package main
+
+import (
+    "log"
+
+    "github.com/goplus/lib/c/tls"
+)
+
 type stats struct {
     handled int
 }
 
 var threadStats = tls.Alloc[*stats](func(s **stats) {
     // Destructor runs when the thread exits.
-    if s != nil && *s != nil {
+    if *s != nil {
         log.Printf("thread handled %d requests", (*s).handled)
     }
 })
