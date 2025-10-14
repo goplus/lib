@@ -4,31 +4,29 @@
 package tls
 
 import (
+	"fmt"
 	"unsafe"
 
 	"github.com/goplus/lib/c"
 	"github.com/goplus/lib/c/pthread"
 )
 
-type descriptor[T any] struct {
+type slot[T any] struct {
+	value      T
 	destructor func(*T)
 }
 
-type slot[T any] struct {
-	value T
-	desc  *descriptor[T]
-}
-
 type Handle[T any] struct {
-	key  pthread.Key
-	desc *descriptor[T]
+	key        pthread.Key
+	destructor func(*T)
 }
 
 func Alloc[T any](destructor func(*T)) Handle[T] {
-	d := &descriptor[T]{destructor: destructor}
 	var key pthread.Key
-	key.Create(slotDestructor[T])
-	return Handle[T]{key: key, desc: d}
+	if ret := key.Create(slotDestructor[T]); ret != 0 {
+		panic(fmt.Sprintf("tls: pthread_key_create failed (errno=%d)", ret))
+	}
+	return Handle[T]{key: key, destructor: destructor}
 }
 
 func (h Handle[T]) Get() T {
@@ -57,18 +55,20 @@ func (h Handle[T]) ensureSlot() *slot[T] {
 		return (*slot[T])(ptr)
 	}
 	size := unsafe.Sizeof(slot[T]{})
-	mem := c.Malloc(size)
+	mem := c.Calloc(1, size)
 	if mem == nil {
 		panic("tls: failed to allocate thread slot")
 	}
-	c.Memset(mem, 0, size)
 	s := (*slot[T])(mem)
-	s.desc = h.desc
+	s.destructor = h.destructor
 	if existing := h.key.Get(); existing != nil {
 		c.Free(mem)
 		return (*slot[T])(existing)
 	}
-	h.key.Set(mem)
+	if ret := h.key.Set(mem); ret != 0 {
+		c.Free(mem)
+		panic(fmt.Sprintf("tls: pthread_setspecific failed (errno=%d)", ret))
+	}
 	return s
 }
 
@@ -77,11 +77,11 @@ func slotDestructor[T any](ptr c.Pointer) {
 	if s == nil {
 		return
 	}
-	if s.desc != nil && s.desc.destructor != nil {
-		s.desc.destructor(&s.value)
+	if s.destructor != nil {
+		s.destructor(&s.value)
 	}
 	var zero T
 	s.value = zero
-	s.desc = nil
+	s.destructor = nil
 	c.Free(ptr)
 }
