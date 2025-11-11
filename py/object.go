@@ -26,7 +26,7 @@ import (
 
 // Object represents a Python object.
 type Object struct {
-	Unused [8]byte
+	Unused [0]byte
 }
 
 // llgo:link (*Object).DecRef C.Py_DecRef
