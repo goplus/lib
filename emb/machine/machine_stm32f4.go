@@ -5,12 +5,12 @@ package machine
 // Peripheral abstraction layer for the stm32f4
 
 import (
-	"device/stm32"
+	"github.com/goplus/lib/emb/device/stm32"
 	"errors"
-	"internal/binary"
+	"github.com/goplus/lib/emb/internal/binary"
 	"math/bits"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

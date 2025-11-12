@@ -6,7 +6,7 @@
 // http://ww1.microchip.com/downloads/en/DeviceDoc/SAM_D5xE5x_Family_Data_Sheet_DS60001507F.pdf
 package machine
 
-import "device/sam"
+import "github.com/goplus/lib/emb/device/sam"
 
 const HSRAM_SIZE = 0x00030000
 

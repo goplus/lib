@@ -2,7 +2,7 @@
 
 package machine
 
-import "device/arm"
+import "github.com/goplus/lib/emb/device/arm"
 
 // CPUReset performs a hard system reset.
 func CPUReset() {

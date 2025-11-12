@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/avr"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/avr"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

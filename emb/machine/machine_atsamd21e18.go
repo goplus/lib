@@ -7,8 +7,8 @@
 package machine
 
 import (
-	"device/sam"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/device/sam"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 var (

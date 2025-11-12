@@ -5,7 +5,7 @@ package machine
 // I2C peripheral abstraction layer for the MIMXRT1062
 
 import (
-	"device/nxp"
+	"github.com/goplus/lib/emb/device/nxp"
 )
 
 // I2CConfig is used to store config info for I2C.

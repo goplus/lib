@@ -2,9 +2,9 @@ package msc
 
 import (
 	"encoding/binary"
-	"machine/usb"
-	"machine/usb/msc/csw"
-	"machine/usb/msc/scsi"
+	"github.com/goplus/lib/emb/machine/_usb"
+	"github.com/goplus/lib/emb/machine/_usb/msc/csw"
+	"github.com/goplus/lib/emb/machine/_usb/msc/scsi"
 )
 
 func (m *msc) scsiCmdBegin() {

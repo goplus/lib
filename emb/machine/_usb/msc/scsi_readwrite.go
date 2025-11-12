@@ -2,8 +2,8 @@ package msc
 
 import (
 	"errors"
-	"machine/usb/msc/csw"
-	"machine/usb/msc/scsi"
+	"github.com/goplus/lib/emb/machine/_usb/msc/csw"
+	"github.com/goplus/lib/emb/machine/_usb/msc/scsi"
 )
 
 var invalidWriteError = errors.New("invalid write offset or length")

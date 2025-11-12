@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/avr"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/avr"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const irq_USART0_RX = avr.IRQ_USART0_RX

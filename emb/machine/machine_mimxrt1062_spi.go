@@ -5,7 +5,7 @@ package machine
 // SPI peripheral abstraction layer for the MIMXRT1062
 
 import (
-	"device/nxp"
+	"github.com/goplus/lib/emb/device/nxp"
 	"errors"
 	"unsafe"
 )

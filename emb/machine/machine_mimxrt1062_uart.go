@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/nxp"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/nxp"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 // UART peripheral abstraction layer for the MIMXRT1062

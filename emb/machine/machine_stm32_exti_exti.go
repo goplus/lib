@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/stm32"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/stm32"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 func getEXTIConfigRegister(pin uint8) *volatile.Register32 {

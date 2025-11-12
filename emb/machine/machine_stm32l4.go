@@ -3,11 +3,11 @@
 package machine
 
 import (
-	"device/stm32"
+	"github.com/goplus/lib/emb/device/stm32"
 	"errors"
-	"internal/binary"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/internal/binary"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

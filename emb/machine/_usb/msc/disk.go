@@ -4,7 +4,7 @@ import (
 	"encoding/binary"
 	"errors"
 	"fmt"
-	"machine"
+	"github.com/goplus/lib/emb/machine"
 	"time"
 )
 

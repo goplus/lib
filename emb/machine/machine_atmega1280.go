@@ -3,9 +3,9 @@
 package machine
 
 import (
-	"device/avr"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/avr"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const irq_USART0_RX = avr.IRQ_USART0_RX
@@ -49,8 +49,8 @@ const (
 	PC5 = portC + 5
 	PC6 = portC + 6
 	PC7 = portC + 7
-	PD0 = portD + 0
-	PD1 = portD + 1
+	PD0 = portD + 0 // peripherals: I2C0 SCL
+	PD1 = portD + 1 // peripherals: I2C0 SDA
 	PD2 = portD + 2
 	PD3 = portD + 3
 	PD7 = portD + 7

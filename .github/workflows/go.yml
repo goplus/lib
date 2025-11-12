@@ -22,4 +22,6 @@ jobs:
         go-version: '1.20'
 
     - name: Build
-      run: go build -v ./...
+      # Exclude entire emb directory as it contains embedded packages that require LLGO targets
+      # (e.g., llgo build -target esp32 .) and cannot be built with standard Go toolchain
+      run: go build -v $(go list ./... | grep -v '/emb/')

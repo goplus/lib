@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/esp"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/esp"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 const deviceName = esp.Device

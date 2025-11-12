@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/arm"
-	"device/rp"
+	"github.com/goplus/lib/emb/device/arm"
+	"github.com/goplus/lib/emb/device/rp"
 )
 
 // https://github.com/raspberrypi/pico-sdk/blob/master/src/rp2_common/pico_fix/rp2040_usb_device_enumeration/rp2040_usb_device_enumeration.c

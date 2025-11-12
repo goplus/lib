@@ -2,8 +2,8 @@ package descriptor
 
 import (
 	"errors"
-	"internal/binary"
-	"internal/bytealg"
+	"github.com/goplus/lib/emb/internal/binary"
+	"github.com/goplus/lib/emb/internal/bytealg"
 )
 
 var configurationCDCHID = [configurationTypeLen]byte{

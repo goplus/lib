@@ -2,7 +2,7 @@
 
 package machine
 
-import "device/nrf"
+import "github.com/goplus/lib/emb/device/nrf"
 
 // I2C on the NRF51 and NRF52.
 type I2C struct {

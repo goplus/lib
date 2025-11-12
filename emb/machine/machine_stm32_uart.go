@@ -5,9 +5,9 @@ package machine
 // Peripheral abstraction layer for UARTs on the stm32 family.
 
 import (
-	"device/stm32"
-	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/stm32"
+	"github.com/goplus/lib/emb/runtime/interrupt"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 

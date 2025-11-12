@@ -6,7 +6,7 @@
 // http://ww1.microchip.com/downloads/en/DeviceDoc/60001507C.pdf
 package machine
 
-import "device/sam"
+import "github.com/goplus/lib/emb/device/sam"
 
 const HSRAM_SIZE = 0x00040000
 

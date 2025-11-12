@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/avr"
-	"runtime/interrupt"
+	"github.com/goplus/lib/emb/device/avr"
+	"github.com/goplus/lib/emb/runtime/interrupt"
 )
 
 // Return the current CPU frequency in hertz.

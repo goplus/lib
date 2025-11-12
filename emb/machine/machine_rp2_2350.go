@@ -3,8 +3,8 @@
 package machine
 
 import (
-	"device/rp"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/device/rp"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"unsafe"
 )
 
@@ -150,6 +150,8 @@ func (p Pin) Configure(config PinConfig) {
 	case PinAnalog:
 		p.setFunc(fnNULL)
 		p.pulloff()
+		// Disable digital input.
+		p.padCtrl().ClearBits(rp.PADS_BANK0_GPIO0_IE)
 	case PinUART:
 		p.setFunc(fnUART)
 	case PinPWM:
