@@ -1,0 +1,32 @@
+name: "Setup LLGO"
+description: "Checkout and build LLGO from specific commit hash"
+inputs:
+  commit-hash:
+    description: "Commit hash to checkout"
+    required: true
+  platform:
+    description: "Platform to download for"
+    required: false
+    default: "linux-amd64"
+runs:
+  using: "composite"
+  steps:
+    - name: Setup LLGo Dependencies
+      uses: goplus/llgo/.github/actions/setup-deps@c4223df0877e2a85d361cdcc73076cdcf312a3b0
+    - name: Checkout LLGo Repository
+      uses: actions/checkout@v4
+      with:
+        repository: goplus/llgo
+        ref: ${{ inputs.commit-hash }}
+        path: llgo-source
+    - name: Setup LLGO
+      shell: bash
+      run: |
+        echo "Setting up LLGO from commit hash ${{ inputs.commit-hash }}..."
+        cd llgo-source
+        # Install LLGO from source
+        bash ./install.sh
+        # Set LLGO_ROOT to the source directory
+        echo "LLGO_ROOT=$PWD" >> $GITHUB_ENV
+        # Verify LLGO is available
+        llgo version || echo "Failed to get LLGO version"
