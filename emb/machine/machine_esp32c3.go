@@ -3,11 +3,11 @@
 package machine
 
 import (
-	"device/esp"
-	"device/riscv"
+	"github.com/goplus/lib/emb/device/esp"
+	"github.com/goplus/lib/emb/device/riscv"
 	"errors"
 	"runtime/interrupt"
-	"runtime/volatile"
+	"github.com/goplus/lib/emb/runtime/volatile"
 	"sync"
 	"unsafe"
 )

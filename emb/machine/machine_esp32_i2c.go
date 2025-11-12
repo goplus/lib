@@ -3,9 +3,10 @@
 package machine
 
 import (
-	"device/esp"
-	"runtime/volatile"
 	"unsafe"
+
+	"github.com/goplus/lib/emb/device/esp"
+	"github.com/goplus/lib/emb/runtime/volatile"
 )
 
 var (
