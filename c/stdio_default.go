@@ -1,5 +1,5 @@
-//go:build !darwin
-// +build !darwin
+//go:build !darwin && !windows
+// +build !darwin,!windows
 
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
@@ -20,6 +20,8 @@
 package c
 
 import _ "unsafe"
+
+const LLGoPackage = "decl"
 
 //go:linkname Stdin stdin
 var Stdin FilePtr

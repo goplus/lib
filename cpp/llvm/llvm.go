@@ -18,10 +18,6 @@ package llvm
 
 // -----------------------------------------------------------------------------
 
-const (
-	LLGoPackage = "link: $(llvm-config --libs) $(llvm-config --ldflags); -lLLVM"
-)
-
 // StringView represents a C++ std::string_view object.
 type StringView = string
 

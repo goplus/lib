@@ -23,3 +23,89 @@ jobs:
 
     - name: Build
       run: go build -v ./...
+
+  llgo-test:
+    name: llgo-test (${{ matrix.os }})
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+        - ubuntu-latest
+        - macos-latest
+        - windows-2022
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version: '1.26.7'
+
+    - name: Check out LLGo
+      uses: actions/checkout@v4
+      with:
+        repository: xgo-dev/llgo
+        # Includes the merged stdcall support required by the direct Winsock
+        # declarations while keeping this library test independent of R9.
+        ref: 6fc2ef150f95d8b9331433f325fcb1b6ee5ad4e4
+        path: .llgo
+
+    - name: Set up LLGo dependencies
+      uses: ./.llgo/.github/actions/setup-deps
+      with:
+        llvm-version: '19'
+
+    - name: Build LLGo
+      if: runner.os != 'Windows'
+      working-directory: .llgo
+      run: go build -tags=dev -o "$RUNNER_TEMP/llgo" ./cmd/llgo
+
+    - name: Test LLGo native bindings
+      if: runner.os != 'Windows'
+      env:
+        LLGO_BUILD_CACHE: 'off'
+        LLGO_ROOT: ${{ github.workspace }}/.llgo
+      run: |
+        "$RUNNER_TEMP/llgo" test -count=1 -v ./c ./c/math/rand ./c/net ./c/os ./c/setjmp ./c/time ./cpp/std
+
+    # The Unix binding exposes libc++'s C++ ABI and is therefore exercised on
+    # macOS. Linux LLVM packages use libstdc++; Windows is tested below through
+    # its stable C bridge.
+    - name: Test LLGo LLVM demangle bindings
+      if: runner.os == 'macOS'
+      env:
+        LLGO_BUILD_CACHE: 'off'
+        LLGO_ROOT: ${{ github.workspace }}/.llgo
+      run: |
+        "$RUNNER_TEMP/llgo" test -v ./cpp/llvm
+
+    - name: Build LLGo on Windows
+      if: runner.os == 'Windows'
+      working-directory: .llgo
+      shell: pwsh
+      run: go build -tags=dev -o "$env:RUNNER_TEMP\llgo.exe" ./cmd/llgo
+
+    - name: Test LLGo Windows bindings
+      if: runner.os == 'Windows'
+      shell: pwsh
+      env:
+        LLGO_BUILD_CACHE: 'off'
+        LLGO_REQUIRE_MSVC: '1'
+        LLGO_ROOT: ${{ github.workspace }}/.llgo
+      run: |
+        $ErrorActionPreference = "Stop"
+        $llgo = Join-Path $env:RUNNER_TEMP "llgo.exe"
+
+        & $llgo test -count=1 -v `
+          ./c `
+          ./c/math/rand `
+          ./c/net `
+          ./c/os `
+          ./c/setjmp `
+          ./c/time `
+          ./cpp/llvm `
+          ./cpp/std
+        if ($LASTEXITCODE -ne 0) {
+          exit $LASTEXITCODE
+        }

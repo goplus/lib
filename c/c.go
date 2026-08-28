@@ -20,10 +20,6 @@ import (
 	"unsafe"
 )
 
-const (
-	LLGoPackage = "decl"
-)
-
 type (
 	Void    = [0]byte
 	Char    = int8

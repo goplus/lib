@@ -1,3 +1,5 @@
+//go:build !windows
+
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
  *
@@ -21,33 +23,6 @@ import (
 
 	"github.com/goplus/lib/c"
 	"github.com/goplus/lib/c/syscall"
-)
-
-const (
-	/* get file status flags */
-	F_GETFL = 3
-	/* set file status flags */
-	F_SETFL = 4
-
-	/* open for reading only */
-	O_RDONLY = 0x0000
-	/* open for writing only */
-	O_WRONLY = 0x0001
-	/* open for reading and writing */
-	O_RDWR = 0x0002
-	/* mask for above modes */
-	O_ACCMODE = 0x0003
-
-	/* no delay */
-	O_NONBLOCK = 0x00000004
-	/* create if nonexistant */
-	O_CREAT = 0x00000200
-	/* truncate to zero length */
-	O_TRUNC = 0x00000400
-)
-
-const (
-	EAGAIN = 35
 )
 
 type (
@@ -95,9 +70,6 @@ func Chmod(path *c.Char, mode ModeT) c.Int
 
 // -----------------------------------------------------------------------------
 
-//go:linkname Getcwd C.getcwd
-func Getcwd(buffer c.Pointer, size uintptr) *c.Char
-
 //go:linkname Chdir C.chdir
 func Chdir(path *c.Char) c.Int
 
@@ -137,17 +109,11 @@ func Fchownat(dirfd c.Int, path *c.Char, owner UidT, group GidT, flags c.Int) c.
 
 // -----------------------------------------------------------------------------
 
-//go:linkname Open C.open
-func Open(path *c.Char, flags c.Int, __llgo_va_list ...any) c.Int
-
 //go:linkname Openat C.openat
 func Openat(dirfd c.Int, path *c.Char, flags c.Int, mode ModeT) c.Int
 
 //go:linkname Creat C.creat
 func Creat(path *c.Char, mode ModeT) c.Int
-
-//go:linkname Fcntl C.fcntl
-func Fcntl(a c.Int, b c.Int, __llgo_va_list ...any) c.Int
 
 //go:linkname Dup C.dup
 func Dup(fd c.Int) c.Int
@@ -163,15 +129,6 @@ func Mkfifo(path *c.Char, mode ModeT) c.Int
 
 //go:linkname Mknod C.mknod
 func Mknod(path *c.Char, mode ModeT, dev DevT) c.Int
-
-//go:linkname Close C.close
-func Close(fd c.Int) c.Int
-
-//go:linkname Read C.read
-func Read(fd c.Int, buf c.Pointer, count uintptr) int
-
-//go:linkname Write C.write
-func Write(fd c.Int, buf c.Pointer, count uintptr) int
 
 //go:linkname Lseek C.lseek
 func Lseek(fd c.Int, offset OffT, whence c.Int) OffT
@@ -210,9 +167,6 @@ func Execle(path *c.Char, arg0 *c.Char, __llgo_va_list ...any) c.Int
 // Execlp only needs to provide the program name and it will search for the program in the
 // paths specified in the PATH environment variable.
 //
-//go:linkname Execlp C.execlp
-func Execlp(file *c.Char, arg0 *c.Char, __llgo_va_list ...any) c.Int
-
 //go:linkname Execv C.execv
 func Execv(path *c.Char, argv **c.Char) c.Int
 

@@ -1,0 +1,18 @@
+//go:build windows && 386
+
+package net
+
+import "github.com/goplus/lib/c"
+
+const wsaDataSize = 400
+
+// WSAData matches the 32-bit Winsock WSADATA layout.
+type WSAData struct {
+	Version      uint16
+	HighVersion  uint16
+	Description  [257]c.Char
+	SystemStatus [129]c.Char
+	MaxSockets   uint16
+	MaxUdpDg     uint16
+	VendorInfo   *c.Char
+}
