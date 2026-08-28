@@ -1,4 +1,4 @@
-//go:build !wasm
+//go:build !wasm && !windows
 
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.

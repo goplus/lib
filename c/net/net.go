@@ -1,3 +1,5 @@
+//go:build !windows
+
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
  *
@@ -218,6 +220,6 @@ type AddrInfo struct {
 func Getaddrinfo(host *c.Char, port *c.Char, addrInfo *AddrInfo, result **AddrInfo) c.Int
 
 //go:linkname Freeaddrinfo C.freeaddrinfo
-func Freeaddrinfo(addrInfo *AddrInfo) c.Int
+func Freeaddrinfo(addrInfo *AddrInfo)
 
 // -----------------------------------------------------------------------------

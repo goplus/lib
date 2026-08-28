@@ -1,5 +1,20 @@
+#if defined(_WIN32) && defined(__clang__) && __clang_major__ < 20
+// The current Visual Studio STL rejects older Clang releases by default.
+// LLGo intentionally supports LLVM 19, whose MSVC ABI is sufficient for this
+// wrapper; use the STL's documented escape hatch instead of changing the
+// compiler or C++ ABI selected by the caller.
+#define _ALLOW_COMPILER_AND_STL_VERSION_MISMATCH
+#endif
+
 #include <string>
 #include <new>
+
+#if defined(_WIN32) && defined(_MSC_VER)
+static_assert(sizeof(std::string) == 16 + 2 * sizeof(void *),
+              "unexpected MSVC std::string layout");
+static_assert(alignof(std::string) == alignof(void *),
+              "unexpected MSVC std::string alignment");
+#endif
 
 extern "C" {
 

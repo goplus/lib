@@ -1,15 +1,11 @@
-//go:build darwin
-// +build darwin
+//go:build windows
 
 /*
- * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
- *
+ * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,17 +13,24 @@
  * limitations under the License.
  */
 
-package c
+package os
 
-import _ "unsafe"
+// #include <sys/stat.h>
+// typedef struct _stat64 llgo_stat64;
+import "C"
 
-const LLGoPackage = "decl"
+import (
+	_ "unsafe"
 
-//go:linkname Stdin __stdinp
-var Stdin FilePtr
+	"github.com/goplus/lib/c"
+)
 
-//go:linkname Stdout __stdoutp
-var Stdout FilePtr
+// StatT preserves the target UCRT's struct _stat64 size, field offsets, and
+// alignment, including its 8-byte alignment on Windows/386.
+type StatT = C.llgo_stat64
 
-//go:linkname Stderr __stderrp
-var Stderr FilePtr
+//go:linkname Stat C._stat64
+func Stat(path *c.Char, buf *StatT) c.Int
+
+//go:linkname Fstat C._fstat64
+func Fstat(fd c.Int, buf *StatT) c.Int

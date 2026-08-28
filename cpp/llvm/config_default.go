@@ -1,8 +1,7 @@
-//go:build darwin
-// +build darwin
+//go:build !windows
 
 /*
- * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
+ * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -17,17 +16,6 @@
  * limitations under the License.
  */
 
-package c
+package llvm
 
-import _ "unsafe"
-
-const LLGoPackage = "decl"
-
-//go:linkname Stdin __stdinp
-var Stdin FilePtr
-
-//go:linkname Stdout __stdoutp
-var Stdout FilePtr
-
-//go:linkname Stderr __stderrp
-var Stderr FilePtr
+const LLGoPackage = "link: $(llvm-config --libs) $(llvm-config --ldflags); -lLLVM"

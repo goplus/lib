@@ -1,15 +1,11 @@
-//go:build darwin
-// +build darwin
+//go:build windows
 
 /*
- * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
- *
+ * Copyright (c) 2026 The GoPlus Authors (goplus.org). All rights reserved.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
  *     http://www.apache.org/licenses/LICENSE-2.0
- *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,17 +13,27 @@
  * limitations under the License.
  */
 
-package c
+package setjmp
 
-import _ "unsafe"
+// #include <setjmp.h>
+import "C"
+
+import (
+	_ "unsafe"
+
+	"github.com/goplus/lib/c"
+)
 
 const LLGoPackage = "decl"
 
-//go:linkname Stdin __stdinp
-var Stdin FilePtr
+type JmpBuf = C.jmp_buf
 
-//go:linkname Stdout __stdoutp
-var Stdout FilePtr
+// Windows has no signal-mask variant of setjmp. These LLGo intrinsics lower
+// at the caller, which is required because setjmp cannot safely be hidden in a
+// wrapper frame that returns before longjmp restores it.
 
-//go:linkname Stderr __stderrp
-var Stderr FilePtr
+//go:linkname Setjmp llgo.setjmp
+func Setjmp(env *JmpBuf) c.Int
+
+//go:linkname Longjmp llgo.longjmp
+func Longjmp(env *JmpBuf, val c.Int)

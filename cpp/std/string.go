@@ -29,11 +29,6 @@ type StringView = string
 
 // -----------------------------------------------------------------------------
 
-// String represents a C++ std::string object.
-type String struct {
-	Unused [3 * unsafe.Sizeof(0)]byte
-}
-
 // llgo:link (*String).InitEmpty C.stdStringInitEmpty
 func (s *String) InitEmpty() {}
 

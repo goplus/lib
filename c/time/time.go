@@ -1,3 +1,5 @@
+//go:build !windows
+
 /*
  * Copyright (c) 2024 The GoPlus Authors (goplus.org). All rights reserved.
  *
@@ -40,7 +42,7 @@ func Time(timer *TimeT) TimeT
 func Mktime(timer *Tm) TimeT
 
 //go:linkname Ctime C.ctime
-func Ctime(timer *TimeT) string
+func Ctime(timer *TimeT) *c.Char
 
 //go:linkname Difftime C.difftime
 func Difftime(end, start TimeT) float64
