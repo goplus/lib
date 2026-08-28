@@ -23,8 +23,8 @@ const (
 	// the bridge for the ABI selected by its host clang++, then expose only C
 	// functions to the LLGo target. This avoids leaking that C++ ABI across the
 	// package boundary while retaining the target's native C ABI.
-	LLGoFiles = "$(pkg-config --cflags llvm-19) -std=c++17 --target=$(llvm-config --host-target): _wrap/demangle_windows.cpp"
-	// The llvm-19 package preserves LLVM's library order and required Windows
+	LLGoFiles = "$(pkg-config --cflags llvm-21) -std=c++17 --target=$(llvm-config --host-target): _wrap/demangle_windows.cpp"
+	// The llvm-21 package preserves LLVM's library order and required Windows
 	// system libraries.
-	LLGoPackage = "link: $(pkg-config --libs llvm-19)"
+	LLGoPackage = "link: $(pkg-config --libs llvm-21)"
 )
