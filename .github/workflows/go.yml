@@ -57,8 +57,6 @@ jobs:
 
     - name: Build LLGo
       working-directory: .llgo
-      env:
-        GOFLAGS: -tags=byollvm
       run: |
         # Stable LLGo predates the default-version switch, but its source can
         # build against system LLVM 22 through the released binding package.
@@ -69,7 +67,7 @@ jobs:
         export CGO_LDFLAGS="$(llvm-config --ldflags --libs --system-libs)"
         go mod edit -require=github.com/xgo-dev/llvm@v0.9.8
         go mod download github.com/xgo-dev/llvm@v0.9.8
-        go build -tags=dev -o "$RUNNER_TEMP/llgo" ./cmd/llgo
+        go build -tags=dev,byollvm -o "$RUNNER_TEMP/llgo" ./cmd/llgo
 
     - name: Test LLGo native bindings
       env:
