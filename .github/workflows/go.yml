@@ -33,14 +33,13 @@ jobs:
         os:
         - ubuntu-latest
         - macos-latest
-        - windows-2022
     steps:
     - uses: actions/checkout@v4
 
     - name: Set up Go
       uses: actions/setup-go@v5
       with:
-        go-version: '1.26.7'
+        go-version: '1.27.0'
 
     - name: Check out LLGo
       uses: actions/checkout@v4
@@ -54,32 +53,20 @@ jobs:
     - name: Set up LLGo dependencies
       uses: ./.llgo/.github/actions/setup-deps
       with:
-        llvm-version: '19'
-
-    - name: Expose selected Windows LLVM metadata alias
-      if: runner.os == 'Windows'
-      shell: pwsh
-      run: |
-        $ErrorActionPreference = "Stop"
-        $pcDir = (& pkg-config --variable=pcfiledir llvm-19).Trim()
-        if ($LASTEXITCODE -ne 0 -or -not $pcDir) {
-          throw "Unable to locate the selected LLVM pkg-config metadata"
-        }
-        $source = Join-Path $pcDir "llvm-19.pc"
-        $alias = Join-Path $pcDir "llvm.pc"
-        Copy-Item -LiteralPath $source -Destination $alias -Force
-        & pkg-config --modversion llvm
-        if ($LASTEXITCODE -ne 0) {
-          throw "The selected LLVM pkg-config alias is unavailable"
-        }
+        llvm-version: '22'
 
     - name: Build LLGo
-      if: runner.os != 'Windows'
       working-directory: .llgo
-      run: go build -tags=dev -o "$RUNNER_TEMP/llgo" ./cmd/llgo
+      env:
+        GOFLAGS: -tags=byollvm
+      run: |
+        # Stable LLGo predates the default-version switch, but its source can
+        # build against system LLVM 22 through the released binding package.
+        go mod edit -require=github.com/xgo-dev/llvm@v0.9.8
+        go mod download github.com/xgo-dev/llvm@v0.9.8
+        go build -tags=dev -o "$RUNNER_TEMP/llgo" ./cmd/llgo
 
     - name: Test LLGo native bindings
-      if: runner.os != 'Windows'
       env:
         LLGO_BUILD_CACHE: 'off'
         LLGO_ROOT: ${{ github.workspace }}/.llgo
@@ -97,32 +84,100 @@ jobs:
       run: |
         "$RUNNER_TEMP/llgo" test -v ./cpp/llvm
 
-    - name: Build LLGo on Windows
-      if: runner.os == 'Windows'
-      working-directory: .llgo
-      shell: pwsh
-      run: go build -tags=dev -o "$env:RUNNER_TEMP\llgo.exe" ./cmd/llgo
+  windows-llvm-demangle:
+    name: Windows LLVM 22 demangle bridge
+    runs-on: windows-2022
+    steps:
+    - uses: actions/checkout@v4
 
-    - name: Test LLGo Windows bindings
-      if: runner.os == 'Windows'
+    - name: Cache LLVM 22 development archive
+      id: llvm-cache
+      uses: actions/cache/restore@v4
+      with:
+        path: ${{ runner.tool_cache }}\lib-llvm\clang+llvm-22.1.8-x86_64-pc-windows-msvc.tar.xz
+        key: lib-llvm-22.1.8-windows-msvc-d96c2cc1736f4eb7fa43cb9bbdf56d93551a9ae0a9aadb9c99c3c3b2b712a234-v1
+
+    - name: Install LLVM 22 development archive
       shell: pwsh
       env:
-        LLGO_BUILD_CACHE: 'off'
-        LLGO_REQUIRE_MSVC: '1'
-        LLGO_ROOT: ${{ github.workspace }}/.llgo
+        LLVM_VERSION: '22.1.8'
+        LLVM_SHA256: d96c2cc1736f4eb7fa43cb9bbdf56d93551a9ae0a9aadb9c99c3c3b2b712a234
       run: |
         $ErrorActionPreference = "Stop"
-        $llgo = Join-Path $env:RUNNER_TEMP "llgo.exe"
+        $archiveName = "clang+llvm-$env:LLVM_VERSION-x86_64-pc-windows-msvc.tar.xz"
+        $archiveDir = Join-Path $env:RUNNER_TOOL_CACHE "lib-llvm"
+        $archive = Join-Path $archiveDir $archiveName
+        if ("${{ steps.llvm-cache.outputs.cache-hit }}" -ne "true") {
+          New-Item -ItemType Directory -Force $archiveDir | Out-Null
+          $asset = $archiveName.Replace("+", "%2B")
+          $url = "https://github.com/llvm/llvm-project/releases/download/llvmorg-$env:LLVM_VERSION/$asset"
+          & curl.exe --fail --location --retry 5 --retry-all-errors --output $archive $url
+          if ($LASTEXITCODE -ne 0) {
+            throw "Downloading LLVM failed with exit code $LASTEXITCODE"
+          }
+        }
+        $actual = (Get-FileHash -Algorithm SHA256 $archive).Hash
+        if (-not $actual.Equals($env:LLVM_SHA256, [StringComparison]::OrdinalIgnoreCase)) {
+          throw "LLVM archive SHA-256 is $actual, want $env:LLVM_SHA256"
+        }
 
-        & $llgo test -count=1 -v `
-          ./c `
-          ./c/math/rand `
-          ./c/net `
-          ./c/os `
-          ./c/setjmp `
-          ./c/time `
-          ./cpp/llvm `
-          ./cpp/std
+        $extractRoot = Join-Path $env:RUNNER_TEMP "lib-llvm-extract"
+        $sevenZip = Join-Path $env:ProgramFiles "7-Zip\7z.exe"
+        New-Item -ItemType Directory -Force $extractRoot | Out-Null
+        & $sevenZip x -y "-o$extractRoot" $archive
         if ($LASTEXITCODE -ne 0) {
-          exit $LASTEXITCODE
+          throw "Decompressing the LLVM archive failed with exit code $LASTEXITCODE"
+        }
+        $tar = Get-ChildItem -LiteralPath $extractRoot -Filter "*.tar" | Select-Object -First 1
+        & $sevenZip x -y "-o$extractRoot" $tar.FullName
+        if ($LASTEXITCODE -ne 0) {
+          throw "Extracting the LLVM archive failed with exit code $LASTEXITCODE"
+        }
+        $llvmRoot = Get-ChildItem -LiteralPath $extractRoot -Directory |
+          Where-Object { Test-Path (Join-Path $_.FullName "bin\llvm-config.exe") } |
+          Select-Object -First 1 -ExpandProperty FullName
+        if (-not $llvmRoot) {
+          throw "The LLVM development archive is incomplete"
+        }
+        Add-Content -Encoding utf8 $env:GITHUB_ENV "LLVM_ROOT=$llvmRoot"
+
+    - name: Save LLVM 22 development archive
+      if: steps.llvm-cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@v4
+      with:
+        path: ${{ runner.tool_cache }}\lib-llvm\clang+llvm-22.1.8-x86_64-pc-windows-msvc.tar.xz
+        key: lib-llvm-22.1.8-windows-msvc-d96c2cc1736f4eb7fa43cb9bbdf56d93551a9ae0a9aadb9c99c3c3b2b712a234-v1
+
+    - name: Activate MSVC SDK
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Compile and run LLVM 22 demangle bridge
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Stop"
+        $llvmConfig = Join-Path $env:LLVM_ROOT "bin\llvm-config.exe"
+        $version = ((& $llvmConfig --version) -join "").Trim()
+        if ($LASTEXITCODE -ne 0 -or -not $version.StartsWith("22.")) {
+          throw "Expected LLVM 22, got '$version'"
+        }
+        $clang = Join-Path $env:LLVM_ROOT "bin\clang++.exe"
+        $include = Join-Path $env:LLVM_ROOT "include"
+        $demangle = Join-Path $env:LLVM_ROOT "lib\LLVMDemangle.lib"
+        $test = Join-Path $env:RUNNER_TEMP "demangle_windows_test.exe"
+        & $clang `
+          --target=x86_64-pc-windows-msvc `
+          -fuse-ld=lld `
+          -fms-runtime-lib=static `
+          -std=c++17 `
+          "-I$include" `
+          cpp/llvm/_wrap/demangle_windows.cpp `
+          cpp/llvm/_wrap/demangle_windows_test.cpp `
+          $demangle `
+          -o $test
+        if ($LASTEXITCODE -ne 0 -or -not (Test-Path $test)) {
+          throw "Compiling the LLVM demangle bridge failed with exit code $LASTEXITCODE"
+        }
+        & $test
+        if ($LASTEXITCODE -ne 0) {
+          throw "The LLVM demangle bridge smoke test failed with exit code $LASTEXITCODE"
         }
