@@ -56,6 +56,23 @@ jobs:
       with:
         llvm-version: '19'
 
+    - name: Expose selected Windows LLVM metadata alias
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        $ErrorActionPreference = "Stop"
+        $pcDir = (& pkg-config --variable=pcfiledir llvm-19).Trim()
+        if ($LASTEXITCODE -ne 0 -or -not $pcDir) {
+          throw "Unable to locate the selected LLVM pkg-config metadata"
+        }
+        $source = Join-Path $pcDir "llvm-19.pc"
+        $alias = Join-Path $pcDir "llvm.pc"
+        Copy-Item -LiteralPath $source -Destination $alias -Force
+        & pkg-config --modversion llvm
+        if ($LASTEXITCODE -ne 0) {
+          throw "The selected LLVM pkg-config alias is unavailable"
+        }
+
     - name: Build LLGo
       if: runner.os != 'Windows'
       working-directory: .llgo
