@@ -1,8 +1,7 @@
 #if defined(_WIN32) && defined(__clang__) && __clang_major__ < 20
 // The current Visual Studio STL rejects older Clang releases by default.
-// LLGo intentionally supports LLVM 19, whose MSVC ABI is sufficient for this
-// wrapper; use the STL's documented escape hatch instead of changing the
-// compiler or C++ ABI selected by the caller.
+// Legacy Clang consumers may still select the STL's documented compatibility
+// escape hatch without changing the C++ ABI selected by the caller.
 #define _ALLOW_COMPILER_AND_STL_VERSION_MISMATCH
 #endif
 
