@@ -191,6 +191,18 @@ func GoDeferData() Pointer
 
 // -----------------------------------------------------------------------------
 
+func ClosureData[ClosureT any](closure ClosureT) Pointer {
+	ret := new(ClosureT)
+	*ret = closure
+	return Pointer(ret)
+}
+
+func GoClosure[ClosureT any](data Pointer) (closure ClosureT) {
+	return *(*ClosureT)(data)
+}
+
+// -----------------------------------------------------------------------------
+
 //go:linkname AllocaSigjmpBuf llgo.sigjmpbuf
 func AllocaSigjmpBuf() Pointer
 
