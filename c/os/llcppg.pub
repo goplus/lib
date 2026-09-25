@@ -1,7 +1,7 @@
-mode_t ModeT
-uid_t UidT
-gid_t GidT
-off_t OffT
-dev_t DevT
-stat StatT
-pid_t PidT
+T mode_t ModeT
+T uid_t UidT
+T gid_t GidT
+T off_t OffT
+T dev_t DevT
+T stat StatT
+T pid_t PidT
