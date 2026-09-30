@@ -1,5 +1,4 @@
-//go:build windows
-// +build windows
+//go:build (windows && !(mingw && (amd64 || 386))) || (darwin && arm64) || arm || mips || mipsle || ((ppc64 || ppc64le) && !linux)
 
 /*
  * Copyright (c) 2024 The XGo Authors (xgo.dev). All rights reserved.
@@ -19,8 +18,15 @@
 
 package c
 
-// For Windows (LLP64 model), Long is 32-bit, regardless of architecture
-type (
-	Long  = int32
-	Ulong = uint32
-)
+// LongDouble is identical to double on these targets (8 bytes, IEEE binary64):
+//   - Windows MSVC ABI (all architectures), and windows/arm64 (MSVC or MinGW)
+//   - darwin/arm64 and ios/arm64
+//   - 32-bit ARM, MIPS o32
+//   - non-Linux ppc64 (AIX, FreeBSD, OpenBSD: 64-bit long double)
+//
+// Build with -tags mingw to select the MinGW x86 layout on windows/amd64
+// and windows/386 instead.
+type LongDouble float64
+
+// LongDoubleSize is sizeof(long double) in bytes on this target.
+const LongDoubleSize = 8

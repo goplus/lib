@@ -1,6 +1,6 @@
 //go:build llgo && !windows
 
-// Copyright (c) 2026 The GoPlus Authors. Licensed under the Apache License 2.0.
+// Copyright (c) 2026 The XGo Authors. Licensed under the Apache License 2.0.
 
 package time_test
 
