@@ -3,6 +3,7 @@ D github.com/goplus/lib/c/time
 T FILE FILE
 T size_t SizeT
 T ssize_t SsizeT
+T ptrdiff_t PtrdiffT
 T intptr_t IntptrT
 T uintptr_t UintptrT
 T int8_t Int8T

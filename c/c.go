@@ -52,6 +52,7 @@ type integer interface {
 
 type SizeT = uintptr
 type SsizeT = Long
+type PtrdiffT = Long
 
 type IntptrT = uintptr
 type UintptrT = uintptr
