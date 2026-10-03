@@ -1,6 +1,10 @@
 D github.com/goplus/lib/c/os
 D github.com/goplus/lib/c/time
 T FILE FILE
+T wchar_t WcharT
+T char8_t Char8T
+T char16_t Char16T
+T char32_t Char32T
 T size_t SizeT
 T ssize_t SsizeT
 T ptrdiff_t PtrdiffT

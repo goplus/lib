@@ -21,12 +21,19 @@ import (
 )
 
 type (
-	Void    = [0]byte
+	Void = [0]byte
+
 	Char    = int8
-	Float   = float32
-	Double  = float64
+	Char8T  = uint8
+	Char16T = uint16
+	Char32T = uint32
+
+	Float  = float32
+	Double = float64
+
 	Pointer = unsafe.Pointer
 	VaList  = Pointer
+
 	FilePtr = *FILE
 
 	Int  = int32
