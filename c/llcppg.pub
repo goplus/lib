@@ -16,7 +16,10 @@ T uint32_t Uint32T
 T uint64_t Uint64T
 T intmax_t IntmaxT
 T uintmax_t UintmaxT
-T va_list VaList
+T div_t DivT
+T ldiv_t LdivT
+T lldiv_t LldivT
 T iconv_t IconvT
 T locale_t LocaleT
 T option Option
+T va_list VaList
