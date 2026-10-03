@@ -26,14 +26,9 @@ type (
 	Float   = float32
 	Double  = float64
 	Pointer = unsafe.Pointer
+	VaList  = Pointer
 	FilePtr = *FILE
-)
 
-type FILE struct {
-	Unused [8]byte
-}
-
-type (
 	Int  = int32
 	Uint = uint32
 
@@ -45,6 +40,10 @@ type (
 	LongLong  = int64
 	UlongLong = uint64
 )
+
+type FILE struct {
+	Unused [0]byte
+}
 
 type integer interface {
 	~int | ~uint | ~uintptr | ~int32 | ~uint32 | ~int64 | ~uint64
@@ -69,7 +68,24 @@ type Uint64T = uint64
 type IntmaxT = LongLong
 type UintmaxT = UlongLong
 
-type VaList = Pointer
+// -----------------------------------------------------------------------------
+
+type DivT struct {
+	Quot Int
+	Rem  Int
+}
+
+type LdivT struct {
+	Quot Long
+	Rem  Long
+}
+
+type LldivT struct {
+	Quot LongLong
+	Rem  LongLong
+}
+
+// -----------------------------------------------------------------------------
 
 //go:linkname Str llgo.cstr
 func Str(string) *Char
