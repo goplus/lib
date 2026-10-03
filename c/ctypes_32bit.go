@@ -25,3 +25,7 @@ type (
 	Long  = int32
 	Ulong = uint32
 )
+
+type (
+	WcharT = int32
+)
