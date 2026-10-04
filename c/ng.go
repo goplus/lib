@@ -1,9 +1,5 @@
-//go:build (linux || darwin || freebsd || netbsd || openbsd || solaris) && (amd64 || arm64 || ppc64 || ppc64le || mips64 || mips64le || s390x || riscv64)
-// +build linux darwin freebsd netbsd openbsd solaris
-// +build amd64 arm64 ppc64 ppc64le mips64 mips64le s390x riscv64
-
 /*
- * Copyright (c) 2024 The XGo Authors (xgo.dev). All rights reserved.
+ * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -20,12 +16,15 @@
 
 package c
 
-// For 64-bit Unix/Linux/macOS, Long is 64-bit
-type (
-	Long  = int64
-	Ulong = uint64
+import (
+	"github.com/qiniu/x/xgo/ng"
 )
 
+// -----------------------------------------------------------------------------
+
 type (
-	WcharT = int32
+	Int128T  = ng.Int128
+	Uint128T = ng.Uint128
 )
+
+// -----------------------------------------------------------------------------

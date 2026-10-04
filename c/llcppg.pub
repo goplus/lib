@@ -14,10 +14,12 @@ T int8_t Int8T
 T int16_t Int16T
 T int32_t Int32T
 T int64_t Int64T
+T int128_t Int128T
 T uint8_t Uint8T
 T uint16_t Uint16T
 T uint32_t Uint32T
 T uint64_t Uint64T
+T uint128_t Uint128T
 T intmax_t IntmaxT
 T uintmax_t UintmaxT
 T div_t DivT
