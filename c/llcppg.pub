@@ -1,5 +1,7 @@
 D github.com/goplus/lib/c/os
 D github.com/goplus/lib/c/time
+D github.com/goplus/lib/c/pthread
+D github.com/goplus/lib/c/pthread/sync
 T FILE FILE
 T wchar_t WcharT
 T char8_t Char8T
