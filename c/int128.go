@@ -17,14 +17,14 @@
 package c
 
 import (
-	"github.com/qiniu/x/xgo/ng"
+	"github.com/goplus/lib/c/types"
 )
 
 // -----------------------------------------------------------------------------
 
 type (
-	Int128T  = ng.Int128
-	Uint128T = ng.Uint128
+	Int128T  = types.Int128
+	Uint128T = types.Uint128
 )
 
 // -----------------------------------------------------------------------------
