@@ -1,5 +1,3 @@
-//go:build !baremetal
-
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
  *
@@ -16,19 +14,15 @@
  * limitations under the License.
  */
 
-package c
-
-import (
-	"github.com/goplus/lib/c/types"
-)
+package types
 
 // -----------------------------------------------------------------------------
 
 // The int128 aliases pull in math/big and fmt through c/types. Bare-metal
 // targets currently omit these types to keep the base C bindings usable.
 type (
-	Int128T  = types.Int128
-	Uint128T = types.Uint128
+	Int128T  = Int128
+	Uint128T = Uint128
 )
 
 // -----------------------------------------------------------------------------
