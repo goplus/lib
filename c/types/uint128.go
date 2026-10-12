@@ -16,15 +16,14 @@
 
 package types
 
-import (
-	"fmt"
-	"math/big"
-	"math/bits"
-	"strconv"
-)
+import "math/bits"
 
 const (
 	XGoPackage = true // to indicate this is a XGo package
+
+	// Keep existing constructor names after moving big.Int conversions to
+	// types/extra. Explicit overloads allow the removed __8/__9 slots.
+	XGoo__Uint128_Cast = "Uint128_Cast__0,Uint128_Cast__1,Uint128_Cast__2,Uint128_Cast__3,Uint128_Cast__4,Uint128_Cast__5,Uint128_Cast__6,Uint128_Cast__7,Uint128_Cast__a,Uint128_Cast__b"
 )
 
 const (
@@ -35,7 +34,6 @@ const (
 
 const (
 	maxUint64 = (1 << 64) - 1
-	intSize   = 32 << (^uint(0) >> 63)
 )
 
 //
@@ -106,58 +104,6 @@ func Uint128_Cast__7(v int64) (out Uint128, inRange bool) {
 	return Uint128{lo: uint64(v)}, true
 }
 
-// Uint128_Cast: func uint128(v *big.Int) uint128
-func Uint128_Cast__8(v *big.Int) Uint128 {
-	out, _ := Uint128_Cast__9(v)
-	return out
-}
-
-// Uint128_Cast: func uint128(v *big.Int) (uint128, bool)
-func Uint128_Cast__9(v *big.Int) (out Uint128, inRange bool) {
-	if v.Sign() < 0 {
-		return out, false
-	}
-
-	words := v.Bits()
-	switch intSize {
-	case 64:
-		lw := len(words)
-		switch lw {
-		case 0:
-			return Uint128{}, true
-		case 1:
-			return Uint128{lo: uint64(words[0])}, true
-		case 2:
-			return Uint128{hi: uint64(words[1]), lo: uint64(words[0])}, true
-		default:
-			return Uint128{hi: maxUint64, lo: maxUint64}, false
-		}
-
-	case 32:
-		lw := len(words)
-		switch lw {
-		case 0:
-			return Uint128{}, true
-		case 1:
-			return Uint128{lo: uint64(words[0])}, true
-		case 2:
-			return Uint128{lo: (uint64(words[1]) << 32) | (uint64(words[0]))}, true
-		case 3:
-			return Uint128{hi: uint64(words[2]), lo: (uint64(words[1]) << 32) | (uint64(words[0]))}, true
-		case 4:
-			return Uint128{
-				hi: (uint64(words[3]) << 32) | (uint64(words[2])),
-				lo: (uint64(words[1]) << 32) | (uint64(words[0])),
-			}, true
-		default:
-			return Uint128{hi: maxUint64, lo: maxUint64}, false
-		}
-
-	default:
-		panic("unsupported bit size")
-	}
-}
-
 // Uint128_Cast: func uint128() uint128
 func Uint128_Cast__a() Uint128 {
 	return Uint128{}
@@ -200,78 +146,6 @@ func (u Uint128) XGo_Rcast__4() (out int64, inRange bool) {
 
 func (u Uint128) IsZero() bool {
 	return u.lo == 0 && u.hi == 0
-}
-
-func (u *Uint128) Scan(state fmt.ScanState, verb rune) (err error) {
-	t, err := state.Token(true, nil)
-	if err != nil {
-		return
-	}
-	v, err := ParseUint128(string(t), 10)
-	if err == nil {
-		*u = v
-	}
-	return
-}
-
-func (u Uint128) Format(s fmt.State, c rune) {
-	// TODO(xsw): not so good
-	u.BigInt().Format(s, c)
-}
-
-func (u Uint128) String() string {
-	return u.Text(10)
-}
-
-func (u Uint128) Text(base int) string {
-	if u.hi == 0 {
-		return strconv.FormatUint(u.lo, base)
-	}
-	// TODO(xsw): not so good
-	return u.BigInt().Text(base)
-}
-
-func (u Uint128) BigInt() *big.Int {
-	var v big.Int
-	u.ToBigInt(&v)
-	return &v
-}
-
-func (u Uint128) ToBigInt(b *big.Int) {
-	switch intSize {
-	case 64:
-		bits := b.Bits()
-		ln := len(bits)
-		if len(bits) < 2 {
-			bits = append(bits, make([]big.Word, 2-ln)...)
-		}
-		bits = bits[:2]
-		bits[0] = big.Word(u.lo)
-		bits[1] = big.Word(u.hi)
-		b.SetBits(bits)
-
-	case 32:
-		bits := b.Bits()
-		ln := len(bits)
-		if len(bits) < 4 {
-			bits = append(bits, make([]big.Word, 4-ln)...)
-		}
-		bits = bits[:4]
-		bits[0] = big.Word(u.lo & 0xFFFFFFFF)
-		bits[1] = big.Word(u.lo >> 32)
-		bits[2] = big.Word(u.hi & 0xFFFFFFFF)
-		bits[3] = big.Word(u.hi >> 32)
-		b.SetBits(bits)
-
-	default:
-		if u.hi > 0 {
-			b.SetUint64(u.hi)
-			b.Lsh(b, 64)
-		}
-		var lo big.Int
-		lo.SetUint64(u.lo)
-		b.Add(b, &lo)
-	}
 }
 
 // Bit returns the value of the i'th bit of x. That is, it returns (x>>i)&1.
@@ -955,22 +829,5 @@ func quo128bin(u, by Uint128, uLeading0, byLeading0 uint) (q Uint128) {
 }
 
 // -----------------------------------------------------------------------------
-
-func ParseUint128(s string, base int) (out Uint128, err error) {
-	b, ok := new(big.Int).SetString(s, base)
-	if !ok {
-		err = fmt.Errorf("invalid uint128 string: %q", s)
-		return
-	}
-	out, inRange := Uint128_Cast__9(b)
-	if !inRange {
-		err = fmt.Errorf("string %q was not in valid uint128 range", s)
-	}
-	return
-}
-
-func FormatUint128(i Uint128, base int) string {
-	return i.Text(base)
-}
 
 // -----------------------------------------------------------------------------
