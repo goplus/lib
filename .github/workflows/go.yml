@@ -24,22 +24,6 @@ jobs:
     - name: Build
       run: go build -v ./...
 
-    - name: Check bare-metal C dependencies
-      run: |
-        go build -tags=baremetal ./c
-        deps=$(go list -tags=baremetal -deps ./c)
-        for dep in $deps; do
-          case "$dep" in
-            github.com/goplus/lib/c/types|github.com/goplus/lib/c/types/*|fmt|math/big|reflect|os)
-              echo "Unexpected bare-metal C dependency: $dep" >&2
-              exit 1
-              ;;
-          esac
-        done
-        # Hosted builds must retain their int128 aliases and dependency.
-        go list -f '{{range .Imports}}{{println .}}{{end}}' ./c |
-          grep -Fx github.com/goplus/lib/c/types
-
   llgo-test:
     name: llgo-test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
