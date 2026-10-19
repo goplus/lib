@@ -5,4 +5,4 @@
 package net
 
 const XGoPackage = true
-const LLGoPackage = "link: -lSystem"
+const LLGoPackage = "link: -lc"
