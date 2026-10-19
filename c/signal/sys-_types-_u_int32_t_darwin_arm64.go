@@ -6,9 +6,4 @@ package signal
 
 import "github.com/goplus/lib/c"
 
-type X__Uint32T = c.Uint
-
-type SigsetT = X__DarwinSigsetT
-
-// [???] signal set
-type X__DarwinSigsetT = X__Uint32T
+type UInt32T = c.Uint
