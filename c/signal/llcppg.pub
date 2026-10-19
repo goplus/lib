@@ -1,5 +1,7 @@
 T __siginfo X__Siginfo
 T __sigset_t X__SigsetT
+T sigevent Sigevent
+T sigevent_t SigeventT
 T siginfo_t SiginfoT
 T sigset_t SigsetT
 T sigval Sigval

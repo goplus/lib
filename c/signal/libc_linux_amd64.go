@@ -127,3 +127,36 @@ type SigsetT = X__SigsetT
 type X__SigsetT struct {
 	X__Val [16]c.Ulong
 }
+
+type Sigevent struct {
+	SigevValue  SigvalT
+	SigevSigno  c.Int
+	SigevNotify c.Int
+	X_sigevUn   _llcppg_anon_6
+}
+
+// llgo:type C
+type llcppgCallback2 = func(_llcppg_param1 SigvalT)
+
+type _llcppg_anon_6 struct {
+	_xgo_union [6]uint64
+}
+
+func (p *_llcppg_anon_6) XGof_ref__pad() *[12]c.Int {
+	return (*[12]c.Int)(unsafe.Pointer(p))
+}
+
+func (p *_llcppg_anon_6) XGof_ref__tid() *c.Int {
+	return (*c.Int)(unsafe.Pointer(p))
+}
+
+type _llcppg_anon_31 struct {
+	X_function  llcppgCallback2
+	X_attribute c.Pointer
+}
+
+func (p *_llcppg_anon_6) XGof_ref__sigev_thread() *_llcppg_anon_31 {
+	return (*_llcppg_anon_31)(unsafe.Pointer(p))
+}
+
+type SigeventT = Sigevent
