@@ -10,22 +10,65 @@ import (
 	"unsafe"
 )
 
+const XGoPackage = true
+const LLGoPackage = "link: -lSystem"
+
+type X__MbstateT struct {
+	_xgo_union [16]uint64
+}
+
+type X__Int8T = int8
+
 type X__Uint8T = uint8
 
+type X__Int16T = int16
+
 type X__Uint16T = uint16
+
+type X__Int32T = c.Int
 
 type X__Uint32T = c.Uint
 
 type X__Int64T = c.LongLong
 
+type X__Uint64T = c.UlongLong
+
+type X__DarwinIntptrT = c.Long
+
+type X__DarwinNaturalT = c.Uint
+
+// ct_rune_t
+type X__DarwinCtRuneT = c.Int
+
+// mbstate_t
+type X__DarwinMbstateT = X__MbstateT
+
+// ptr1 - ptr2
+type X__DarwinPtrdiffT = c.Long
+
 // sizeof()
 type X__DarwinSizeT = c.Ulong
+
+// wchar_t
+type X__DarwinWcharT = c.Int
+
+// rune_t
+type X__DarwinRuneT = X__DarwinWcharT
+
+// wint_t
+type X__DarwinWintT = c.Int
+
+// clock()
+type X__DarwinClockT = c.Ulong
 
 // socklen_t (duh)
 type X__DarwinSocklenT = X__Uint32T
 
 // byte count or error
 type X__DarwinSsizeT = c.Long
+
+// time()
+type X__DarwinTimeT = c.Long
 
 // llgo:link InAddr.InetNtoa C.inet_ntoa
 func (self InAddr) InetNtoa() *c.Char {
@@ -186,6 +229,19 @@ const IF_WAKE_ON_MAGIC_PACKET = 1
 // 10 lines of text
 const IFSTATMAX = 800
 
+const (
+	IFRTYPE_FUNCTIONAL_UNKNOWN       = 0
+	IFRTYPE_FUNCTIONAL_LOOPBACK      = 1
+	IFRTYPE_FUNCTIONAL_WIRED         = 2
+	IFRTYPE_FUNCTIONAL_WIFI_INFRA    = 3
+	IFRTYPE_FUNCTIONAL_WIFI_AWDL     = 4
+	IFRTYPE_FUNCTIONAL_CELLULAR      = 5
+	IFRTYPE_FUNCTIONAL_INTCOPROC     = 6
+	IFRTYPE_FUNCTIONAL_COMPANIONLINK = 7
+	IFRTYPE_FUNCTIONAL_MANAGEMENT    = 8
+	IFRTYPE_FUNCTIONAL_LAST          = 8
+)
+
 type IfClonereq struct {
 	IfcrTotal  c.Int
 	IfcrCount  c.Int
@@ -261,7 +317,7 @@ type KevDlProtoData struct {
 	ProtoRemainingCount UInt32T
 }
 
-type IfNameindex struct {
+type IfNameindexT struct {
 	IfIndex c.Uint
 	IfName  *c.Char
 }
@@ -272,8 +328,11 @@ func IfNametoindex(_llcppg_param1 *c.Char) c.Uint
 //go:linkname IfIndextoname C.if_indextoname
 func IfIndextoname(_llcppg_param1 c.Uint, _llcppg_param2 *c.Char) *c.Char
 
-// llgo:link (*IfNameindex).IfFreenameindex C.if_freenameindex
-func (self *IfNameindex) IfFreenameindex() {
+//go:linkname IfNameindex C.if_nameindex
+func IfNameindex() *IfNameindexT
+
+// llgo:link (*IfNameindexT).IfFreenameindex C.if_freenameindex
+func (self *IfNameindexT) IfFreenameindex() {
 }
 
 const (
@@ -321,6 +380,9 @@ type Ifqueue struct {
 	IfqLen    c.Int
 	IfqMaxlen c.Int
 	IfqDrops  c.Int
+}
+
+type IfnetInterfaceAdvisory struct {
 }
 
 // Kernel event subclass identifiers for KEV_NETWORK_CLASS
@@ -1622,8 +1684,59 @@ var In6addrLinklocalAllv2routers In6Addr
 //go:linkname Inet6OptionSpace C.inet6_option_space
 func Inet6OptionSpace(_llcppg_param1 c.Int) c.Int
 
+//go:linkname Inet6OptionInit C.inet6_option_init
+func Inet6OptionInit(_llcppg_param1 unsafe.Pointer, _llcppg_param2 **Cmsghdr, _llcppg_param3 c.Int) c.Int
+
+// llgo:link (*Cmsghdr).Inet6OptionAppend C.inet6_option_append
+func (self *Cmsghdr) Inet6OptionAppend(_llcppg_param2 *X__Uint8T, _llcppg_param3 c.Int, _llcppg_param4 c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*Cmsghdr).Inet6OptionAlloc C.inet6_option_alloc
+func (self *Cmsghdr) Inet6OptionAlloc(_llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 c.Int) *X__Uint8T {
+	return nil
+}
+
+// llgo:link (*Cmsghdr).Inet6OptionNext C.inet6_option_next
+func (self *Cmsghdr) Inet6OptionNext(_llcppg_param2 **X__Uint8T) c.Int {
+	return 0
+}
+
+// llgo:link (*Cmsghdr).Inet6OptionFind C.inet6_option_find
+func (self *Cmsghdr) Inet6OptionFind(_llcppg_param2 **X__Uint8T, _llcppg_param3 c.Int) c.Int {
+	return 0
+}
+
 //go:linkname Inet6RthdrSpace C.inet6_rthdr_space
 func Inet6RthdrSpace(_llcppg_param1 c.Int, _llcppg_param2 c.Int) SizeT
+
+//go:linkname Inet6RthdrInit C.inet6_rthdr_init
+func Inet6RthdrInit(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.Int) *Cmsghdr
+
+// llgo:link (*Cmsghdr).Inet6RthdrAdd C.inet6_rthdr_add
+func (self *Cmsghdr) Inet6RthdrAdd(_llcppg_param2 *In6Addr, _llcppg_param3 c.Uint) c.Int {
+	return 0
+}
+
+// llgo:link (*Cmsghdr).Inet6RthdrLasthop C.inet6_rthdr_lasthop
+func (self *Cmsghdr) Inet6RthdrLasthop(_llcppg_param2 c.Uint) c.Int {
+	return 0
+}
+
+// llgo:link (*Cmsghdr).Inet6RthdrSegments C.inet6_rthdr_segments
+func (self *Cmsghdr) Inet6RthdrSegments() c.Int {
+	return 0
+}
+
+// llgo:link (*Cmsghdr).Inet6RthdrGetaddr C.inet6_rthdr_getaddr
+func (self *Cmsghdr) Inet6RthdrGetaddr(_llcppg_param2 c.Int) *In6Addr {
+	return nil
+}
+
+// llgo:link (*Cmsghdr).Inet6RthdrGetflags C.inet6_rthdr_getflags
+func (self *Cmsghdr) Inet6RthdrGetflags(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
 
 //go:linkname Inet6OptInit C.inet6_opt_init
 func Inet6OptInit(_llcppg_param1 unsafe.Pointer, _llcppg_param2 SocklenT) c.Int
@@ -1664,6 +1777,8 @@ func Inet6RthSegments(_llcppg_param1 unsafe.Pointer) c.Int
 //go:linkname Inet6RthGetaddr C.inet6_rth_getaddr
 func Inet6RthGetaddr(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.Int) *In6Addr
 
+type CaddrT = *c.Char
+
 // base type for internet address
 type InAddrT = X__Uint32T
 
@@ -1683,14 +1798,76 @@ type SocklenT = X__DarwinSocklenT
 
 type SsizeT = X__DarwinSsizeT
 
+type Timeval32 struct {
+	TvSec  X__Int32T
+	TvUsec X__Int32T
+}
+
 type UChar = uint8
 
 type UInt32T = c.Uint
 
+type UInt64T = c.UlongLong
+
 type UShort = uint16
+
+// total blocks
+type X__DarwinBlkcntT = X__Int64T
+
+// preferred block size
+type X__DarwinBlksizeT = X__Int32T
+
+// dev_t
+type X__DarwinDevT = X__Int32T
+
+// Used by statvfs and fstatvfs
+type X__DarwinFsblkcntT = c.Uint
+
+// Used by statvfs and fstatvfs
+type X__DarwinFsfilcntT = c.Uint
+
+// [???] process and group IDs
+type X__DarwinGidT = X__Uint32T
+
+// [XSI] pid_t, uid_t, or gid_t
+type X__DarwinIdT = X__Uint32T
+
+// [???] Used for 64 bit inodes
+type X__DarwinIno64T = X__Uint64T
+
+// [???] Used for inodes
+type X__DarwinInoT = X__DarwinIno64T
+
+// Used by mach
+type X__DarwinMachPortNameT = X__DarwinNaturalT
+
+// Used by mach
+type X__DarwinMachPortT = X__DarwinMachPortNameT
+
+// [???] Some file attributes
+type X__DarwinModeT = X__Uint16T
 
 // [???] Used for file sizes
 type X__DarwinOffT = X__Int64T
+
+// [???] process and group IDs
+type X__DarwinPidT = X__Int32T
+
+// [???] signal set
+type X__DarwinSigsetT = X__Uint32T
+
+// [???] microseconds
+type X__DarwinSusecondsT = X__Int32T
+
+// [???] user IDs
+type X__DarwinUidT = X__Uint32T
+
+// [???] microseconds
+type X__DarwinUsecondsT = X__Uint32T
+
+type X__DarwinUuidT = [16]uint8
+
+type X__DarwinUuidStringT = [37]c.Char
 
 // Types
 const (
@@ -2187,6 +2364,16 @@ type Msghdr struct {
 	MsgFlags      c.Int
 }
 
+// Header for ancillary data objects in msg_control buffer.
+// Used for additional information with/about a datagram
+// not expressible by flags.  The format is a sequence
+// of message elements headed by cmsghdr structures.
+type Cmsghdr struct {
+	CmsgLen   SocklenT
+	CmsgLevel c.Int
+	CmsgType  c.Int
+}
+
 // sendfile(2) header/trailer struct
 type SfHdtr struct {
 	Headers  *Iovec
@@ -2234,6 +2421,9 @@ func Socketpair(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int
 
 //go:linkname Sendfile C.sendfile
 func Sendfile(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 OffT, _llcppg_param4 *OffT, _llcppg_param5 *SfHdtr, _llcppg_param6 c.Int) c.Int
+
+//go:linkname Pfctlinput C.pfctlinput
+func Pfctlinput(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr)
 
 //go:linkname Connectx C.connectx
 func Connectx(_llcppg_param1 c.Int, _llcppg_param2 *SaEndpointsT, _llcppg_param3 SaeAssocidT, _llcppg_param4 c.Uint, _llcppg_param5 *Iovec, _llcppg_param6 c.Uint, _llcppg_param7 *SizeT, _llcppg_param8 *SaeConnidT) c.Int

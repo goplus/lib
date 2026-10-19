@@ -10,6 +10,9 @@ import (
 	"unsafe"
 )
 
+const XGoPackage = true
+const LLGoPackage = "link: -lc -lresolv"
+
 const X_ARPA_INET_H = 1
 
 // Return the local host address part of the Internet address in IN.
@@ -58,6 +61,26 @@ func InetPton(__af c.Int, __cp *uint8, __buf unsafe.Pointer) c.Int
 //
 //go:linkname InetAton C.inet_aton
 func InetAton(__cp *uint8, __inp *InAddr) c.Int
+
+// Format a network number NET into presentation format and place result
+// in buffer starting at BUF with length of LEN bytes.
+//
+//go:linkname InetNeta C.inet_neta
+func InetNeta(__net InAddrT, __buf *uint8, __len SizeT) *uint8
+
+// Convert network number for interface type AF in buffer starting at
+// CP to presentation format.  The result will specifiy BITS bits of
+// the number.
+//
+//go:linkname InetNetNtop C.inet_net_ntop
+func InetNetNtop(__af c.Int, __cp unsafe.Pointer, __bits c.Int, __buf *uint8, __len SizeT) *uint8
+
+// Convert network number for interface type AF from presentation in
+// buffer starting at CP to network format and store result int
+// buffer starting at BUF of size LEN.
+//
+//go:linkname InetNetPton C.inet_net_pton
+func InetNetPton(__af c.Int, __cp *uint8, __buf unsafe.Pointer, __len SizeT) c.Int
 
 // Convert ASCII representation in hexadecimal form of the Internet
 // address to binary form and place result in buffer of length LEN
@@ -675,6 +698,13 @@ type Msghdr struct {
 	MsgFlags      c.Int
 }
 
+// Structure used for storage of ancillary data object information.
+type Cmsghdr struct {
+	CmsgLen   c.SizeT
+	CmsgLevel c.Int
+	CmsgType  c.Int
+}
+
 // Socket level message types.  This must match the definitions in
 // <linux/socket.h>.
 const SCM_RIGHTS = 1
@@ -686,6 +716,11 @@ type Linger struct {
 }
 
 type SocklenT = X__SocklenT
+
+// llgo:link (*Msghdr).X__CmsgNxthdr C.__cmsg_nxthdr
+func (self *Msghdr) X__CmsgNxthdr(__cmsg *Cmsghdr) *Cmsghdr {
+	return nil
+}
 
 // Types of sockets.
 type X__SocketType c.Uint
@@ -699,10 +734,143 @@ const (
 	SOCK_NONBLOCK X__SocketType = 2048
 )
 
+type X__FsidT struct {
+	X__Val [2]c.Int
+}
+
+// Convenience types.
+type X__UChar = uint8
+
+type X__UShort = uint16
+
+type X__UInt = c.Uint
+
+type X__ULong = c.Ulong
+
+// Fixed-size types, underlying types depend on word size and compiler.
+type X__Int8T = int8
+
+type X__Uint8T = uint8
+
+type X__Int16T = int16
+
+type X__Uint16T = uint16
+
+type X__Int32T = c.Int
+
+type X__Uint32T = c.Uint
+
+type X__Int64T = c.Long
+
+type X__Uint64T = c.Ulong
+
+type X__QuadT = c.Long
+
+type X__UQuadT = c.Ulong
+
+// Type of device numbers.
+type X__DevT = c.Ulong
+
+// Type of user identifications.
+type X__UidT = c.Uint
+
+// Type of group identifications.
+type X__GidT = c.Uint
+
+// Type of file serial numbers.
+type X__InoT = c.Ulong
+
+// Type of file serial numbers (LFS).
+type X__Ino64T = c.Ulong
+
+// Type of file attribute bitmasks.
+type X__ModeT = c.Uint
+
+// Type of file link counts.
+type X__NlinkT = c.Uint
+
+// Type of file sizes and offsets.
+type X__OffT = c.Long
+
+// Type of file sizes and offsets (LFS).
+type X__Off64T = c.Long
+
+// Type of process identifications.
+type X__PidT = c.Int
+
+// Type of CPU usage counts.
+type X__ClockT = c.Long
+
+// Type for resource measurement.
+type X__RlimT = c.Ulong
+
+// Type for resource measurement (LFS).
+type X__Rlim64T = c.Ulong
+
+// General type for IDs.
+type X__IdT = c.Uint
+
+// Seconds since the Epoch.
+type X__TimeT = c.Long
+
+// Count of microseconds.
+type X__UsecondsT = c.Uint
+
+// Signed count of microseconds.
+type X__SusecondsT = c.Long
+
+// The type of a disk address.
+type X__DaddrT = c.Int
+
+// Type of an IPC key.
+type X__KeyT = c.Int
+
+// Clock ID used in clock and timer functions.
+type X__ClockidT = c.Int
+
+// Timer ID returned by `timer_create'.
+type X__TimerT uintptr
+
+// Type to represent block size.
+type X__BlksizeT = c.Int
+
+// Type to count number of disk blocks.
+type X__BlkcntT = c.Long
+
+type X__Blkcnt64T = c.Long
+
+// Type to count file system blocks.
+type X__FsblkcntT = c.Ulong
+
+type X__Fsblkcnt64T = c.Ulong
+
+// Type to count file system nodes.
+type X__FsfilcntT = c.Ulong
+
+type X__Fsfilcnt64T = c.Ulong
+
+// Type of miscellaneous file system fields.
+type X__FswordT = c.Long
+
 // Type of a byte count, or error.
 type X__SsizeT = c.Long
 
+// Signed long type used in system calls.
+type X__SyscallSlongT = c.Long
+
+// Unsigned long type used in system calls.
+type X__SyscallUlongT = c.Ulong
+
+// These few don't really vary by system, they always correspond
+// to one of the other defined types.
+type X__LoffT = X__Off64T
+
+type X__QaddrT = *X__QuadT
+
 type X__CaddrT = *uint8
+
+// Duplicates info from stdint.h but this is used in unistd.h.
+type X__IntptrT = c.Long
 
 // Duplicate info from sys/socket.h.
 type X__SocklenT = c.Uint
@@ -721,7 +889,7 @@ const (
 	IFNAMSIZ    = 16
 )
 
-type IfNameindex struct {
+type IfNameindexT struct {
 	IfIndex c.Uint
 	IfName  *uint8
 }
@@ -748,6 +916,13 @@ const (
 	IFF_DYNAMIC = 32768
 )
 
+type Ifaddr struct {
+	IfaAddr SockAddr
+	IfaIfu  _llcppg_anon_1
+	IfaIfp  *Iface
+	IfaNext *Ifaddr
+}
+
 type Ifmap struct {
 	MemStart c.Ulong
 	MemEnd   c.Ulong
@@ -767,6 +942,13 @@ type Ifconf struct {
 	IfcIfcu _llcppg_anon_4
 }
 
+type _llcppg_anon_1 struct {
+	_xgo_union [8]uint16
+}
+
+type Iface struct {
+}
+
 type _llcppg_anon_2 struct {
 	_xgo_union [16]uint8
 }
@@ -777,6 +959,14 @@ type _llcppg_anon_3 struct {
 
 type _llcppg_anon_4 struct {
 	_xgo_union [1]uint64
+}
+
+func (p *_llcppg_anon_1) XGof_ref_ifu_broadaddr() *SockAddr {
+	return (*SockAddr)(unsafe.Pointer(p))
+}
+
+func (p *_llcppg_anon_1) XGof_ref_ifu_dstaddr() *SockAddr {
+	return (*SockAddr)(unsafe.Pointer(p))
 }
 
 func (p *_llcppg_anon_2) XGof_ref_ifrn_name() *[16]uint8 {
@@ -847,10 +1037,15 @@ func IfNametoindex(__ifname *uint8) c.Uint
 //go:linkname IfIndextoname C.if_indextoname
 func IfIndextoname(__ifindex c.Uint, __ifname *uint8) *uint8
 
+// Return a list of all interfaces and their indices.
+//
+//go:linkname IfNameindex C.if_nameindex
+func IfNameindex() *IfNameindexT
+
 // Free the data returned from if_nameindex.
 //
-// llgo:link (*IfNameindex).IfFreenameindex C.if_freenameindex
-func (self *IfNameindex) IfFreenameindex() {
+// llgo:link (*IfNameindexT).IfFreenameindex C.if_freenameindex
+func (self *IfNameindexT) IfFreenameindex() {
 }
 
 const X_NETDB_H = 1
@@ -1649,6 +1844,11 @@ var In6addrLoopback In6Addr
 //
 //go:linkname Bindresvport C.bindresvport
 func Bindresvport(__sockfd c.Int, __sock_in *SockaddrIn) c.Int
+
+// The IPv6 version of this function.
+//
+//go:linkname Bindresvport6 C.bindresvport6
+func Bindresvport6(__sockfd c.Int, __sock_in *SockaddrIn6) c.Int
 
 const X_RPC_NETDB_H = 1
 
