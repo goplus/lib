@@ -1,7 +1,14 @@
-T pthread_once_t Once
-T pthread_mutexattr_t MutexAttr
-T pthread_mutex_t Mutex
-T pthread_rwlockattr_t RWLockAttr
-T pthread_rwlock_t RWLock
-T pthread_condattr_t CondAttr
+D github.com/goplus/lib/c
+D github.com/goplus/lib/c/pthread
+D github.com/goplus/lib/c/time
+T pthread_barrier_t Barrier
+T pthread_barrierattr_t BarrierAttr
 T pthread_cond_t Cond
+T pthread_condattr_t CondAttr
+T pthread_mutex_t Mutex
+T pthread_mutexattr_t MutexAttr
+T pthread_once_t Once
+T pthread_rwlock_t RWLock
+T pthread_rwlockattr_t RWLockAttr
+T pthread_spinlock_t Spinlock
+T sem_t Sem

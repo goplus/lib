@@ -55,9 +55,6 @@ const (
 	MUTEX_DEFAULT    MutexType = C.PTHREAD_MUTEX_DEFAULT
 )
 
-// MutexAttr is a mutex attribute object.
-type MutexAttr C.pthread_mutexattr_t
-
 // llgo:link (*MutexAttr).Init C.pthread_mutexattr_init
 func (a *MutexAttr) Init(attr *MutexAttr) c.Int { return 0 }
 
@@ -68,9 +65,6 @@ func (a *MutexAttr) Destroy() {}
 func (a *MutexAttr) SetType(typ MutexType) c.Int { return 0 }
 
 // -----------------------------------------------------------------------------
-
-// Mutex is a mutual exclusion lock.
-type Mutex C.pthread_mutex_t
 
 // llgo:link (*Mutex).Init C.pthread_mutex_init
 func (m *Mutex) Init(attr *MutexAttr) c.Int { return 0 }
@@ -89,9 +83,6 @@ func (m *Mutex) Unlock() {}
 
 // -----------------------------------------------------------------------------
 
-// RWLockAttr is a read-write lock attribute object.
-type RWLockAttr C.pthread_rwlockattr_t
-
 // llgo:link (*RWLockAttr).Init C.pthread_rwlockattr_init
 func (a *RWLockAttr) Init(attr *RWLockAttr) c.Int { return 0 }
 
@@ -105,9 +96,6 @@ func (a *RWLockAttr) SetPShared(pshared c.Int) c.Int { return 0 }
 func (a *RWLockAttr) GetPShared(pshared *c.Int) c.Int { return 0 }
 
 // -----------------------------------------------------------------------------
-
-// RWLock is a read-write lock.
-type RWLock C.pthread_rwlock_t
 
 // llgo:link (*RWLock).Init C.pthread_rwlock_init
 func (rw *RWLock) Init(attr *RWLockAttr) c.Int { return 0 }
@@ -135,9 +123,6 @@ func (rw *RWLock) Unlock() {}
 
 // -----------------------------------------------------------------------------
 
-// CondAttr is a condition variable attribute object.
-type CondAttr C.pthread_condattr_t
-
 // llgo:link (*CondAttr).Init C.pthread_condattr_init
 func (a *CondAttr) Init(attr *CondAttr) c.Int { return 0 }
 
@@ -151,9 +136,6 @@ func (a *CondAttr) SetClock(clock time.ClockidT) c.Int { return 0 }
 func (a *CondAttr) GetClock(clock *time.ClockidT) c.Int { return 0 }
 
 // -----------------------------------------------------------------------------
-
-// Cond is a condition variable.
-type Cond C.pthread_cond_t
 
 // llgo:link (*Cond).Init C.pthread_cond_init
 func (c *Cond) Init(attr *CondAttr) c.Int { return 0 }
