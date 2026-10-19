@@ -60,13 +60,6 @@ func Cancel(thread Thread) c.Int
 
 // -----------------------------------------------------------------------------
 
-// Attr represents a POSIX thread attributes.
-type Attr struct {
-	Detached byte
-	SsSp     *c.Char
-	SsSize   uintptr
-}
-
 // llgo:link (*Attr).Init C.pthread_attr_init
 func (attr *Attr) Init() c.Int { return 0 }
 
@@ -93,8 +86,6 @@ func (attr *Attr) SetStackAddr(stackAddr c.Pointer) c.Int { return 0 }
 
 // -----------------------------------------------------------------------------
 // Thread Local Storage
-
-type Key c.Uint
 
 // llgo:link (*Key).Create C.pthread_key_create
 func (key *Key) Create(destructor func(c.Pointer)) c.Int { return 0 }
