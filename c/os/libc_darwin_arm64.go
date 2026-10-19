@@ -28,6 +28,9 @@ const (
 	// there's nothing more to read in the kernel
 )
 
+type X_telldir struct {
+}
+
 // llgo:link (*DIR).ReaddirR C.readdir_r
 func (self *DIR) ReaddirR(_llcppg_param2 *Dirent, _llcppg_param3 **Dirent) c.Int {
 	return 0
@@ -147,6 +150,45 @@ const (
 	GLOB_MAXPATH = 4096
 	GLOB_ABEND   = -2
 )
+
+type GlobT struct {
+	GlPathc    c.SizeT
+	GlMatchc   c.Int
+	GlOffs     c.SizeT
+	GlFlags    c.Int
+	GlPathv    **c.Char
+	GlErrfunc  llcppgCallback14
+	GlClosedir llcppgCallback13
+	GlReaddir  llcppgCallback12
+	GlOpendir  llcppgCallback11
+	GlLstat    llcppgCallback10
+	GlStat     llcppgCallback9
+}
+
+// llgo:type C
+type llcppgCallback9 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+
+// llgo:type C
+type llcppgCallback10 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+
+// llgo:type C
+type llcppgCallback11 = func(_llcppg_param1 *c.Char) unsafe.Pointer
+
+// llgo:type C
+type llcppgCallback12 = func(_llcppg_param1 unsafe.Pointer) *Dirent
+
+// llgo:type C
+type llcppgCallback13 = func(_llcppg_param1 unsafe.Pointer)
+
+// llgo:type C
+type llcppgCallback14 = func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
+
+//go:linkname Glob C.glob
+func Glob(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int, _llcppg_param4 *GlobT) c.Int
+
+// llgo:link (*GlobT).Globfree C.globfree
+func (self *GlobT) Globfree() {
+}
 
 type Group struct {
 	GrName   *c.Char
@@ -419,6 +461,11 @@ func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddchdirNp(_llcppg_para
 func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddfchdirNp(_llcppg_param2 c.Int) c.Int {
 	return 0
 }
+
+type X_filesec struct {
+}
+
+type FilesecT = *X_filesec
 
 type MachPortT = c.Uint
 
@@ -941,6 +988,13 @@ type FattributiontagT = Fattributiontag
 //
 //	int open_dprotected_np(user_addr_t path, int flags, int class, int dpflags, int mode)
 //
+//go:linkname OpenxNp C.openx_np
+func OpenxNp(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 FilesecT) c.Int
+
+// data-protected non-portable open(2) :
+//
+//	int open_dprotected_np(user_addr_t path, int flags, int class, int dpflags, int mode)
+//
 //go:linkname OpenDprotectedNp C.open_dprotected_np
 func OpenDprotectedNp(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 c.Int, __llgo_va_list ...any) c.Int
 
@@ -952,6 +1006,48 @@ func OpenatAuthenticatedNp(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg
 
 //go:linkname Flock C.flock
 func Flock(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+
+//go:linkname FilesecInit C.filesec_init
+func FilesecInit() FilesecT
+
+// llgo:link FilesecT.FilesecDup C.filesec_dup
+func (self FilesecT) FilesecDup() FilesecT {
+	return self
+}
+
+// llgo:link FilesecT.FilesecFree C.filesec_free
+func (self FilesecT) FilesecFree() {
+}
+
+// llgo:link FilesecT.FilesecGetProperty C.filesec_get_property
+func (self FilesecT) FilesecGetProperty(_llcppg_param2 FilesecPropertyT, _llcppg_param3 unsafe.Pointer) c.Int {
+	return 0
+}
+
+// llgo:link FilesecT.FilesecQueryProperty C.filesec_query_property
+func (self FilesecT) FilesecQueryProperty(_llcppg_param2 FilesecPropertyT, _llcppg_param3 *c.Int) c.Int {
+	return 0
+}
+
+// llgo:link FilesecT.FilesecSetProperty C.filesec_set_property
+func (self FilesecT) FilesecSetProperty(_llcppg_param2 FilesecPropertyT, _llcppg_param3 unsafe.Pointer) c.Int {
+	return 0
+}
+
+// llgo:link FilesecT.FilesecUnsetProperty C.filesec_unset_property
+func (self FilesecT) FilesecUnsetProperty(_llcppg_param2 FilesecPropertyT) c.Int {
+	return 0
+}
+
+type PosixCred struct {
+}
+
+type Ucred struct {
+}
+
+type KauthCredT = *Ucred
+
+type PosixCredT = *PosixCred
 
 // Protections are chosen from these bits, or-ed together
 const (
@@ -1782,14 +1878,40 @@ func Utimensat(__fd c.Int, __path *c.Char, __times *lltime.Timespec, __flag c.In
 //go:linkname Chflags C.chflags
 func Chflags(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint) c.Int
 
+//go:linkname ChmodxNp C.chmodx_np
+func ChmodxNp(_llcppg_param1 *c.Char, _llcppg_param2 FilesecT) c.Int
+
 //go:linkname Fchflags C.fchflags
 func Fchflags(_llcppg_param1 c.Int, _llcppg_param2 c.Uint) c.Int
+
+//go:linkname FchmodxNp C.fchmodx_np
+func FchmodxNp(_llcppg_param1 c.Int, _llcppg_param2 FilesecT) c.Int
+
+//go:linkname FstatxNp C.fstatx_np
+func FstatxNp(_llcppg_param1 c.Int, _llcppg_param2 *StatT, _llcppg_param3 FilesecT) c.Int
 
 //go:linkname Lchflags C.lchflags
 func Lchflags(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint) c.Int
 
 //go:linkname Lchmod C.lchmod
 func Lchmod(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname LstatxNp C.lstatx_np
+func LstatxNp(_llcppg_param1 *c.Char, _llcppg_param2 *StatT, _llcppg_param3 FilesecT) c.Int
+
+//go:linkname MkdirxNp C.mkdirx_np
+func MkdirxNp(_llcppg_param1 *c.Char, _llcppg_param2 FilesecT) c.Int
+
+//go:linkname MkfifoxNp C.mkfifox_np
+func MkfifoxNp(_llcppg_param1 *c.Char, _llcppg_param2 FilesecT) c.Int
+
+//go:linkname StatxNp C.statx_np
+func StatxNp(_llcppg_param1 *c.Char, _llcppg_param2 *StatT, _llcppg_param3 FilesecT) c.Int
+
+// llgo:link FilesecT.UmaskxNp C.umaskx_np
+func (self FilesecT) UmaskxNp() c.Int {
+	return 0
+}
 
 // Defined bits for f_flag field value
 const (
@@ -1799,7 +1921,7 @@ const (
 )
 
 // Following structure is used as a statvfs/fstatvfs function parameter
-type Statvfs struct {
+type StatvfsT struct {
 	FBsize   c.Ulong
 	FFrsize  c.Ulong
 	FBlocks  c.Uint
@@ -1814,7 +1936,10 @@ type Statvfs struct {
 }
 
 //go:linkname Fstatvfs C.fstatvfs
-func Fstatvfs(_llcppg_param1 c.Int, _llcppg_param2 *Statvfs) c.Int
+func Fstatvfs(_llcppg_param1 c.Int, _llcppg_param2 *StatvfsT) c.Int
+
+//go:linkname Statvfs C.statvfs
+func Statvfs(_llcppg_param1 *c.Char, _llcppg_param2 *StatvfsT) c.Int
 
 // Special Control Characters
 //
@@ -2204,14 +2329,14 @@ func (self *Termios) Cfsetspeed(_llcppg_param2 c.Ulong) c.Int {
 
 // [XSI] Structure whose address is passed as the first parameter to times()
 type Tms struct {
-	TmsUtime  c.Ulong
-	TmsStime  c.Ulong
-	TmsCutime c.Ulong
-	TmsCstime c.Ulong
+	TmsUtime  lltime.ClockT
+	TmsStime  lltime.ClockT
+	TmsCutime lltime.ClockT
+	TmsCstime lltime.ClockT
 }
 
 // llgo:link (*Tms).Times C.times
-func (self *Tms) Times() c.Ulong {
+func (self *Tms) Times() lltime.ClockT {
 	return 0
 }
 
@@ -2347,6 +2472,12 @@ const (
 	SYNC_VOLUME_WAIT = 2
 )
 
+type Fssearchblock struct {
+}
+
+type Searchstate struct {
+}
+
 //go:linkname X_exit C._exit
 func X_exit(_llcppg_param1 c.Int)
 
@@ -2406,9 +2537,6 @@ func TtynameR(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Siz
 
 //go:linkname Confstr C.confstr
 func Confstr(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.SizeT
-
-//go:linkname Getopt C.getopt
-func Getopt(_llcppg_param1 c.Int, _llcppg_param2 **c.Char, _llcppg_param3 *c.Char) c.Int
 
 // getopt(3) external variables
 //
@@ -2485,9 +2613,6 @@ func Sync()
 
 //go:linkname Ualarm C.ualarm
 func Ualarm(_llcppg_param1 c.Uint, _llcppg_param2 c.Uint) c.Uint
-
-//go:linkname Usleep C.usleep
-func Usleep(_llcppg_param1 c.Uint) c.Int
 
 // End XSI
 //
@@ -2679,6 +2804,9 @@ func Exchangedata(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char, _llcppg_param3
 //go:linkname Getdirentriesattr C.getdirentriesattr
 func Getdirentriesattr(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer, _llcppg_param4 c.SizeT, _llcppg_param5 *c.Uint, _llcppg_param6 *c.Uint, _llcppg_param7 *c.Uint, _llcppg_param8 c.Uint) c.Int
 
+//go:linkname Searchfs C.searchfs
+func Searchfs(_llcppg_param1 *c.Char, _llcppg_param2 *Fssearchblock, _llcppg_param3 *c.Ulong, _llcppg_param4 c.Uint, _llcppg_param5 c.Uint, _llcppg_param6 *Searchstate) c.Int
+
 //go:linkname Fsctl C.fsctl
 func Fsctl(_llcppg_param1 *c.Char, _llcppg_param2 c.Ulong, _llcppg_param3 unsafe.Pointer, _llcppg_param4 c.Uint) c.Int
 
@@ -2695,8 +2823,8 @@ func SyncVolumeNp(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
 var Optreset c.Int
 
 type Utimbuf struct {
-	Actime  c.Long
-	Modtime c.Long
+	Actime  lltime.TimeT
+	Modtime lltime.TimeT
 }
 
 //go:linkname Utime C.utime

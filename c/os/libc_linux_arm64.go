@@ -28,7 +28,6 @@ type FlockT struct {
 type Rusage struct {
 	RuUtime llsys.Timeval
 	RuStime llsys.Timeval
-	_llcppg_anon_7
 	_llcppg_anon_8
 	_llcppg_anon_9
 	_llcppg_anon_10
@@ -42,10 +41,7 @@ type Rusage struct {
 	_llcppg_anon_18
 	_llcppg_anon_19
 	_llcppg_anon_20
-}
-
-type _llcppg_anon_7 struct {
-	_xgo_union [1]uint64
+	_llcppg_anon_21
 }
 
 type _llcppg_anon_8 struct {
@@ -100,115 +96,119 @@ type _llcppg_anon_20 struct {
 	_xgo_union [1]uint64
 }
 
-func (p *_llcppg_anon_7) XGof_ref_ru_maxrss() *c.Long {
+type _llcppg_anon_21 struct {
+	_xgo_union [1]uint64
+}
+
+func (p *_llcppg_anon_8) XGof_ref_ru_maxrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_7) XGof_ref___ru_maxrss_word() *c.Long {
+func (p *_llcppg_anon_8) XGof_ref___ru_maxrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_8) XGof_ref_ru_ixrss() *c.Long {
+func (p *_llcppg_anon_9) XGof_ref_ru_ixrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_8) XGof_ref___ru_ixrss_word() *c.Long {
+func (p *_llcppg_anon_9) XGof_ref___ru_ixrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_9) XGof_ref_ru_idrss() *c.Long {
+func (p *_llcppg_anon_10) XGof_ref_ru_idrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_9) XGof_ref___ru_idrss_word() *c.Long {
+func (p *_llcppg_anon_10) XGof_ref___ru_idrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_10) XGof_ref_ru_isrss() *c.Long {
+func (p *_llcppg_anon_11) XGof_ref_ru_isrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_10) XGof_ref___ru_isrss_word() *c.Long {
+func (p *_llcppg_anon_11) XGof_ref___ru_isrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_11) XGof_ref_ru_minflt() *c.Long {
+func (p *_llcppg_anon_12) XGof_ref_ru_minflt() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_11) XGof_ref___ru_minflt_word() *c.Long {
+func (p *_llcppg_anon_12) XGof_ref___ru_minflt_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_12) XGof_ref_ru_majflt() *c.Long {
+func (p *_llcppg_anon_13) XGof_ref_ru_majflt() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_12) XGof_ref___ru_majflt_word() *c.Long {
+func (p *_llcppg_anon_13) XGof_ref___ru_majflt_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_13) XGof_ref_ru_nswap() *c.Long {
+func (p *_llcppg_anon_14) XGof_ref_ru_nswap() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_13) XGof_ref___ru_nswap_word() *c.Long {
+func (p *_llcppg_anon_14) XGof_ref___ru_nswap_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_14) XGof_ref_ru_inblock() *c.Long {
+func (p *_llcppg_anon_15) XGof_ref_ru_inblock() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_14) XGof_ref___ru_inblock_word() *c.Long {
+func (p *_llcppg_anon_15) XGof_ref___ru_inblock_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_15) XGof_ref_ru_oublock() *c.Long {
+func (p *_llcppg_anon_16) XGof_ref_ru_oublock() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_15) XGof_ref___ru_oublock_word() *c.Long {
+func (p *_llcppg_anon_16) XGof_ref___ru_oublock_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_16) XGof_ref_ru_msgsnd() *c.Long {
+func (p *_llcppg_anon_17) XGof_ref_ru_msgsnd() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_16) XGof_ref___ru_msgsnd_word() *c.Long {
+func (p *_llcppg_anon_17) XGof_ref___ru_msgsnd_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_17) XGof_ref_ru_msgrcv() *c.Long {
+func (p *_llcppg_anon_18) XGof_ref_ru_msgrcv() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_17) XGof_ref___ru_msgrcv_word() *c.Long {
+func (p *_llcppg_anon_18) XGof_ref___ru_msgrcv_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_18) XGof_ref_ru_nsignals() *c.Long {
+func (p *_llcppg_anon_19) XGof_ref_ru_nsignals() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_18) XGof_ref___ru_nsignals_word() *c.Long {
+func (p *_llcppg_anon_19) XGof_ref___ru_nsignals_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_19) XGof_ref_ru_nvcsw() *c.Long {
+func (p *_llcppg_anon_20) XGof_ref_ru_nvcsw() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_19) XGof_ref___ru_nvcsw_word() *c.Long {
+func (p *_llcppg_anon_20) XGof_ref___ru_nvcsw_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_20) XGof_ref_ru_nivcsw() *c.Long {
+func (p *_llcppg_anon_21) XGof_ref_ru_nivcsw() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_20) XGof_ref___ru_nivcsw_word() *c.Long {
+func (p *_llcppg_anon_21) XGof_ref___ru_nivcsw_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
@@ -217,7 +217,7 @@ type SchedParam struct {
 	X__SchedPriority c.Int
 }
 
-type Statvfs struct {
+type StatvfsT struct {
 	FBsize    c.Ulong
 	FFrsize   c.Ulong
 	FBlocks   c.Ulong
@@ -264,6 +264,9 @@ const (
 	DT_WHT     = 14
 )
 
+type X__Dirstream struct {
+}
+
 // llgo:link (*DIR).ReaddirR C.readdir_r
 func (self *DIR) ReaddirR(__entry *Dirent, __result **Dirent) c.Int {
 	return 0
@@ -304,7 +307,7 @@ func Alphasort(__e1 **Dirent, __e2 **Dirent) c.Int
 //go:linkname Getdirentries C.getdirentries
 func Getdirentries(__fd c.Int, __buf *uint8, __nbytes c.SizeT, __basep *c.Long) c.Long
 
-// Open the shared object c.FILE and map it in; return a handle that can be
+// Open the shared object FILE and map it in; return a handle that can be
 // passed to `dlsym' to get symbol values from it.
 //
 //go:linkname Dlopen C.dlopen
@@ -497,6 +500,42 @@ const (
 	GLOB_NOSYS = 4
 )
 
+type GlobT struct {
+	GlPathc    c.Ulong
+	GlPathv    **uint8
+	GlOffs     c.Ulong
+	GlFlags    c.Int
+	GlClosedir llcppgCallback9
+	GlReaddir  llcppgCallback8
+	GlOpendir  llcppgCallback7
+	GlLstat    llcppgCallback6
+	GlStat     llcppgCallback5
+}
+
+// llgo:type C
+type llcppgCallback5 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
+
+// llgo:type C
+type llcppgCallback6 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
+
+// llgo:type C
+type llcppgCallback7 = func(_llcppg_param1 *uint8) unsafe.Pointer
+
+// llgo:type C
+type llcppgCallback8 = func(_llcppg_param1 unsafe.Pointer) unsafe.Pointer
+
+// llgo:type C
+type llcppgCallback9 = func(_llcppg_param1 unsafe.Pointer)
+
+//go:linkname Glob C.glob
+func Glob(__pattern *uint8, __flags c.Int, __errfunc func(_llcppg_param1 *uint8, _llcppg_param2 c.Int) c.Int, __pglob *GlobT) c.Int
+
+// Free storage allocated in PGLOB by a previous `glob' call.
+//
+// llgo:link (*GlobT).Globfree C.globfree
+func (self *GlobT) Globfree() {
+}
+
 // Reasonable value for the buffer sized used in the reentrant
 // functions below.  But better use `sysconf'.
 const NSS_BUFLEN_GROUP = 1024
@@ -533,6 +572,16 @@ func Endgrent()
 //go:linkname Getgrent C.getgrent
 func Getgrent() *Group
 
+// Read a group entry from STREAM.
+//
+// This function is not part of POSIX and therefore no official
+// cancellation point.  But due to similarity with an POSIX interface
+// or due to the implementation it is a cancellation point and
+// therefore not marked with __THROW.
+//
+//go:linkname Fgetgrent C.fgetgrent
+func Fgetgrent(__stream *c.FILE) *Group
+
 // Search for an entry with a matching group ID.
 //
 // This function is a possible cancellation point and therefore not
@@ -564,6 +613,17 @@ func GetgrgidR(__gid c.Uint, __resultbuf *Group, __buffer *uint8, __buflen c.Siz
 //
 //go:linkname GetgrnamR C.getgrnam_r
 func GetgrnamR(__name *uint8, __resultbuf *Group, __buffer *uint8, __buflen c.SizeT, __result **Group) c.Int
+
+// Read a group entry from STREAM.  This function is not standardized
+// an probably never will.
+//
+// This function is not part of POSIX and therefore no official
+// cancellation point.  But due to similarity with an POSIX interface
+// or due to the implementation it is a cancellation point and
+// therefore not marked with __THROW.
+//
+//go:linkname FgetgrentR C.fgetgrent_r
+func FgetgrentR(__stream *c.FILE, __resultbuf *Group, __buffer *uint8, __buflen c.SizeT, __result **Group) c.Int
 
 // Set the group set for the current user to GROUPS (N of them).
 //
@@ -633,6 +693,16 @@ func Endpwent()
 //go:linkname Getpwent C.getpwent
 func Getpwent() *Passwd
 
+// Read an entry from STREAM.
+//
+// This function is not part of POSIX and therefore no official
+// cancellation point.  But due to similarity with an POSIX interface
+// or due to the implementation it is a cancellation point and
+// therefore not marked with __THROW.
+//
+//go:linkname Fgetpwent C.fgetpwent
+func Fgetpwent(__stream *c.FILE) *Passwd
+
 // Write the given entry onto the given stream.
 //
 // This function is not part of POSIX and therefore no official
@@ -676,6 +746,17 @@ func GetpwuidR(__uid c.Uint, __resultbuf *Passwd, __buffer *uint8, __buflen c.Si
 
 //go:linkname GetpwnamR C.getpwnam_r
 func GetpwnamR(__name *uint8, __resultbuf *Passwd, __buffer *uint8, __buflen c.SizeT, __result **Passwd) c.Int
+
+// Read an entry from STREAM.  This function is not standardized and
+// probably never will.
+//
+// This function is not part of POSIX and therefore no official
+// cancellation point.  But due to similarity with an POSIX interface
+// or due to the implementation it is a cancellation point and
+// therefore not marked with __THROW.
+//
+//go:linkname FgetpwentR C.fgetpwent_r
+func FgetpwentR(__stream *c.FILE, __resultbuf *Passwd, __buffer *uint8, __buflen c.SizeT, __result **Passwd) c.Int
 
 // Set scheduling parameters for a process.
 //
@@ -737,6 +818,35 @@ type PosixSpawnattrT struct {
 	X__Policy c.Int
 	X__Pad    [16]c.Int
 }
+
+// Data structure to contain information about the actions to be
+// performed in the new process with respect to file descriptors.
+type PosixSpawnFileActionsT struct {
+	X__Allocated c.Int
+	X__Used      c.Int
+	X__Actions   *X__SpawnAction
+	X__Pad       [16]c.Int
+}
+
+type X__SpawnAction struct {
+}
+
+// Spawn a new process executing PATH with the attributes describes in *ATTRP.
+// Before running the process perform the actions described in FILE-ACTIONS.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname PosixSpawn C.posix_spawn
+func PosixSpawn(__pid *c.Int, __path *uint8, __file_actions *PosixSpawnFileActionsT, __attrp *PosixSpawnattrT, __argv **uint8, __envp **uint8) c.Int
+
+// Similar to `posix_spawn' but search for FILE in the PATH.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname PosixSpawnp C.posix_spawnp
+func PosixSpawnp(__pid *c.Int, __file *uint8, __file_actions *PosixSpawnFileActionsT, __attrp *PosixSpawnattrT, __argv **uint8, __envp **uint8) c.Int
 
 // Initialize data structure with attributes for `spawn' to default values.
 //
@@ -834,6 +944,44 @@ func (self *PosixSpawnattrT) PosixSpawnattrGetschedparam(__schedparam *SchedPara
 //
 // llgo:link (*PosixSpawnattrT).PosixSpawnattrSetschedparam C.posix_spawnattr_setschedparam
 func (self *PosixSpawnattrT) PosixSpawnattrSetschedparam(__schedparam *SchedParam) c.Int {
+	return 0
+}
+
+// Initialize data structure for file attribute for `spawn' call.
+//
+// llgo:link (*PosixSpawnFileActionsT).PosixSpawnFileActionsInit C.posix_spawn_file_actions_init
+func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsInit() c.Int {
+	return 0
+}
+
+// Free resources associated with FILE-ACTIONS.
+//
+// llgo:link (*PosixSpawnFileActionsT).PosixSpawnFileActionsDestroy C.posix_spawn_file_actions_destroy
+func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsDestroy() c.Int {
+	return 0
+}
+
+// Add an action to FILE-ACTIONS which tells the implementation to call
+// `open' for the given file during the `spawn' call.
+//
+// llgo:link (*PosixSpawnFileActionsT).PosixSpawnFileActionsAddopen C.posix_spawn_file_actions_addopen
+func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddopen(__fd c.Int, __path *uint8, __oflag c.Int, __mode c.Uint) c.Int {
+	return 0
+}
+
+// Add an action to FILE-ACTIONS which tells the implementation to call
+// `close' for the given file descriptor during the `spawn' call.
+//
+// llgo:link (*PosixSpawnFileActionsT).PosixSpawnFileActionsAddclose C.posix_spawn_file_actions_addclose
+func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddclose(__fd c.Int) c.Int {
+	return 0
+}
+
+// Add an action to FILE-ACTIONS which tells the implementation to call
+// `dup2' for the given file descriptors during the `spawn' call.
+//
+// llgo:link (*PosixSpawnFileActionsT).PosixSpawnFileActionsAdddup2 C.posix_spawn_file_actions_adddup2
+func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAdddup2(__fd c.Int, __newfd c.Int) c.Int {
 	return 0
 }
 
@@ -970,8 +1118,8 @@ const (
 // Block size for `st_blocks'.
 const S_BLKSIZE = 512
 
-// Set file access permissions for c.FILE to MODE.
-// If c.FILE is a symbolic link, this affects the link itself
+// Set file access permissions for FILE to MODE.
+// If FILE is a symbolic link, this affects the link itself
 // rather than its target.
 //
 //go:linkname Lchmod C.lchmod
@@ -1009,15 +1157,18 @@ func Utimensat(__fd c.Int, __path *uint8, __times *lltime.Timespec, __flags c.In
 //go:linkname Futimens C.futimens
 func Futimens(__fd c.Int, __times *lltime.Timespec) c.Int
 
+//go:linkname Statvfs C.statvfs
+func Statvfs(__file *uint8, __buf *StatvfsT) c.Int
+
 //go:linkname Fstatvfs C.fstatvfs
-func Fstatvfs(__fildes c.Int, __buf *Statvfs) c.Int
+func Fstatvfs(__fildes c.Int, __buf *StatvfsT) c.Int
 
 // Structure describing CPU time used by a process and its children.
 type Tms struct {
-	TmsUtime  c.Long
-	TmsStime  c.Long
-	TmsCutime c.Long
-	TmsCstime c.Long
+	TmsUtime  lltime.ClockT
+	TmsStime  lltime.ClockT
+	TmsCutime lltime.ClockT
+	TmsCstime lltime.ClockT
 }
 
 // Store the CPU time used by this process and all its
@@ -1026,7 +1177,7 @@ type Tms struct {
 // All times are in CLK_TCKths of a second.
 //
 // llgo:link (*Tms).Times C.times
-func (self *Tms) Times() c.Long {
+func (self *Tms) Times() lltime.ClockT {
 	return 0
 }
 
@@ -1287,15 +1438,6 @@ func Sleep(__seconds c.Uint) c.Uint
 //go:linkname Ualarm C.ualarm
 func Ualarm(__value c.Uint, __interval c.Uint) c.Uint
 
-// Sleep USECONDS microseconds, or until a signal arrives that is not blocked
-// or ignored.
-//
-// This function is a cancellation point and therefore not marked with
-// __THROW.
-//
-//go:linkname Usleep C.usleep
-func Usleep(__useconds c.Uint) c.Int
-
 // Suspend the process until a signal arrives.
 // This always returns -1 and sets `errno' to EINTR.
 //
@@ -1539,7 +1681,7 @@ func Setdomainname(__name *uint8, __len c.SizeT) c.Int
 //go:linkname Vhangup C.vhangup
 func Vhangup() c.Int
 
-// Revoke the access of all descriptors currently open on c.FILE.
+// Revoke the access of all descriptors currently open on FILE.
 //
 //go:linkname Revoke C.revoke
 func Revoke(__file *uint8) c.Int
@@ -1636,7 +1778,7 @@ type Utimbuf struct {
 	Modtime c.Long
 }
 
-// Set the access and modification times of c.FILE to those given in
+// Set the access and modification times of FILE to those given in
 // FILE_TIMES.  If FILE_TIMES is NULL, set them to the current time.
 //
 //go:linkname Utime C.utime
