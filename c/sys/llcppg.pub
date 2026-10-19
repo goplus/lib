@@ -1,0 +1,3 @@
+D github.com/goplus/lib/c
+T fd_set FdSet
+T timeval Timeval
