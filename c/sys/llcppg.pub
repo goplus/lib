@@ -1,4 +1,8 @@
 D github.com/goplus/lib/c/signal
 D github.com/goplus/lib/c/time
+T __itimer_which X__ItimerWhich
+T __timezone_ptr_t X__TimezonePtrT
 T fd_set FdSet
+T itimerval Itimerval
 T timeval Timeval
+T timezone Timezone

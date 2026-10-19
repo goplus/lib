@@ -24,3 +24,91 @@ const FD_SETSIZE = 1024
 //
 //go:linkname Pselect C.pselect
 func Pselect(__nfds c.Int, __readfds *FdSet, __writefds *FdSet, __exceptfds *FdSet, __timeout *lltime.Timespec, __sigmask *llsignal.SigsetT) c.Int
+
+// Structure crudely representing a timezone.
+// This is obsolete and should never be used.
+type Timezone struct {
+	TzMinuteswest c.Int
+	TzDsttime     c.Int
+}
+
+// Values for the first argument to `getitimer' and `setitimer'.
+type X__ItimerWhich c.Uint
+
+const (
+	// Timers run in real time.
+	ITIMER_REAL X__ItimerWhich = 0
+	// Timers run only when the process is executing.
+	ITIMER_VIRTUAL X__ItimerWhich = 1
+	// Timers run when the process is executing and when
+	// the system is executing on behalf of the process.
+	ITIMER_PROF X__ItimerWhich = 2
+)
+
+// Type of the second argument to `getitimer' and
+// the second and third arguments `setitimer'.
+type Itimerval struct {
+	ItInterval Timeval
+	ItValue    Timeval
+}
+
+type X__TimezonePtrT = *Timezone
+
+// Get the current time of day and timezone information,
+// putting it into *TV and *TZ.  If TZ is NULL, *TZ is not filled.
+// Returns 0 on success, -1 on errors.
+// NOTE: This form of timezone information is obsolete.
+// Use the functions and variables declared in <time.h> instead.
+//
+// llgo:link (*Timeval).Gettimeofday C.gettimeofday
+func (self *Timeval) Gettimeofday(__tz X__TimezonePtrT) c.Int {
+	return 0
+}
+
+// Set the current time of day and timezone information.
+// This call is restricted to the super-user.
+//
+// llgo:link (*Timeval).Settimeofday C.settimeofday
+func (self *Timeval) Settimeofday(__tz *Timezone) c.Int {
+	return 0
+}
+
+// Adjust the current time of day by the amount in DELTA.
+// If OLDDELTA is not NULL, it is filled in with the amount
+// of time adjustment remaining to be done from the last `adjtime' call.
+// This call is restricted to the super-user.
+//
+// llgo:link (*Timeval).Adjtime C.adjtime
+func (self *Timeval) Adjtime(__olddelta *Timeval) c.Int {
+	return 0
+}
+
+// Set *VALUE to the current setting of timer WHICH.
+// Return 0 on success, -1 on errors.
+//
+//go:linkname Getitimer C.getitimer
+func Getitimer(__which c.Int, __value *Itimerval) c.Int
+
+// Set the timer WHICH to *NEW.  If OLD is not NULL,
+// set *OLD to the old value of timer WHICH.
+// Returns 0 on success, -1 on errors.
+//
+//go:linkname Setitimer C.setitimer
+func Setitimer(__which c.Int, __new *Itimerval, __old *Itimerval) c.Int
+
+// Change the access time of FILE to TVP[0] and the modification time of
+// FILE to TVP[1].  If TVP is a null pointer, use the current time instead.
+// Returns 0 on success, -1 on errors.
+//
+//go:linkname Utimes C.utimes
+func Utimes(__file *c.Char, __tvp *Timeval) c.Int
+
+// Same as `utimes', but does not follow symbolic links.
+//
+//go:linkname Lutimes C.lutimes
+func Lutimes(__file *c.Char, __tvp *Timeval) c.Int
+
+// Same as `utimes', but takes an open file descriptor instead of a name.
+//
+//go:linkname Futimes C.futimes
+func Futimes(__fd c.Int, __tvp *Timeval) c.Int

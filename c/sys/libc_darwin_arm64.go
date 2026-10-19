@@ -8,8 +8,75 @@ package sys
 import (
 	"github.com/goplus/lib/c"
 	lltime "github.com/goplus/lib/c/time"
-	_ "unsafe"
+	"unsafe"
 )
 
 //go:linkname Pselect C.pselect
 func Pselect(_llcppg_param1 c.Int, _llcppg_param2 *FdSet, _llcppg_param3 *FdSet, _llcppg_param4 *FdSet, _llcppg_param5 *lltime.Timespec, _llcppg_param6 *c.Uint) c.Int
+
+// Names of the interval timers, and structure
+// defining a timer setting.
+const (
+	ITIMER_REAL    = 0
+	ITIMER_VIRTUAL = 1
+	ITIMER_PROF    = 2
+)
+
+const (
+	// not on dst
+	DST_NONE = 0
+	// USA style dst
+	DST_USA = 1
+	// Australian style dst
+	DST_AUST = 2
+	// Western European dst
+	DST_WET = 3
+	// Middle European dst
+	DST_MET = 4
+	// Eastern European dst
+	DST_EET = 5
+	// Canada
+	DST_CAN = 6
+)
+
+// Structure used as a parameter by getitimer(2) and setitimer(2) system
+// calls.
+type Itimerval struct {
+	ItInterval Timeval
+	ItValue    Timeval
+}
+
+type Timezone struct {
+	TzMinuteswest c.Int
+	TzDsttime     c.Int
+}
+
+// llgo:link (*Timeval).Adjtime C.adjtime
+func (self *Timeval) Adjtime(_llcppg_param2 *Timeval) c.Int {
+	return 0
+}
+
+//go:linkname Futimes C.futimes
+func Futimes(_llcppg_param1 c.Int, _llcppg_param2 *Timeval) c.Int
+
+//go:linkname Lutimes C.lutimes
+func Lutimes(_llcppg_param1 *c.Char, _llcppg_param2 *Timeval) c.Int
+
+// llgo:link (*Timeval).Settimeofday C.settimeofday
+func (self *Timeval) Settimeofday(_llcppg_param2 *Timezone) c.Int {
+	return 0
+}
+
+//go:linkname Getitimer C.getitimer
+func Getitimer(_llcppg_param1 c.Int, _llcppg_param2 *Itimerval) c.Int
+
+// llgo:link (*Timeval).Gettimeofday C.gettimeofday
+func (self *Timeval) Gettimeofday(_llcppg_param2 unsafe.Pointer) c.Int {
+	return 0
+}
+
+//go:linkname Setitimer C.setitimer
+func Setitimer(_llcppg_param1 c.Int, _llcppg_param2 *Itimerval, _llcppg_param3 *Itimerval) c.Int
+
+//go:linkname Utimes C.utimes
+func Utimes(_llcppg_param1 *c.Char, _llcppg_param2 *Timeval) c.Int
