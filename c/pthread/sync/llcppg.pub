@@ -1,6 +1,21 @@
-D github.com/goplus/lib/c
+D github.com/goplus/lib/c/os
 D github.com/goplus/lib/c/pthread
+D github.com/goplus/lib/c/signal
 D github.com/goplus/lib/c/time
+T __darwin_pthread_cond_t X__DarwinPthreadCond
+T __darwin_pthread_condattr_t X__DarwinPthreadCondattr
+T __darwin_pthread_mutex_t X__DarwinPthreadMutex
+T __darwin_pthread_mutexattr_t X__DarwinPthreadMutexattr
+T __darwin_pthread_once_t X__DarwinPthreadOnce
+T __darwin_pthread_rwlock_t X__DarwinPthreadRwlock
+T __darwin_pthread_rwlockattr_t X__DarwinPthreadRwlockattr
+T _opaque_pthread_cond_t Cond
+T _opaque_pthread_condattr_t CondAttr
+T _opaque_pthread_mutex_t Mutex
+T _opaque_pthread_mutexattr_t MutexAttr
+T _opaque_pthread_once_t Once
+T _opaque_pthread_rwlock_t RWLock
+T _opaque_pthread_rwlockattr_t RWLockAttr
 T pthread_barrier_t Barrier
 T pthread_barrierattr_t BarrierAttr
 T pthread_cond_t Cond

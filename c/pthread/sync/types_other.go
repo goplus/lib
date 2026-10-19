@@ -1,4 +1,4 @@
-//go:build !windows && !(linux && amd64 && !android)
+//go:build !windows && !(linux && amd64 && !android) && !(linux && arm64 && !android)
 
 package sync
 
