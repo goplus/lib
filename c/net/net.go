@@ -1,4 +1,4 @@
-//go:build !windows
+//go:build !windows && !(darwin && arm64 && !ios) && !(linux && amd64 && !android)
 
 /*
  * Copyright (c) 2024 The XGo Authors (xgo.dev). All rights reserved.
