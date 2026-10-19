@@ -1,4 +1,4 @@
-//go:build !windows && !(darwin && arm64 && !ios) && !(linux && amd64 && !android)
+//go:build !windows && !(darwin && arm64 && !ios) && !(linux && amd64 && !android) && !(linux && arm64 && !android)
 
 package pthread
 

@@ -1,12 +1,19 @@
-D github.com/goplus/lib/c
 D github.com/goplus/lib/c/os
 D github.com/goplus/lib/c/signal
 D github.com/goplus/lib/c/time
-T attr Attr
+T __darwin_pthread_attr_t X__DarwinPthreadAttr
+T __darwin_pthread_handler_rec X__DarwinPthreadHandlerRec
+T __darwin_pthread_key_t X__DarwinPthreadKey
+T __darwin_pthread_t X__DarwinPthread
+T __pthread_cleanup_frame X__PthreadCleanupFrame
+T __pthread_internal_list X__PthreadInternalList
+T __pthread_list_t X__PthreadList
+T _opaque_pthread_attr_t Attr
+T _opaque_pthread_t X_opaquePthread
+T _pthread_cleanup_buffer X_cleanupBuffer
 T pthread_attr_t AttrT
 T pthread_jit_write_callback_t JitWriteCallbackT
 T pthread_key_t Key
 T pthread_override_s OverrideS
-T pthread_override_t OverrideT
+T pthread_override_t Override
 T pthread_t Thread
-T qos_class_t QosClassT
