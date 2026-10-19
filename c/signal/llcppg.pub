@@ -1,0 +1,5 @@
+D github.com/goplus/lib/c
+T __sigval_t X__SigvalT
+T siginfo_t SiginfoT
+T sigset_t SigsetT
+T sigval Sigval
