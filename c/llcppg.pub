@@ -30,3 +30,4 @@ T iconv_t IconvT
 T locale_t LocaleT
 T option Option
 T va_list VaList
+T iovec Iovec
