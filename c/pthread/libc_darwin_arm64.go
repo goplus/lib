@@ -18,6 +18,11 @@ const (
 	SCHED_RR    = 2
 )
 
+type OverrideS struct {
+}
+
+type OverrideT = *OverrideS
+
 // !
 // @function pthread_attr_set_qos_class_np
 //
@@ -132,6 +137,122 @@ func (self *Attr) GetQosClassNp(__qos_class *c.Uint, __relative_priority *c.Int)
 //
 //go:linkname SetQosClassSelfNp C.pthread_set_qos_class_self_np
 func SetQosClassSelfNp(__qos_class c.Uint, __relative_priority c.Int) c.Int
+
+// !
+// @function pthread_get_qos_class_np
+//
+// @abstract
+// Gets the requested QOS class and relative priority of a thread.
+//
+// @param __pthread
+// The target thread to inspect.
+//
+// @param __qos_class
+// On output, a QOS class value:
+//   - QOS_CLASS_USER_INTERACTIVE
+//   - QOS_CLASS_USER_INITIATED
+//   - QOS_CLASS_DEFAULT
+//   - QOS_CLASS_UTILITY
+//   - QOS_CLASS_BACKGROUND
+//   - QOS_CLASS_UNSPECIFIED
+//
+// This value may be NULL in which case no value is returned.
+//
+// @param __relative_priority
+// On output, a relative priority offset within the QOS class.
+// This value may be NULL in which case no value is returned.
+//
+// @return
+// Zero if successful, otherwise an errno value.
+//
+// llgo:link Thread.GetQosClassNp C.pthread_get_qos_class_np
+func (self Thread) GetQosClassNp(__qos_class *c.Uint, __relative_priority *c.Int) c.Int {
+	return 0
+}
+
+// !
+// @function pthread_override_qos_class_start_np
+//
+// @abstract
+// Starts a QOS class override of the specified target thread.
+//
+// @discussion
+// Starting a QOS class override of the specified target thread expresses that
+// an item of pending work classified with the specified QOS class and relative
+// priority depends on the completion of the work currently being executed by
+// the thread (e.g. due to ordering requirements).
+//
+// While overrides are in effect, the specified target thread will execute at
+// the maximum QOS class and relative priority of all overrides and of the QOS
+// class requested by the thread itself.
+//
+// Starting a QOS class override does not modify the target thread's requested
+// QOS class value and the effect of an override is not visible to the
+// qos_class_self() and pthread_get_qos_class_np() interfaces.
+//
+// The returned newly allocated override object is intended to be associated
+// with the item of pending work in question. Once the dependency has been
+// satisfied and enabled that work to begin executing, the QOS class override
+// must be ended by passing the associated override object to
+// pthread_override_qos_class_end_np(). Failure to do so will result in the
+// associated resources to be leaked and the target thread to be permanently
+// executed at an inappropriately elevated QOS class.
+//
+// @param __pthread
+// The target thread to modify.
+//
+// @param __qos_class
+// A QOS class value:
+//   - QOS_CLASS_USER_INTERACTIVE
+//   - QOS_CLASS_USER_INITIATED
+//   - QOS_CLASS_DEFAULT
+//   - QOS_CLASS_UTILITY
+//   - QOS_CLASS_BACKGROUND
+//
+// NULL will be returned if any other value is provided.
+//
+// @param __relative_priority
+// A relative priority within the QOS class. This value is a negative offset
+// from the maximum supported scheduler priority for the given class.
+// NULL will be returned if the value is greater than zero or less than
+// QOS_MIN_RELATIVE_PRIORITY.
+//
+// @return
+// A newly allocated override object if successful, or NULL if the override
+// could not be started.
+//
+// llgo:link Thread.OverrideQosClassStartNp C.pthread_override_qos_class_start_np
+func (self Thread) OverrideQosClassStartNp(__qos_class c.Uint, __relative_priority c.Int) OverrideT {
+	return nil
+}
+
+// !
+// @function pthread_override_qos_class_end_np
+//
+// @abstract
+// Ends a QOS class override.
+//
+// @discussion
+// Passing an override object returned by pthread_override_qos_class_start_np()
+// ends the QOS class override started by that call and deallocates all
+// associated resources as well as the override object itself.
+//
+// The thread starting and the thread ending a QOS class override need not be
+// identical. If the thread ending the override is the the target thread of the
+// override itself, it should take care to elevate its requested QOS class
+// appropriately with pthread_set_qos_class_self_np() before ending the
+// override.
+//
+// @param __override
+// An override object returned by pthread_override_qos_class_start_np().
+//
+// @return
+// Zero if successful, otherwise an errno value.
+//
+// llgo:link OverrideT.OverrideQosClassEndNp C.pthread_override_qos_class_end_np
+func (self OverrideT) OverrideQosClassEndNp() c.Int {
+	return 0
+}
 
 const (
 	PTHREAD_CREATE_JOINABLE = 1
@@ -268,8 +389,24 @@ func (self *Attr) Setstack(_llcppg_param2 unsafe.Pointer, _llcppg_param3 c.SizeT
 	return 0
 }
 
+// llgo:link Thread.Detach C.pthread_detach
+func (self Thread) Detach() c.Int {
+	return 0
+}
+
+//go:linkname Equal C.pthread_equal
+func Equal(_llcppg_param1 Thread, _llcppg_param2 Thread) c.Int
+
 //go:linkname Getconcurrency C.pthread_getconcurrency
 func Getconcurrency() c.Int
+
+// llgo:link Thread.Getschedparam C.pthread_getschedparam
+func (self Thread) Getschedparam(_llcppg_param2 *c.Int, _llcppg_param3 *llos.SchedParam) c.Int {
+	return 0
+}
+
+//go:linkname Self C.pthread_self
+func Self() Thread
 
 //go:linkname Setcancelstate C.pthread_setcancelstate
 func Setcancelstate(_llcppg_param1 c.Int, _llcppg_param2 *c.Int) c.Int
@@ -280,6 +417,11 @@ func Setcanceltype(_llcppg_param1 c.Int, _llcppg_param2 *c.Int) c.Int
 //go:linkname Setconcurrency C.pthread_setconcurrency
 func Setconcurrency(_llcppg_param1 c.Int) c.Int
 
+// llgo:link Thread.Setschedparam C.pthread_setschedparam
+func (self Thread) Setschedparam(_llcppg_param2 c.Int, _llcppg_param3 *llos.SchedParam) c.Int {
+	return 0
+}
+
 //go:linkname Testcancel C.pthread_testcancel
 func Testcancel()
 
@@ -288,6 +430,18 @@ func Testcancel()
 //go:linkname IsThreadedNp C.pthread_is_threaded_np
 func IsThreadedNp() c.Int
 
+// llgo:link Thread.ThreadidNp C.pthread_threadid_np
+func (self Thread) ThreadidNp(_llcppg_param2 *c.UlongLong) c.Int {
+	return 0
+}
+
+// SPI to set and get pthread name
+//
+// llgo:link Thread.GetnameNp C.pthread_getname_np
+func (self Thread) GetnameNp(_llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.Int {
+	return 0
+}
+
 //go:linkname SetnameNp C.pthread_setname_np
 func SetnameNp(_llcppg_param1 *c.Char) c.Int
 
@@ -295,6 +449,36 @@ func SetnameNp(_llcppg_param1 *c.Char) c.Int
 //
 //go:linkname MainNp C.pthread_main_np
 func MainNp() c.Int
+
+// return the mach thread bound to the pthread
+//
+// llgo:link Thread.MachThreadNp C.pthread_mach_thread_np
+func (self Thread) MachThreadNp() llos.MachPortT {
+	return 0
+}
+
+// llgo:link Thread.GetStacksizeNp C.pthread_get_stacksize_np
+func (self Thread) GetStacksizeNp() c.SizeT {
+	return 0
+}
+
+// llgo:link Thread.GetStackaddrNp C.pthread_get_stackaddr_np
+func (self Thread) GetStackaddrNp() unsafe.Pointer {
+	return nil
+}
+
+// Like pthread_create(), but leaves the thread suspended
+//
+//go:linkname CreateSuspendedNp C.pthread_create_suspended_np
+func CreateSuspendedNp(_llcppg_param1 *Thread, _llcppg_param2 *Attr, _llcppg_param3 func(_llcppg_param1 unsafe.Pointer) unsafe.Pointer, _llcppg_param4 unsafe.Pointer) c.Int
+
+// llgo:link Thread.Kill C.pthread_kill
+func (self Thread) Kill(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
+//go:linkname FromMachThreadNp C.pthread_from_mach_thread_np
+func FromMachThreadNp(_llcppg_param1 llos.MachPortT) Thread
 
 //go:linkname Sigmask C.pthread_sigmask
 func Sigmask(_llcppg_param1 c.Int, _llcppg_param2 *c.Uint, _llcppg_param3 *c.Uint) c.Int
