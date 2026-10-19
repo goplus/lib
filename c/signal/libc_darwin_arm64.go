@@ -10,6 +10,365 @@ import (
 	"unsafe"
 )
 
+//go:linkname SysSigname C.sys_signame
+var SysSigname [32]*c.Char
+
+//go:linkname SysSiglist C.sys_siglist
+var SysSiglist [32]*c.Char
+
+//go:linkname Raise C.raise
+func Raise(_llcppg_param1 c.Int) c.Int
+
+//go:linkname BsdSignal C.bsd_signal
+func BsdSignal(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
+
+//go:linkname Killpg C.killpg
+func Killpg(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+
+//go:linkname Sigaction C.sigaction
+func Sigaction(_llcppg_param1 c.Int, _llcppg_param2 *SigactionT, _llcppg_param3 *SigactionT) c.Int
+
+//go:linkname Sigaddset C.sigaddset
+func Sigaddset(_llcppg_param1 *c.Uint, _llcppg_param2 c.Int) c.Int
+
+// llgo:link (*StackT).Sigaltstack C.sigaltstack
+func (self *StackT) Sigaltstack(_llcppg_param2 *StackT) c.Int {
+	return 0
+}
+
+//go:linkname Sigdelset C.sigdelset
+func Sigdelset(_llcppg_param1 *c.Uint, _llcppg_param2 c.Int) c.Int
+
+//go:linkname Sigemptyset C.sigemptyset
+func Sigemptyset(_llcppg_param1 *c.Uint) c.Int
+
+//go:linkname Sigfillset C.sigfillset
+func Sigfillset(_llcppg_param1 *c.Uint) c.Int
+
+//go:linkname Sighold C.sighold
+func Sighold(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Sigignore C.sigignore
+func Sigignore(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Siginterrupt C.siginterrupt
+func Siginterrupt(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+
+//go:linkname Sigismember C.sigismember
+func Sigismember(_llcppg_param1 *c.Uint, _llcppg_param2 c.Int) c.Int
+
+//go:linkname Sigpause C.sigpause
+func Sigpause(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Sigpending C.sigpending
+func Sigpending(_llcppg_param1 *c.Uint) c.Int
+
+//go:linkname Sigprocmask C.sigprocmask
+func Sigprocmask(_llcppg_param1 c.Int, _llcppg_param2 *c.Uint, _llcppg_param3 *c.Uint) c.Int
+
+//go:linkname Sigrelse C.sigrelse
+func Sigrelse(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Sigset C.sigset
+func Sigset(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
+
+//go:linkname Sigsuspend C.sigsuspend
+func Sigsuspend(_llcppg_param1 *c.Uint) c.Int
+
+//go:linkname Sigwait C.sigwait
+func Sigwait(_llcppg_param1 *c.Uint, _llcppg_param2 *c.Int) c.Int
+
+//go:linkname Psignal C.psignal
+func Psignal(_llcppg_param1 c.Int, _llcppg_param2 *c.Char)
+
+//go:linkname Sigblock C.sigblock
+func Sigblock(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Sigsetmask C.sigsetmask
+func Sigsetmask(_llcppg_param1 c.Int) c.Int
+
+//go:linkname Sigvec C.sigvec
+func Sigvec(_llcppg_param1 c.Int, _llcppg_param2 *SigvecT, _llcppg_param3 *SigvecT) c.Int
+
+type X__DarwinSigaltstack struct {
+	SsSp    unsafe.Pointer
+	SsSize  c.Ulong
+	SsFlags c.Int
+}
+
+// [???] signal stack
+type StackT = X__DarwinSigaltstack
+
+const NSIG = 32
+
+const (
+	// hangup
+	SIGHUP = 1
+	// interrupt
+	SIGINT = 2
+	// quit
+	SIGQUIT = 3
+	// illegal instruction (not reset when caught)
+	SIGILL = 4
+	// trace trap (not reset when caught)
+	SIGTRAP = 5
+	// abort()
+	SIGABRT = 6
+)
+
+const (
+	// compatibility
+	SIGIOT = 6
+	// EMT instruction
+	SIGEMT = 7
+)
+
+const (
+	// floating point exception
+	SIGFPE = 8
+	// kill (cannot be caught or ignored)
+	SIGKILL = 9
+	// bus error
+	SIGBUS = 10
+	// segmentation violation
+	SIGSEGV = 11
+	// bad argument to system call
+	SIGSYS = 12
+	// write on a pipe with no one to read it
+	SIGPIPE = 13
+	// alarm clock
+	SIGALRM = 14
+	// software termination signal from kill
+	SIGTERM = 15
+	// urgent condition on IO channel
+	SIGURG = 16
+	// sendable stop signal not from tty
+	SIGSTOP = 17
+	// stop signal from tty
+	SIGTSTP = 18
+	// continue a stopped process
+	SIGCONT = 19
+	// to parent on child stop or exit
+	SIGCHLD = 20
+	// to readers pgrp upon background tty read
+	SIGTTIN = 21
+	// like TTIN for output if (tp->t_local&LTOSTOP)
+	SIGTTOU = 22
+)
+
+// input/output possible signal
+const SIGIO = 23
+
+const (
+	// exceeded CPU time limit
+	SIGXCPU = 24
+	// exceeded file size limit
+	SIGXFSZ = 25
+	// virtual time alarm
+	SIGVTALRM = 26
+	// profiling time alarm
+	SIGPROF = 27
+)
+
+const (
+	// window size changes
+	SIGWINCH = 28
+	// information request
+	SIGINFO = 29
+)
+
+const (
+	// user defined signal 1
+	SIGUSR1 = 30
+	// user defined signal 2
+	SIGUSR2 = 31
+)
+
+const (
+	// No async notification
+	SIGEV_NONE = 0
+	// aio - completion notification
+	SIGEV_SIGNAL = 1
+	// [NOTIMP] [RTS] call notification function
+	SIGEV_THREAD = 3
+)
+
+// if only I knew...
+const ILL_NOOP = 0
+
+const (
+	// [XSI] illegal opcode
+	ILL_ILLOPC = 1
+	// [XSI] illegal trap
+	ILL_ILLTRP = 2
+	// [XSI] privileged opcode
+	ILL_PRVOPC = 3
+	// [XSI] illegal operand -NOTIMP
+	ILL_ILLOPN = 4
+	// [XSI] illegal addressing mode -NOTIMP
+	ILL_ILLADR = 5
+	// [XSI] privileged register -NOTIMP
+	ILL_PRVREG = 6
+	// [XSI] coprocessor error -NOTIMP
+	ILL_COPROC = 7
+	// [XSI] internal stack error -NOTIMP
+	ILL_BADSTK = 8
+)
+
+// if only I knew...
+const FPE_NOOP = 0
+
+const (
+	// [XSI] floating point divide by zero
+	FPE_FLTDIV = 1
+	// [XSI] floating point overflow
+	FPE_FLTOVF = 2
+	// [XSI] floating point underflow
+	FPE_FLTUND = 3
+	// [XSI] floating point inexact result
+	FPE_FLTRES = 4
+	// [XSI] invalid floating point operation
+	FPE_FLTINV = 5
+	// [XSI] subscript out of range -NOTIMP
+	FPE_FLTSUB = 6
+	// [XSI] integer divide by zero
+	FPE_INTDIV = 7
+	// [XSI] integer overflow
+	FPE_INTOVF = 8
+)
+
+// if only I knew...
+const SEGV_NOOP = 0
+
+const (
+	// [XSI] address not mapped to object
+	SEGV_MAPERR = 1
+	// [XSI] invalid permission for mapped object
+	SEGV_ACCERR = 2
+)
+
+// if only I knew...
+const BUS_NOOP = 0
+
+const (
+	// [XSI] Invalid address alignment
+	BUS_ADRALN = 1
+	// [XSI] Nonexistent physical address -NOTIMP
+	BUS_ADRERR = 2
+	// [XSI] Object-specific HW error - NOTIMP
+	BUS_OBJERR = 3
+)
+
+// Codes for SIGTRAP
+const (
+	TRAP_BRKPT = 1
+	// [XSI] Process trace trap -NOTIMP
+	TRAP_TRACE = 2
+)
+
+// if only I knew...
+const CLD_NOOP = 0
+
+const (
+	// [XSI] child has exited
+	CLD_EXITED = 1
+	// [XSI] terminated abnormally, no core file
+	CLD_KILLED = 2
+	// [XSI] terminated abnormally, core file
+	CLD_DUMPED = 3
+	// [XSI] traced child has trapped
+	CLD_TRAPPED = 4
+	// [XSI] child has stopped
+	CLD_STOPPED = 5
+	// [XSI] stopped child has continued
+	CLD_CONTINUED = 6
+)
+
+// Codes for SIGPOLL
+const (
+	POLL_IN = 1
+	// [XSR] Output buffers available
+	POLL_OUT = 2
+	// [XSR] Input message available
+	POLL_MSG = 3
+	// [XSR] I/O error
+	POLL_ERR = 4
+	// [XSR] High priority input available
+	POLL_PRI = 5
+	// [XSR] Device disconnected
+	POLL_HUP = 6
+)
+
+const (
+	// take signal on signal stack
+	SA_ONSTACK = 1
+	// restart system on signal return
+	SA_RESTART = 2
+	// reset to SIG_DFL when taking signal
+	SA_RESETHAND = 4
+	// do not generate SIGCHLD on child stop
+	SA_NOCLDSTOP = 8
+	// don't mask the signal we're delivering
+	SA_NODEFER = 16
+	// don't keep zombies around
+	SA_NOCLDWAIT = 32
+	// signal handler with SA_SIGINFO args
+	SA_SIGINFO = 64
+)
+
+// do not bounce off kernel's sigtramp
+const SA_USERTRAMP = 256
+
+// This will provide 64bit register set in a 32bit user address space
+const SA_64REGSET = 512
+
+// the following are the only bits we support from user space, the
+// rest are for kernel use only.
+const SA_USERSPACE_MASK = 127
+
+// Flags for sigprocmask:
+const (
+	SIG_BLOCK = 1
+	// unblock specified signal set
+	SIG_UNBLOCK = 2
+	// set specified signal set
+	SIG_SETMASK = 3
+)
+
+// POSIX 1003.1b required values.
+const (
+	SI_USER = 65537
+	// [CX] signal from sigqueue()
+	SI_QUEUE = 65538
+	// [CX] timer expiration
+	SI_TIMER = 65539
+	// [CX] aio request completion
+	SI_ASYNCIO = 65540
+	// [CX]	from message arrival on empty queue
+	SI_MESGQ = 65541
+)
+
+const (
+	// take signal on signal stack
+	SS_ONSTACK = 1
+	// disable taking signals on alternate stack
+	SS_DISABLE = 4
+	// (32K)minimum allowable stack
+	MINSIGSTKSZ = 32768
+	// (128K)recommended stack size
+	SIGSTKSZ = 131072
+)
+
+const (
+	SV_ONSTACK = 1
+	// same bit, opposite sense
+	SV_INTERRUPT = 2
+	SV_RESETHAND = 4
+	SV_NODEFER   = 16
+	SV_NOCLDSTOP = 8
+	SV_SIGINFO   = 64
+)
+
 type Sigval struct {
 	_xgo_union [1]uint64
 }
@@ -27,7 +386,38 @@ type X__Siginfo struct {
 	X__Pad   [7]c.Ulong
 }
 
+type X__SigactionU struct {
+	_xgo_union [1]uint64
+}
+
+// Signal vector "template" used in sigaction call.
+type SigactionT struct {
+	X__SigactionU X__SigactionU
+	SaMask        c.Uint
+	SaFlags       c.Int
+}
+
+type SigvecT struct {
+	SvHandler llcppgCallback4
+	SvMask    c.Int
+	SvFlags   c.Int
+}
+
 type SiginfoT = X__Siginfo
+
+// union for signal handlers
+//
+// llgo:type C
+type llcppgCallback6 = func(_llcppg_param1 c.Int, _llcppg_param2 *X__Siginfo, _llcppg_param3 unsafe.Pointer)
+
+// llgo:type C
+type llcppgCallback7 = func(_llcppg_param1 c.Int)
+
+// 4.3 compatibility:
+// Signal vector "template" used in sigvec call.
+//
+// llgo:type C
+type llcppgCallback4 = func(_llcppg_param1 c.Int)
 
 func (p *Sigval) XGof_ref_sival_int() *c.Int {
 	return (*c.Int)(unsafe.Pointer(p))
@@ -36,5 +426,16 @@ func (p *Sigval) XGof_ref_sival_int() *c.Int {
 func (p *Sigval) XGof_ref_sival_ptr() *unsafe.Pointer {
 	return (*unsafe.Pointer)(unsafe.Pointer(p))
 }
+
+func (p *X__SigactionU) XGof_ref___sa_handler() *llcppgCallback7 {
+	return (*llcppgCallback7)(unsafe.Pointer(p))
+}
+
+func (p *X__SigactionU) XGof_ref___sa_sigaction() *llcppgCallback6 {
+	return (*llcppgCallback6)(unsafe.Pointer(p))
+}
+
+//go:linkname NativeSignal C.signal
+func NativeSignal(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
 
 type SigsetT = c.Uint
