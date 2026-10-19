@@ -7,6 +7,7 @@ package sync
 
 import (
 	"github.com/goplus/lib/c"
+	llpthread "github.com/goplus/lib/c/pthread"
 	lltime "github.com/goplus/lib/c/time"
 	_ "unsafe"
 )
@@ -73,6 +74,13 @@ func (self *MutexAttr) Setpshared(_llcppg_param2 c.Int) c.Int {
 
 // llgo:link (*MutexAttr).SetpolicyNp C.pthread_mutexattr_setpolicy_np
 func (self *MutexAttr) SetpolicyNp(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
+// Like pthread_cond_signal(), but only wake up the specified pthread
+//
+// llgo:link (*Cond).SignalThreadNp C.pthread_cond_signal_thread_np
+func (self *Cond) SignalThreadNp(_llcppg_param2 llpthread.Thread) c.Int {
 	return 0
 }
 
