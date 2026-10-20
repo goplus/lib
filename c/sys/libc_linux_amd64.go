@@ -15,6 +15,18 @@ import (
 // Maximum number of file descriptors in `fd_set'.
 const FD_SETSIZE = 1024
 
+// Check the first NFDS descriptors each in READFDS (if not NULL) for read
+// readiness, in WRITEFDS (if not NULL) for write readiness, and in EXCEPTFDS
+// (if not NULL) for exceptional conditions.  If TIMEOUT is not NULL, time out
+// after waiting the interval specified therein.  Returns the number of ready
+// descriptors, or -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeSelect C.select
+func NativeSelect(__nfds c.Int, __readfds *FdSet, __writefds *FdSet, __exceptfds *FdSet, __timeout *Timeval) c.Int
+
 // Same as above only that the TIMEOUT value is given with higher
 // resolution and a sigmask which is been set temporarily.  This version
 // should be used.
@@ -60,28 +72,22 @@ type X__TimezonePtrT = *Timezone
 // NOTE: This form of timezone information is obsolete.
 // Use the functions and variables declared in <time.h> instead.
 //
-// llgo:link (*Timeval).Gettimeofday C.gettimeofday
-func (self *Timeval) Gettimeofday(__tz X__TimezonePtrT) c.Int {
-	return 0
-}
+//go:linkname Gettimeofday C.gettimeofday
+func Gettimeofday(__tv *Timeval, __tz X__TimezonePtrT) c.Int
 
 // Set the current time of day and timezone information.
 // This call is restricted to the super-user.
 //
-// llgo:link (*Timeval).Settimeofday C.settimeofday
-func (self *Timeval) Settimeofday(__tz *Timezone) c.Int {
-	return 0
-}
+//go:linkname Settimeofday C.settimeofday
+func Settimeofday(__tv *Timeval, __tz *Timezone) c.Int
 
 // Adjust the current time of day by the amount in DELTA.
 // If OLDDELTA is not NULL, it is filled in with the amount
 // of time adjustment remaining to be done from the last `adjtime' call.
 // This call is restricted to the super-user.
 //
-// llgo:link (*Timeval).Adjtime C.adjtime
-func (self *Timeval) Adjtime(__olddelta *Timeval) c.Int {
-	return 0
-}
+//go:linkname Adjtime C.adjtime
+func Adjtime(__delta *Timeval, __olddelta *Timeval) c.Int
 
 // Set *VALUE to the current setting of timer WHICH.
 // Return 0 on success, -1 on errors.

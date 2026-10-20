@@ -51,10 +51,8 @@ type Timezone struct {
 	TzDsttime     c.Int
 }
 
-// llgo:link (*Timeval).Adjtime C.adjtime
-func (self *Timeval) Adjtime(_llcppg_param2 *Timeval) c.Int {
-	return 0
-}
+//go:linkname Adjtime C.adjtime
+func Adjtime(_llcppg_param1 *Timeval, _llcppg_param2 *Timeval) c.Int
 
 //go:linkname Futimes C.futimes
 func Futimes(_llcppg_param1 c.Int, _llcppg_param2 *Timeval) c.Int
@@ -62,18 +60,14 @@ func Futimes(_llcppg_param1 c.Int, _llcppg_param2 *Timeval) c.Int
 //go:linkname Lutimes C.lutimes
 func Lutimes(_llcppg_param1 *c.Char, _llcppg_param2 *Timeval) c.Int
 
-// llgo:link (*Timeval).Settimeofday C.settimeofday
-func (self *Timeval) Settimeofday(_llcppg_param2 *Timezone) c.Int {
-	return 0
-}
+//go:linkname Settimeofday C.settimeofday
+func Settimeofday(_llcppg_param1 *Timeval, _llcppg_param2 *Timezone) c.Int
 
 //go:linkname Getitimer C.getitimer
 func Getitimer(_llcppg_param1 c.Int, _llcppg_param2 *Itimerval) c.Int
 
-// llgo:link (*Timeval).Gettimeofday C.gettimeofday
-func (self *Timeval) Gettimeofday(_llcppg_param2 unsafe.Pointer) c.Int {
-	return 0
-}
+//go:linkname Gettimeofday C.gettimeofday
+func Gettimeofday(_llcppg_param1 *Timeval, _llcppg_param2 unsafe.Pointer) c.Int
 
 //go:linkname Setitimer C.setitimer
 func Setitimer(_llcppg_param1 c.Int, _llcppg_param2 *Itimerval, _llcppg_param3 *Itimerval) c.Int
