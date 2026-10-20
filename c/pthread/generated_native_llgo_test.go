@@ -29,6 +29,31 @@ func TestGeneratedThreadAttributeLayout(t *testing.T) {
 	}
 }
 func TestGeneratedThreadAttributes(t *testing.T) {
+	t.Run("thread local storage", func(t *testing.T) {
+		var key pthread.Key
+		if result := key.Create(nil); result != 0 {
+			t.Fatalf("pthread_key_create = %d", result)
+		}
+		defer func() {
+			if result := key.Delete(); result != 0 {
+				t.Errorf("pthread_key_delete = %d", result)
+			}
+		}()
+		if got := key.Get(); got != nil {
+			t.Fatalf("pthread_getspecific initial value = %p, want nil", got)
+		}
+		var value c.Int = 123
+		expected := unsafe.Pointer(&value)
+		if result := key.Set(expected); result != 0 {
+			t.Fatalf("pthread_setspecific = %d", result)
+		}
+		if got := key.Get(); got != expected {
+			t.Fatalf("pthread_getspecific = %p, want %p", got, expected)
+		}
+		if result := key.Set(nil); result != 0 {
+			t.Fatalf("pthread_setspecific reset = %d", result)
+		}
+	})
 	var probe struct {
 		before [8]byte
 		attr   pthread.Attr
@@ -38,23 +63,23 @@ func TestGeneratedThreadAttributes(t *testing.T) {
 		probe.before[i] = 0xa5
 		probe.after[i] = 0xa5
 	}
-	if result := probe.attr.NativeInit(); result != 0 {
+	if result := probe.attr.Init(); result != 0 {
 		t.Fatalf("attr_init = %d", result)
 	}
 	defer func() {
-		if result := probe.attr.NativeDestroy(); result != 0 {
+		if result := probe.attr.Destroy(); result != 0 {
 			t.Errorf("attr_destroy = %d", result)
 		}
 	}()
 	var size c.SizeT
-	if result := probe.attr.NativeGetstacksize(&size); result != 0 || size == 0 {
+	if result := probe.attr.GetStackSize(&size); result != 0 || size == 0 {
 		t.Fatalf("attr_getstacksize = %d, value %d", result, size)
 	}
 	const requested = 1 << 20
-	if result := probe.attr.NativeSetstacksize(requested); result != 0 {
+	if result := probe.attr.SetStackSize(requested); result != 0 {
 		t.Fatalf("attr_setstacksize = %d", result)
 	}
-	if result := probe.attr.NativeGetstacksize(&size); result != 0 || size != requested {
+	if result := probe.attr.GetStackSize(&size); result != 0 || size != requested {
 		t.Fatalf("stack size = %d, result %d", size, result)
 	}
 	for i := range probe.before {

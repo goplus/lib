@@ -349,15 +349,11 @@ type JitWriteCallbackT = func(_llcppg_param1 unsafe.Pointer) c.Int
 //go:linkname Atfork C.pthread_atfork
 func Atfork(_llcppg_param1 llcppgCallback30, _llcppg_param2 llcppgCallback29, _llcppg_param3 llcppgCallback28) c.Int
 
-// llgo:link (*Attr).NativeDestroy C.pthread_attr_destroy
-func (self *Attr) NativeDestroy() c.Int {
-	return 0
-}
+// llgo:link (*Attr).Destroy C.pthread_attr_destroy
+func (self *Attr) Destroy() c.Int { return 0 }
 
-// llgo:link (*Attr).NativeGetdetachstate C.pthread_attr_getdetachstate
-func (self *Attr) NativeGetdetachstate(_llcppg_param2 *c.Int) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetDetached C.pthread_attr_getdetachstate
+func (self *Attr) GetDetached(_llcppg_param2 *c.Int) c.Int { return 0 }
 
 // llgo:link (*Attr).Getguardsize C.pthread_attr_getguardsize
 func (self *Attr) Getguardsize(_llcppg_param2 *c.SizeT) c.Int {
@@ -389,25 +385,17 @@ func (self *Attr) Getstack(_llcppg_param2 *unsafe.Pointer, _llcppg_param3 *c.Siz
 	return 0
 }
 
-// llgo:link (*Attr).NativeGetstackaddr C.pthread_attr_getstackaddr
-func (self *Attr) NativeGetstackaddr(_llcppg_param2 *unsafe.Pointer) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetStackAddr C.pthread_attr_getstackaddr
+func (self *Attr) GetStackAddr(_llcppg_param2 *unsafe.Pointer) c.Int { return 0 }
 
-// llgo:link (*Attr).NativeGetstacksize C.pthread_attr_getstacksize
-func (self *Attr) NativeGetstacksize(_llcppg_param2 *c.SizeT) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetStackSize C.pthread_attr_getstacksize
+func (self *Attr) GetStackSize(_llcppg_param2 *c.SizeT) c.Int { return 0 }
 
-// llgo:link (*Attr).NativeInit C.pthread_attr_init
-func (self *Attr) NativeInit() c.Int {
-	return 0
-}
+// llgo:link (*Attr).Init C.pthread_attr_init
+func (self *Attr) Init() c.Int { return 0 }
 
-// llgo:link (*Attr).NativeSetdetachstate C.pthread_attr_setdetachstate
-func (self *Attr) NativeSetdetachstate(_llcppg_param2 c.Int) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetDetached C.pthread_attr_setdetachstate
+func (self *Attr) SetDetached(_llcppg_param2 c.Int) c.Int { return 0 }
 
 // llgo:link (*Attr).Setguardsize C.pthread_attr_setguardsize
 func (self *Attr) Setguardsize(_llcppg_param2 c.SizeT) c.Int {
@@ -439,20 +427,14 @@ func (self *Attr) Setstack(_llcppg_param2 unsafe.Pointer, _llcppg_param3 c.SizeT
 	return 0
 }
 
-// llgo:link (*Attr).NativeSetstackaddr C.pthread_attr_setstackaddr
-func (self *Attr) NativeSetstackaddr(_llcppg_param2 unsafe.Pointer) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetStackAddr C.pthread_attr_setstackaddr
+func (self *Attr) SetStackAddr(_llcppg_param2 unsafe.Pointer) c.Int { return 0 }
 
-// llgo:link (*Attr).NativeSetstacksize C.pthread_attr_setstacksize
-func (self *Attr) NativeSetstacksize(_llcppg_param2 c.SizeT) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetStackSize C.pthread_attr_setstacksize
+func (self *Attr) SetStackSize(_llcppg_param2 c.SizeT) c.Int { return 0 }
 
-// llgo:link Thread.NativeCancel C.pthread_cancel
-func (self Thread) NativeCancel() c.Int {
-	return 0
-}
+//go:linkname Cancel C.pthread_cancel
+func Cancel(self Thread) c.Int
 
 //go:linkname NativeCreate C.pthread_create
 func NativeCreate(_llcppg_param1 *Thread, _llcppg_param2 *Attr, _llcppg_param3 llcppgCallback27, _llcppg_param4 unsafe.Pointer) c.Int
@@ -465,8 +447,8 @@ func (self Thread) Detach() c.Int {
 //go:linkname Equal C.pthread_equal
 func Equal(_llcppg_param1 Thread, _llcppg_param2 Thread) c.Int
 
-//go:linkname NativeExit C.pthread_exit
-func NativeExit(_llcppg_param1 unsafe.Pointer)
+//go:linkname Exit C.pthread_exit
+func Exit(_llcppg_param1 unsafe.Pointer)
 
 //go:linkname Getconcurrency C.pthread_getconcurrency
 func Getconcurrency() c.Int
@@ -476,19 +458,19 @@ func (self Thread) Getschedparam(_llcppg_param2 *c.Int, _llcppg_param3 *llos.Sch
 	return 0
 }
 
-//go:linkname NativeGetspecific C.pthread_getspecific
-func NativeGetspecific(_llcppg_param1 Key) unsafe.Pointer
+// llgo:link Key.Get C.pthread_getspecific
+func (self Key) Get() unsafe.Pointer { return nil }
 
 // llgo:link Thread.NativeJoin C.pthread_join
 func (self Thread) NativeJoin(_llcppg_param2 *unsafe.Pointer) c.Int {
 	return 0
 }
 
-//go:linkname NativeKeyCreate C.pthread_key_create
-func NativeKeyCreate(_llcppg_param1 *Key, _llcppg_param2 llcppgCallback26) c.Int
+// llgo:link (*Key).Create C.pthread_key_create
+func (self *Key) Create(_llcppg_param2 llcppgCallback26) c.Int { return 0 }
 
-//go:linkname NativeKeyDelete C.pthread_key_delete
-func NativeKeyDelete(_llcppg_param1 Key) c.Int
+// llgo:link Key.Delete C.pthread_key_delete
+func (self Key) Delete() c.Int { return 0 }
 
 //go:linkname Self C.pthread_self
 func Self() Thread
@@ -507,8 +489,8 @@ func (self Thread) Setschedparam(_llcppg_param2 c.Int, _llcppg_param3 *llos.Sche
 	return 0
 }
 
-//go:linkname NativeSetspecific C.pthread_setspecific
-func NativeSetspecific(_llcppg_param1 Key, _llcppg_param2 unsafe.Pointer) c.Int
+// llgo:link Key.Set C.pthread_setspecific
+func (self Key) Set(_llcppg_param2 unsafe.Pointer) c.Int { return 0 }
 
 //go:linkname Testcancel C.pthread_testcancel
 func Testcancel()

@@ -134,8 +134,8 @@ func NativeCreate(__newthread *Thread, __attr *Attr, __start_routine llcppgCallb
 // The registered cleanup handlers are called via exception handling
 // so we cannot mark this function with __THROW.
 //
-//go:linkname NativeExit C.pthread_exit
-func NativeExit(__retval unsafe.Pointer)
+//go:linkname Exit C.pthread_exit
+func Exit(__retval unsafe.Pointer)
 
 // Make calling thread wait for termination of the thread TH.  The
 // exit status of the thread is stored in *THREAD_RETURN, if THREAD_RETURN
@@ -169,31 +169,23 @@ func Equal(__thread1 Thread, __thread2 Thread) c.Int
 // (detachstate is PTHREAD_JOINABLE, scheduling policy is SCHED_OTHER,
 // no user-provided stack).
 //
-// llgo:link (*Attr).NativeInit C.pthread_attr_init
-func (self *Attr) NativeInit() c.Int {
-	return 0
-}
+// llgo:link (*Attr).Init C.pthread_attr_init
+func (self *Attr) Init() c.Int { return 0 }
 
 // Destroy thread attribute *ATTR.
 //
-// llgo:link (*Attr).NativeDestroy C.pthread_attr_destroy
-func (self *Attr) NativeDestroy() c.Int {
-	return 0
-}
+// llgo:link (*Attr).Destroy C.pthread_attr_destroy
+func (self *Attr) Destroy() c.Int { return 0 }
 
 // Get detach state attribute.
 //
-// llgo:link (*Attr).NativeGetdetachstate C.pthread_attr_getdetachstate
-func (self *Attr) NativeGetdetachstate(__detachstate *c.Int) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetDetached C.pthread_attr_getdetachstate
+func (self *Attr) GetDetached(__detachstate *c.Int) c.Int { return 0 }
 
 // Set detach state attribute.
 //
-// llgo:link (*Attr).NativeSetdetachstate C.pthread_attr_setdetachstate
-func (self *Attr) NativeSetdetachstate(__detachstate c.Int) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetDetached C.pthread_attr_setdetachstate
+func (self *Attr) SetDetached(__detachstate c.Int) c.Int { return 0 }
 
 // Get the size of the guard area created for stack overflow protection.
 //
@@ -267,36 +259,28 @@ func (self *Attr) Setscope(__scope c.Int) c.Int {
 
 // Return the previously set address for the stack.
 //
-// llgo:link (*Attr).NativeGetstackaddr C.pthread_attr_getstackaddr
-func (self *Attr) NativeGetstackaddr(__stackaddr *unsafe.Pointer) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetStackAddr C.pthread_attr_getstackaddr
+func (self *Attr) GetStackAddr(__stackaddr *unsafe.Pointer) c.Int { return 0 }
 
 // Set the starting address of the stack of the thread to be created.
 // Depending on whether the stack grows up or down the value must either
 // be higher or lower than all the address in the memory block.  The
 // minimal size of the block must be PTHREAD_STACK_MIN.
 //
-// llgo:link (*Attr).NativeSetstackaddr C.pthread_attr_setstackaddr
-func (self *Attr) NativeSetstackaddr(__stackaddr unsafe.Pointer) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetStackAddr C.pthread_attr_setstackaddr
+func (self *Attr) SetStackAddr(__stackaddr unsafe.Pointer) c.Int { return 0 }
 
 // Return the currently used minimal stack size.
 //
-// llgo:link (*Attr).NativeGetstacksize C.pthread_attr_getstacksize
-func (self *Attr) NativeGetstacksize(__stacksize *c.SizeT) c.Int {
-	return 0
-}
+// llgo:link (*Attr).GetStackSize C.pthread_attr_getstacksize
+func (self *Attr) GetStackSize(__stacksize *c.SizeT) c.Int { return 0 }
 
 // Add information about the minimum stack size needed for the thread
 // to be started.  This size must never be less than PTHREAD_STACK_MIN
 // and must also not exceed the system limits.
 //
-// llgo:link (*Attr).NativeSetstacksize C.pthread_attr_setstacksize
-func (self *Attr) NativeSetstacksize(__stacksize c.SizeT) c.Int {
-	return 0
-}
+// llgo:link (*Attr).SetStackSize C.pthread_attr_setstacksize
+func (self *Attr) SetStackSize(__stacksize c.SizeT) c.Int { return 0 }
 
 // Return the previously set address for the stack.
 //
@@ -344,8 +328,8 @@ func Setcanceltype(__type c.Int, __oldtype *c.Int) c.Int
 
 // Cancel THREAD immediately or at the next possibility.
 //
-//go:linkname NativeCancel C.pthread_cancel
-func NativeCancel(__th Thread) c.Int
+//go:linkname Cancel C.pthread_cancel
+func Cancel(__th Thread) c.Int
 
 // Test for pending cancellation for the current thread and terminate
 // the thread as per pthread_exit(PTHREAD_CANCELED) if it has been
@@ -354,23 +338,23 @@ func NativeCancel(__th Thread) c.Int
 //go:linkname Testcancel C.pthread_testcancel
 func Testcancel()
 
-//go:linkname NativeKeyCreate C.pthread_key_create
-func NativeKeyCreate(__key *Key, __destr_function llcppgCallback9) c.Int
+// llgo:link (*Key).Create C.pthread_key_create
+func (self *Key) Create(__destr_function llcppgCallback9) c.Int { return 0 }
 
 // Destroy KEY.
 //
-//go:linkname NativeKeyDelete C.pthread_key_delete
-func NativeKeyDelete(__key Key) c.Int
+// llgo:link Key.Delete C.pthread_key_delete
+func (self Key) Delete() c.Int { return 0 }
 
 // Return current value of the thread-specific data slot identified by KEY.
 //
-//go:linkname NativeGetspecific C.pthread_getspecific
-func NativeGetspecific(__key Key) unsafe.Pointer
+// llgo:link Key.Get C.pthread_getspecific
+func (self Key) Get() unsafe.Pointer { return nil }
 
 // Store POINTER in the thread-specific data slot identified by KEY.
 //
-//go:linkname NativeSetspecific C.pthread_setspecific
-func NativeSetspecific(__key Key, __pointer unsafe.Pointer) c.Int
+// llgo:link Key.Set C.pthread_setspecific
+func (self Key) Set(__pointer unsafe.Pointer) c.Int { return 0 }
 
 // Get ID of CPU-time clock for thread THREAD_ID.
 //
