@@ -15,18 +15,6 @@ import (
 // Maximum number of file descriptors in `fd_set'.
 const FD_SETSIZE = 1024
 
-// Check the first NFDS descriptors each in READFDS (if not NULL) for read
-// readiness, in WRITEFDS (if not NULL) for write readiness, and in EXCEPTFDS
-// (if not NULL) for exceptional conditions.  If TIMEOUT is not NULL, time out
-// after waiting the interval specified therein.  Returns the number of ready
-// descriptors, or -1 for errors.
-//
-// This function is a cancellation point and therefore not marked with
-// __THROW.
-//
-//go:linkname NativeSelect C.select
-func NativeSelect(__nfds c.Int, __readfds *FdSet, __writefds *FdSet, __exceptfds *FdSet, __timeout *Timeval) c.Int
-
 // Same as above only that the TIMEOUT value is given with higher
 // resolution and a sigmask which is been set temporarily.  This version
 // should be used.

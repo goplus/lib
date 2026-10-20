@@ -8,6 +8,10 @@ import (
 )
 
 func TestGeneratedGettimeofday(t *testing.T) {
+	var timeout Timeval
+	if result := Select(0, nil, nil, nil, &timeout); result != 0 {
+		t.Fatalf("select with zero timeout = %d", result)
+	}
 	var value Timeval
 	if unsafe.Sizeof(value) != 16 || unsafe.Alignof(value) != 8 {
 		t.Fatalf("timeval layout = %d/%d", unsafe.Sizeof(value), unsafe.Alignof(value))
