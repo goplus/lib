@@ -15,7 +15,7 @@ func TestGeneratedPipeIO(t *testing.T) {
 	}
 	defer func() {
 		for _, fd := range pair {
-			if result := NativeClose(fd); result != 0 {
+			if result := Close(fd); result != 0 {
 				t.Errorf("close = %d", result)
 			}
 		}

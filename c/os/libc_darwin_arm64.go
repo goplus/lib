@@ -37,10 +37,8 @@ type llcppgCallback38 = func(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c
 // llgo:type C
 type llcppgCallback39 = func(_llcppg_param1 *Dirent) c.Int
 
-// llgo:link (*DIR).NativeClosedir C.closedir
-func (self *DIR) NativeClosedir() c.Int {
-	return 0
-}
+//go:linkname Closedir C.closedir
+func Closedir(self *DIR) c.Int
 
 //go:linkname NativeOpendir C.opendir
 func NativeOpendir(_llcppg_param1 *c.Char) *DIR
@@ -552,8 +550,8 @@ func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddfchdirNp(_llcppg_par
 	return 0
 }
 
-//go:linkname NativeSelect C.select
-func NativeSelect(_llcppg_param1 c.Int, _llcppg_param2 *llsys.FdSet, _llcppg_param3 *llsys.FdSet, _llcppg_param4 *llsys.FdSet, _llcppg_param5 *llsys.Timeval) c.Int
+//go:linkname Select C.select
+func Select(_llcppg_param1 c.Int, _llcppg_param2 *llsys.FdSet, _llcppg_param3 *llsys.FdSet, _llcppg_param4 *llsys.FdSet, _llcppg_param5 *llsys.Timeval) c.Int
 
 //go:linkname X__DarwinCheckFdSetOverflow C.__darwin_check_fd_set_overflow
 func X__DarwinCheckFdSetOverflow(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 c.Int) c.Int
@@ -1102,8 +1100,8 @@ func NativeOpenat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c
 //go:linkname NativeCreat C.creat
 func NativeCreat(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
 
-//go:linkname NativeFcntl C.fcntl
-func NativeFcntl(_llcppg_param1 c.Int, _llcppg_param2 c.Int, __llgo_va_list ...any) c.Int
+//go:linkname Fcntl C.fcntl
+func Fcntl(_llcppg_param1 c.Int, _llcppg_param2 c.Int, __llgo_va_list ...any) c.Int
 
 // data-protected non-portable open(2) :
 //
@@ -2808,14 +2806,14 @@ func NativeChdir(_llcppg_param1 *c.Char) c.Int
 //go:linkname NativeChown C.chown
 func NativeChown(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint, _llcppg_param3 c.Uint) c.Int
 
-//go:linkname NativeClose C.close
-func NativeClose(_llcppg_param1 c.Int) c.Int
+//go:linkname Close C.close
+func Close(_llcppg_param1 c.Int) c.Int
 
-//go:linkname NativeDup C.dup
-func NativeDup(_llcppg_param1 c.Int) c.Int
+//go:linkname Dup C.dup
+func Dup(_llcppg_param1 c.Int) c.Int
 
-//go:linkname NativeDup2 C.dup2
-func NativeDup2(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+//go:linkname Dup2 C.dup2
+func Dup2(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
 //go:linkname NativeExecl C.execl
 func NativeExecl(__path *c.Char, __arg0 *c.Char, __llgo_va_list ...any) c.Int
@@ -2871,8 +2869,8 @@ func NativeGetppid() c.Int
 //go:linkname NativeGetuid C.getuid
 func NativeGetuid() c.Uint
 
-//go:linkname NativeIsatty C.isatty
-func NativeIsatty(_llcppg_param1 c.Int) c.Int
+//go:linkname Isatty C.isatty
+func Isatty(_llcppg_param1 c.Int) c.Int
 
 //go:linkname NativeLink C.link
 func NativeLink(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char) c.Int
@@ -2934,8 +2932,8 @@ func NativeWrite(__fd c.Int, __buf unsafe.Pointer, __nbyte c.SizeT) c.SsizeT
 //go:linkname Confstr C.confstr
 func Confstr(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.SizeT
 
-//go:linkname NativeGetopt C.getopt
-func NativeGetopt(_llcppg_param1 c.Int, _llcppg_param2 **c.Char, _llcppg_param3 *c.Char) c.Int
+//go:linkname Getopt C.getopt
+func Getopt(_llcppg_param1 c.Int, _llcppg_param2 **c.Char, _llcppg_param3 *c.Char) c.Int
 
 // getopt(3) external variables
 //
@@ -2963,8 +2961,8 @@ func Crypt(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char) *c.Char
 //go:linkname Encrypt C.encrypt
 func Encrypt(_llcppg_param1 *c.Char, _llcppg_param2 c.Int)
 
-//go:linkname NativeFchdir C.fchdir
-func NativeFchdir(_llcppg_param1 c.Int) c.Int
+//go:linkname Fchdir C.fchdir
+func Fchdir(_llcppg_param1 c.Int) c.Int
 
 //go:linkname Gethostid C.gethostid
 func Gethostid() c.Long
@@ -3025,16 +3023,16 @@ func NativeTruncate(_llcppg_param1 *c.Char, _llcppg_param2 c.LongLong) c.Int
 //go:linkname Ualarm C.ualarm
 func Ualarm(_llcppg_param1 c.Uint, _llcppg_param2 c.Uint) c.Uint
 
-//go:linkname NativeUsleep C.usleep
-func NativeUsleep(_llcppg_param1 c.Uint) c.Int
+//go:linkname Usleep C.usleep
+func Usleep(_llcppg_param1 c.Uint) c.Int
 
 // End XSI
 //
 //go:linkname Vfork C.vfork
 func Vfork() c.Int
 
-//go:linkname NativeFsync C.fsync
-func NativeFsync(_llcppg_param1 c.Int) c.Int
+//go:linkname Fsync C.fsync
+func Fsync(_llcppg_param1 c.Int) c.Int
 
 //go:linkname NativeFtruncate C.ftruncate
 func NativeFtruncate(_llcppg_param1 c.Int, _llcppg_param2 c.LongLong) c.Int
@@ -3224,8 +3222,8 @@ func Undelete(_llcppg_param1 *c.Char) c.Int
 //go:linkname Unwhiteout C.unwhiteout
 func Unwhiteout(_llcppg_param1 *c.Char) c.Int
 
-//go:linkname NativeSyscall C.syscall
-func NativeSyscall(_llcppg_param1 c.Int, __llgo_va_list ...any) c.Int
+//go:linkname Syscall C.syscall
+func Syscall(_llcppg_param1 c.Int, __llgo_va_list ...any) c.Int
 
 //go:linkname Fgetattrlist C.fgetattrlist
 func Fgetattrlist(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer, _llcppg_param4 c.SizeT, _llcppg_param5 c.Uint) c.Int

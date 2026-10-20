@@ -301,10 +301,8 @@ func NativeFdopendir(__fd c.Int) *DIR
 // This function is a possible cancellation point and therefore not
 // marked with __THROW.
 //
-// llgo:link (*DIR).NativeClosedir C.closedir
-func (self *DIR) NativeClosedir() c.Int {
-	return 0
-}
+//go:linkname Closedir C.closedir
+func Closedir(self *DIR) c.Int
 
 // llgo:link (*DIR).NativeReaddir C.readdir
 func (self *DIR) NativeReaddir() *Dirent {
@@ -493,8 +491,8 @@ const (
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeFcntl C.fcntl
-func NativeFcntl(__fd c.Int, __cmd c.Int, __llgo_va_list ...any) c.Int
+//go:linkname Fcntl C.fcntl
+func Fcntl(__fd c.Int, __cmd c.Int, __llgo_va_list ...any) c.Int
 
 //go:linkname NativeOpen C.open
 func NativeOpen(__file *uint8, __oflag c.Int, __llgo_va_list ...any) c.Int
@@ -1616,8 +1614,8 @@ func NativeLseek(__fd c.Int, __offset c.Long, __whence c.Int) c.Long
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeClose C.close
-func NativeClose(__fd c.Int) c.Int
+//go:linkname Close C.close
+func Close(__fd c.Int) c.Int
 
 // NativeRead NBYTES into BUF from FD.  Return the
 // number read, -1 for errors or 0 for EOF.
@@ -1702,8 +1700,8 @@ func Ualarm(__value c.Uint, __interval c.Uint) c.Uint
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeUsleep C.usleep
-func NativeUsleep(__useconds c.Uint) c.Int
+//go:linkname Usleep C.usleep
+func Usleep(__useconds c.Uint) c.Int
 
 // Suspend the process until a signal arrives.
 // This always returns -1 and sets `errno' to EINTR.
@@ -1743,8 +1741,8 @@ func NativeChdir(__path *uint8) c.Int
 
 // Change the process's working directory to the one FD is open on.
 //
-//go:linkname NativeFchdir C.fchdir
-func NativeFchdir(__fd c.Int) c.Int
+//go:linkname Fchdir C.fchdir
+func Fchdir(__fd c.Int) c.Int
 
 // Get the pathname of the current working directory,
 // and put it in SIZE bytes of BUF.  Returns NULL if the
@@ -1766,13 +1764,13 @@ func Getwd(__buf *uint8) *uint8
 
 // Duplicate FD, returning a new file descriptor on the same file.
 //
-//go:linkname NativeDup C.dup
-func NativeDup(__fd c.Int) c.Int
+//go:linkname Dup C.dup
+func Dup(__fd c.Int) c.Int
 
 // Duplicate FD to FD2, closing FD2 and making it open on the same file.
 //
-//go:linkname NativeDup2 C.dup2
-func NativeDup2(__fd c.Int, __fd2 c.Int) c.Int
+//go:linkname Dup2 C.dup2
+func Dup2(__fd c.Int, __fd2 c.Int) c.Int
 
 // Replace the current process, executing PATH with arguments ARGV and
 // environment ENVP.  ARGV and ENVP are terminated by NULL pointers.
@@ -1989,8 +1987,8 @@ func TtynameR(__fd c.Int, __buf *uint8, __buflen c.SizeT) c.Int
 // Return 1 if FD is a valid descriptor associated
 // with a terminal, zero if not.
 //
-//go:linkname NativeIsatty C.isatty
-func NativeIsatty(__fd c.Int) c.Int
+//go:linkname Isatty C.isatty
+func Isatty(__fd c.Int) c.Int
 
 // Return the index into the active-logins file (utmp) for
 // the controlling terminal.
@@ -2177,8 +2175,8 @@ func Getpass(__prompt *uint8) *uint8
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeFsync C.fsync
-func NativeFsync(__fd c.Int) c.Int
+//go:linkname Fsync C.fsync
+func Fsync(__fd c.Int) c.Int
 
 // Return identifier for the current host.
 //
@@ -2237,8 +2235,8 @@ func Sbrk(__delta c.IntptrT) unsafe.Pointer
 // In Mach, all system calls take normal arguments and always return an
 // error code (zero for success).
 //
-//go:linkname NativeSyscall C.syscall
-func NativeSyscall(__sysno c.Long, __llgo_va_list ...any) c.Long
+//go:linkname Syscall C.syscall
+func Syscall(__sysno c.Long, __llgo_va_list ...any) c.Long
 
 // Synchronize at least the data part of a file with the underlying
 // media.
