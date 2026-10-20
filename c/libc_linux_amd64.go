@@ -9,42 +9,9 @@ import (
 	"unsafe"
 )
 
-// This prints an "Assertion failed" message and aborts.
-//
-//go:linkname X__AssertFail C.__assert_fail
-func X__AssertFail(__assertion *Char, __file *Char, __line Uint, __function *Char)
-
-// Likewise, but prints the error text for ERRNUM.
-//
-//go:linkname X__AssertPerrorFail C.__assert_perror_fail
-func X__AssertPerrorFail(__errnum Int, __file *Char, __line Uint, __function *Char)
-
-// The following is not at all used here but needed for standard
-// compliance.
-//
-//go:linkname X__Assert C.__assert
-func X__Assert(__assertion *Char, __file *Char, __line Int)
-
-// Function to get address of global `errno' variable.
-//
-//go:linkname X__ErrnoLocation C.__errno_location
-func X__ErrnoLocation() *Int
-
 // Data structure to describe CPU mask.
 type CpuSetT struct {
 	X__Bits [16]Ulong
-}
-
-//go:linkname X__SchedCpucount C.__sched_cpucount
-func X__SchedCpucount(__setsize SizeT, __setp *CpuSetT) Int
-
-// Ignore
-//
-//go:linkname X__SchedCpualloc C.__sched_cpualloc
-func X__SchedCpualloc(__count SizeT) *CpuSetT
-
-// llgo:link (*CpuSetT).X__SchedCpufree C.__sched_cpufree
-func (self *CpuSetT) X__SchedCpufree() {
 }
 
 // Structure describing messages sent by
@@ -65,37 +32,6 @@ type Cmsghdr struct {
 	CmsgLevel Int
 	CmsgType  Int
 }
-
-// llgo:link (*Msghdr).X__CmsgNxthdr C.__cmsg_nxthdr
-func (self *Msghdr) X__CmsgNxthdr(__cmsg *Cmsghdr) *Cmsghdr {
-	return nil
-}
-
-// These are defined in ctype-info.
-// The declarations here must match those in localeinfo.h.
-//
-// In the thread-specific locale model (see `uselocale' in <locale.h>)
-// we cannot use global variables for these as was done in the past.
-// Instead, the following accessor functions return the address of
-// each variable, which is local to the current thread if multithreaded.
-//
-// These point into arrays of 384, so they can be indexed by any `unsigned
-// char' value [0,255]; by EOF (-1); or by any `signed char' value
-// [-128,-1).  ISO C requires that the ctype functions work for `unsigned
-// char' values and for EOF; we also support negative `signed char' values
-// for broken old programs.  The case conversion arrays are of `int's
-// rather than `unsigned char's because tolower (EOF) must be EOF, which
-// doesn't fit into an `unsigned char'.  But today more important is that
-// the arrays are also used for multi-byte character sets.
-//
-//go:linkname X__CtypeBLoc C.__ctype_b_loc
-func X__CtypeBLoc() **uint16
-
-//go:linkname X__CtypeTolowerLoc C.__ctype_tolower_loc
-func X__CtypeTolowerLoc() **Int
-
-//go:linkname X__CtypeToupperLoc C.__ctype_toupper_loc
-func X__CtypeToupperLoc() **Int
 
 // The following names are all functions:
 // int isCHARACTERISTIC(int c);
@@ -210,18 +146,8 @@ func IsxdigitL(_llcppg_param1 Int, _llcppg_param2 X__LocaleT) Int
 //go:linkname IsblankL C.isblank_l
 func IsblankL(_llcppg_param1 Int, _llcppg_param2 X__LocaleT) Int
 
-// Return the lowercase version of C in locale L.
-//
-//go:linkname X__TolowerL C.__tolower_l
-func X__TolowerL(__c Int, __l X__LocaleT) Int
-
 //go:linkname TolowerL C.tolower_l
 func TolowerL(__c Int, __l X__LocaleT) Int
-
-// Return the uppercase version of C.
-//
-//go:linkname X__ToupperL C.__toupper_l
-func X__ToupperL(__c Int, __l X__LocaleT) Int
 
 //go:linkname ToupperL C.toupper_l
 func ToupperL(__c Int, __l X__LocaleT) Int
@@ -495,81 +421,6 @@ type X_IO_FILE struct {
 	X__Pad5          SizeT
 	X_mode           Int
 	X_unused2        [20]Char
-}
-
-// llgo:link (*X_IO_FILE).X__Underflow C.__underflow
-func (self *X_IO_FILE) X__Underflow() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X__Uflow C.__uflow
-func (self *X_IO_FILE) X__Uflow() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X__Overflow C.__overflow
-func (self *X_IO_FILE) X__Overflow(_llcppg_param2 Int) Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_getc C._IO_getc
-func (self *X_IO_FILE) X_IO_getc() Int {
-	return 0
-}
-
-//go:linkname X_IO_putc C._IO_putc
-func X_IO_putc(__c Int, __fp *X_IO_FILE) Int
-
-// llgo:link (*X_IO_FILE).X_IO_feof C._IO_feof
-func (self *X_IO_FILE) X_IO_feof() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_ferror C._IO_ferror
-func (self *X_IO_FILE) X_IO_ferror() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_peekc_locked C._IO_peekc_locked
-func (self *X_IO_FILE) X_IO_peekc_locked() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_flockfile C._IO_flockfile
-func (self *X_IO_FILE) X_IO_flockfile() {
-}
-
-// llgo:link (*X_IO_FILE).X_IO_funlockfile C._IO_funlockfile
-func (self *X_IO_FILE) X_IO_funlockfile() {
-}
-
-// llgo:link (*X_IO_FILE).X_IO_ftrylockfile C._IO_ftrylockfile
-func (self *X_IO_FILE) X_IO_ftrylockfile() Int {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_padn C._IO_padn
-func (self *X_IO_FILE) X_IO_padn(_llcppg_param2 Int, _llcppg_param3 Long) Long {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_sgetn C._IO_sgetn
-func (self *X_IO_FILE) X_IO_sgetn(_llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT) SizeT {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_seekoff C._IO_seekoff
-func (self *X_IO_FILE) X_IO_seekoff(_llcppg_param2 Long, _llcppg_param3 Int, _llcppg_param4 Int) Long {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_seekpos C._IO_seekpos
-func (self *X_IO_FILE) X_IO_seekpos(_llcppg_param2 Long, _llcppg_param3 Int) Long {
-	return 0
-}
-
-// llgo:link (*X_IO_FILE).X_IO_free_backup_area C._IO_free_backup_area
-func (self *X_IO_FILE) X_IO_free_backup_area() {
 }
 
 // Maximum length of any multibyte character in any locale.
@@ -986,20 +837,6 @@ func Putw(__w Int, __stream *FILE) Int
 //go:linkname Fgets C.fgets
 func Fgets(__s *Char, __n Int, __stream *FILE) *Char
 
-// Read up to (and including) a DELIMITER from STREAM into *LINEPTR
-// (and null-terminate it). *LINEPTR is a pointer returned from malloc (or
-// NULL), pointing to *N characters of space.  It is realloc'd as
-// necessary.  Returns the number of characters read (not including the
-// null terminator), or -1 on error or EOF.
-//
-// These functions are not part of POSIX and therefore no official
-// cancellation point.  But due to similarity with an POSIX interface
-// or due to the implementation they are cancellation points and
-// therefore not marked with __THROW.
-//
-//go:linkname X__Getdelim C.__getdelim
-func X__Getdelim(__lineptr **Char, __n *SizeT, __delimiter Int, __stream *FILE) Long
-
 // Ignore
 //
 //go:linkname Getdelim C.getdelim
@@ -1226,11 +1063,6 @@ type llcppgCallback0 = func(_llcppg_param1 Int, _llcppg_param2 unsafe.Pointer)
 // llgo:type C
 type X__ComparFnT = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
 
-// Ignore
-//
-//go:linkname X__CtypeGetMbCurMax C.__ctype_get_mb_cur_max
-func X__CtypeGetMbCurMax() SizeT
-
 // Convert a string to a floating-point number.
 //
 //go:linkname Atof C.atof
@@ -1420,7 +1252,7 @@ func Lcong48R(__param *uint16, __buffer *Drand48Data) Int
 
 // Free a block.  An alias for `free'.	(Sun Unices).
 //
-//go:linkname Cfree C.cfree
+//go:linkname Cfree C.free
 func Cfree(__ptr unsafe.Pointer)
 
 // Allocate SIZE bytes on a page boundary.  The storage cannot be freed.
@@ -1667,12 +1499,6 @@ func Strspn(__s *Char, __accept *Char) SizeT
 //go:linkname Strpbrk C.strpbrk
 func Strpbrk(__s *Char, __accept *Char) *Char
 
-// Divide S into tokens separated by characters in DELIM.  Information
-// passed between calls are stored in SAVE_PTR.
-//
-//go:linkname X__StrtokR C.__strtok_r
-func X__StrtokR(__s *Char, __delim *Char, __save_ptr **Char) *Char
-
 //go:linkname StrtokR C.strtok_r
 func StrtokR(__s *Char, __delim *Char, __save_ptr **Char) *Char
 
@@ -1689,12 +1515,6 @@ func StrerrorR(__errnum Int, __buf *Char, __buflen SizeT) Int
 //
 //go:linkname StrerrorL C.strerror_l
 func StrerrorL(__errnum Int, __l X__LocaleT) *Char
-
-// We define this function always since `bzero' is sometimes needed when
-// the namespace rules does not allow this.
-//
-//go:linkname X__Bzero C.__bzero
-func X__Bzero(__s unsafe.Pointer, __n SizeT)
 
 // Copy N bytes of SRC to DEST (like memmove, but args reversed).
 //
@@ -1741,19 +1561,8 @@ func Strsep(__stringp **Char, __delim *Char) *Char
 //go:linkname Strsignal C.strsignal
 func Strsignal(__sig Int) *Char
 
-// Copy SRC to DEST, returning the address of the terminating '\0' in DEST.
-//
-//go:linkname X__Stpcpy C.__stpcpy
-func X__Stpcpy(__dest *Char, __src *Char) *Char
-
 //go:linkname Stpcpy C.stpcpy
 func Stpcpy(__dest *Char, __src *Char) *Char
-
-// Copy no more than N characters of SRC to DEST, returning the address of
-// the last character written into DEST.
-//
-//go:linkname X__Stpncpy C.__stpncpy
-func X__Stpncpy(__dest *Char, __src *Char, __n SizeT) *Char
 
 //go:linkname Stpncpy C.stpncpy
 func Stpncpy(__dest *Char, __src *Char, __n SizeT) *Char
@@ -1806,3 +1615,5 @@ type Iovec struct {
 	IovBase unsafe.Pointer
 	IovLen  uintptr
 }
+
+const LLGoPackage = "link"

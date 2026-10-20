@@ -21,8 +21,6 @@ package c
 
 import _ "unsafe"
 
-const LLGoPackage = "decl"
-
 //go:linkname Stdin C.stdin
 var Stdin FilePtr
 

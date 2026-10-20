@@ -9,9 +9,6 @@ import (
 	"unsafe"
 )
 
-//go:linkname X__AssertRtn C.__assert_rtn
-func X__AssertRtn(_llcppg_param1 *Char, _llcppg_param2 *Char, _llcppg_param3 Int, _llcppg_param4 *Char)
-
 // Match failed.
 const FNM_NOMATCH = 1
 
@@ -250,70 +247,6 @@ type X_mallocZoneT struct {
 
 type MallocZoneT X_mallocZoneT
 
-//go:linkname MallocTypeMalloc C.malloc_type_malloc
-func MallocTypeMalloc(size SizeT, type_id UlongLong) unsafe.Pointer
-
-//go:linkname MallocTypeCalloc C.malloc_type_calloc
-func MallocTypeCalloc(count SizeT, size SizeT, type_id UlongLong) unsafe.Pointer
-
-//go:linkname MallocTypeFree C.malloc_type_free
-func MallocTypeFree(ptr unsafe.Pointer, type_id UlongLong)
-
-//go:linkname MallocTypeRealloc C.malloc_type_realloc
-func MallocTypeRealloc(ptr unsafe.Pointer, size SizeT, type_id UlongLong) unsafe.Pointer
-
-//go:linkname MallocTypeValloc C.malloc_type_valloc
-func MallocTypeValloc(size SizeT, type_id UlongLong) unsafe.Pointer
-
-//go:linkname MallocTypeAlignedAlloc C.malloc_type_aligned_alloc
-func MallocTypeAlignedAlloc(alignment SizeT, size SizeT, type_id UlongLong) unsafe.Pointer
-
-// __alloc_size(3)
-//
-//go:linkname MallocTypePosixMemalign C.malloc_type_posix_memalign
-func MallocTypePosixMemalign(memptr *unsafe.Pointer, alignment SizeT, size SizeT, type_id UlongLong) Int
-
-// llgo:link (*MallocZoneT).MallocTypeZoneMalloc C.malloc_type_zone_malloc
-func (self *MallocZoneT) MallocTypeZoneMalloc(size SizeT, type_id UlongLong) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*MallocZoneT).MallocTypeZoneCalloc C.malloc_type_zone_calloc
-func (self *MallocZoneT) MallocTypeZoneCalloc(count SizeT, size SizeT, type_id UlongLong) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*MallocZoneT).MallocTypeZoneFree C.malloc_type_zone_free
-func (self *MallocZoneT) MallocTypeZoneFree(ptr unsafe.Pointer, type_id UlongLong) {
-}
-
-// llgo:link (*MallocZoneT).MallocTypeZoneRealloc C.malloc_type_zone_realloc
-func (self *MallocZoneT) MallocTypeZoneRealloc(ptr unsafe.Pointer, size SizeT, type_id UlongLong) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*MallocZoneT).MallocTypeZoneValloc C.malloc_type_zone_valloc
-func (self *MallocZoneT) MallocTypeZoneValloc(size SizeT, type_id UlongLong) unsafe.Pointer {
-	return nil
-}
-
-// llgo:link (*MallocZoneT).MallocTypeZoneMemalign C.malloc_type_zone_memalign
-func (self *MallocZoneT) MallocTypeZoneMemalign(alignment SizeT, size SizeT, type_id UlongLong) unsafe.Pointer {
-	return nil
-}
-
-//go:linkname X__SprintfChk C.__sprintf_chk
-func X__SprintfChk(_llcppg_param1 *Char, _llcppg_param2 Int, _llcppg_param3 SizeT, _llcppg_param4 *Char, __llgo_va_list ...any) Int
-
-//go:linkname X__SnprintfChk C.__snprintf_chk
-func X__SnprintfChk(_llcppg_param1 *Char, _llcppg_param2 SizeT, _llcppg_param3 Int, _llcppg_param4 SizeT, _llcppg_param5 *Char, __llgo_va_list ...any) Int
-
-//go:linkname X__VsprintfChk C.__vsprintf_chk
-func X__VsprintfChk(_llcppg_param1 *Char, _llcppg_param2 Int, _llcppg_param3 SizeT, _llcppg_param4 *Char, _llcppg_param5 VaList) Int
-
-//go:linkname X__VsnprintfChk C.__vsnprintf_chk
-func X__VsnprintfChk(_llcppg_param1 *Char, _llcppg_param2 SizeT, _llcppg_param3 Int, _llcppg_param4 SizeT, _llcppg_param5 *Char, _llcppg_param6 VaList) Int
-
 // 7.18.2.1 Limits of exact-width integer types
 const (
 	INT8_MAX  = 127
@@ -512,15 +445,6 @@ func Pclose(_llcppg_param1 *FILE) Int
 //go:linkname Popen C.popen
 func Popen(_llcppg_param1 *Char, _llcppg_param2 *Char) *FILE
 
-//go:linkname X__Srget C.__srget
-func X__Srget(_llcppg_param1 *FILE) Int
-
-//go:linkname X__Svfscanf C.__svfscanf
-func X__Svfscanf(_llcppg_param1 *FILE, _llcppg_param2 *Char, _llcppg_param3 VaList) Int
-
-//go:linkname X__Swbuf C.__swbuf
-func X__Swbuf(_llcppg_param1 Int, _llcppg_param2 *FILE) Int
-
 //go:linkname Flockfile C.flockfile
 func Flockfile(_llcppg_param1 *FILE)
 
@@ -574,11 +498,11 @@ func OpenMemstream(__bufp **Char, __sizep *SizeT) *FILE
 
 // perror(3) external variables
 //
-//go:linkname SysNerr C.sys_nerr
+//go:linkname SysNerr sys_nerr
 var SysNerr Int
 
-//go:linkname SysErrlist C.sys_errlist
-var SysErrlist **Char
+//go:linkname SysErrlist sys_errlist
+var SysErrlist [0]*Char
 
 //go:linkname Asprintf C.asprintf
 func Asprintf(_llcppg_param1 **Char, _llcppg_param2 *Char, __llgo_va_list ...any) Int
@@ -935,7 +859,7 @@ func Strtouq(__str *Char, __endptr **Char, __base Int) UlongLong
 
 // getsubopt(3) external variable
 //
-//go:linkname Suboptarg C.suboptarg
+//go:linkname Suboptarg suboptarg
 var Suboptarg *Char
 
 //go:linkname Strcoll C.strcoll
@@ -1073,24 +997,6 @@ func RenameatxNp(_llcppg_param1 Int, _llcppg_param2 *Char, _llcppg_param3 Int, _
 
 //go:linkname Ctermid C.ctermid
 func Ctermid(_llcppg_param1 *Char) *Char
-
-//go:linkname X___Runetype C.___runetype
-func X___Runetype(_llcppg_param1 Int) Ulong
-
-//go:linkname X___Tolower C.___tolower
-func X___Tolower(_llcppg_param1 Int) Int
-
-//go:linkname X___Toupper C.___toupper
-func X___Toupper(_llcppg_param1 Int) Int
-
-//go:linkname X__Maskrune C.__maskrune
-func X__Maskrune(_llcppg_param1 Int, _llcppg_param2 Ulong) Int
-
-//go:linkname X__Toupper C.__toupper
-func X__Toupper(_llcppg_param1 Int) Int
-
-//go:linkname X__Tolower C.__tolower
-func X__Tolower(_llcppg_param1 Int) Int
 
 type Lconv struct {
 	DecimalPoint    *Char
