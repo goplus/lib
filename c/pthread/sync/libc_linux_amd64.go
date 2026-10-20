@@ -50,10 +50,59 @@ func (p *Sem) XGof_ref___align() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
+// Guarantee that the initialization function INIT_ROUTINE will be called
+// only once, even if pthread_once is executed several times with the
+// same ONCE_CONTROL argument. ONCE_CONTROL must point to a static or
+// extern variable initialized to PTHREAD_ONCE_INIT.
+//
+// The initialization functions might throw exception which is why
+// this function is not marked with __THROW.
+//
+// llgo:type C
+type llcppgCallback11 = func()
+
+//go:linkname NativePthreadOnce C.pthread_once
+func NativePthreadOnce(__once_control *Once, __init_routine llcppgCallback11) c.Int
+
+// Initialize a mutex.
+//
+// llgo:link (*Mutex).NativeInit C.pthread_mutex_init
+func (self *Mutex) NativeInit(__mutexattr *MutexAttr) c.Int {
+	return 0
+}
+
+// Destroy a mutex.
+//
+// llgo:link (*Mutex).NativeDestroy C.pthread_mutex_destroy
+func (self *Mutex) NativeDestroy() c.Int {
+	return 0
+}
+
+// Try locking a mutex.
+//
+// llgo:link (*Mutex).NativeTrylock C.pthread_mutex_trylock
+func (self *Mutex) NativeTrylock() c.Int {
+	return 0
+}
+
+// Lock a mutex.
+//
+// llgo:link (*Mutex).NativeLock C.pthread_mutex_lock
+func (self *Mutex) NativeLock() c.Int {
+	return 0
+}
+
 // Wait until lock becomes available, or specified time passes.
 //
 // llgo:link (*Mutex).Timedlock C.pthread_mutex_timedlock
 func (self *Mutex) Timedlock(__abstime *lltime.Timespec) c.Int {
+	return 0
+}
+
+// Unlock a mutex.
+//
+// llgo:link (*Mutex).NativeUnlock C.pthread_mutex_unlock
+func (self *Mutex) NativeUnlock() c.Int {
 	return 0
 }
 
@@ -79,6 +128,21 @@ func (self *Mutex) Consistent() c.Int {
 	return 0
 }
 
+// Initialize mutex attribute object ATTR with default attributes
+// (kind is PTHREAD_MUTEX_TIMED_NP).
+//
+// llgo:link (*MutexAttr).NativeInit C.pthread_mutexattr_init
+func (self *MutexAttr) NativeInit() c.Int {
+	return 0
+}
+
+// Destroy mutex attribute object ATTR.
+//
+// llgo:link (*MutexAttr).NativeDestroy C.pthread_mutexattr_destroy
+func (self *MutexAttr) NativeDestroy() c.Int {
+	return 0
+}
+
 // Get the process-shared flag of the mutex attribute ATTR.
 //
 // llgo:link (*MutexAttr).Getpshared C.pthread_mutexattr_getpshared
@@ -97,6 +161,15 @@ func (self *MutexAttr) Setpshared(__pshared c.Int) c.Int {
 //
 // llgo:link (*MutexAttr).Gettype C.pthread_mutexattr_gettype
 func (self *MutexAttr) Gettype(__kind *c.Int) c.Int {
+	return 0
+}
+
+// Set the mutex kind attribute in *ATTR to KIND (either PTHREAD_MUTEX_NORMAL,
+// PTHREAD_MUTEX_RECURSIVE, PTHREAD_MUTEX_ERRORCHECK, or
+// PTHREAD_MUTEX_DEFAULT).
+//
+// llgo:link (*MutexAttr).NativeSettype C.pthread_mutexattr_settype
+func (self *MutexAttr) NativeSettype(__kind c.Int) c.Int {
 	return 0
 }
 
@@ -143,6 +216,35 @@ func (self *MutexAttr) Setrobust(__robustness c.Int) c.Int {
 	return 0
 }
 
+// Initialize read-write lock RWLOCK using attributes ATTR, or use
+// the default values if later is NULL.
+//
+// llgo:link (*RWLock).NativeInit C.pthread_rwlock_init
+func (self *RWLock) NativeInit(__attr *RWLockAttr) c.Int {
+	return 0
+}
+
+// Destroy read-write lock RWLOCK.
+//
+// llgo:link (*RWLock).NativeDestroy C.pthread_rwlock_destroy
+func (self *RWLock) NativeDestroy() c.Int {
+	return 0
+}
+
+// Acquire read lock for RWLOCK.
+//
+// llgo:link (*RWLock).NativeRdlock C.pthread_rwlock_rdlock
+func (self *RWLock) NativeRdlock() c.Int {
+	return 0
+}
+
+// Try to acquire read lock for RWLOCK.
+//
+// llgo:link (*RWLock).NativeTryrdlock C.pthread_rwlock_tryrdlock
+func (self *RWLock) NativeTryrdlock() c.Int {
+	return 0
+}
+
 // Try to acquire read lock for RWLOCK or return after specfied time.
 //
 // llgo:link (*RWLock).Timedrdlock C.pthread_rwlock_timedrdlock
@@ -150,10 +252,59 @@ func (self *RWLock) Timedrdlock(__abstime *lltime.Timespec) c.Int {
 	return 0
 }
 
+// Acquire write lock for RWLOCK.
+//
+// llgo:link (*RWLock).NativeWrlock C.pthread_rwlock_wrlock
+func (self *RWLock) NativeWrlock() c.Int {
+	return 0
+}
+
+// Try to acquire write lock for RWLOCK.
+//
+// llgo:link (*RWLock).NativeTrywrlock C.pthread_rwlock_trywrlock
+func (self *RWLock) NativeTrywrlock() c.Int {
+	return 0
+}
+
 // Try to acquire write lock for RWLOCK or return after specfied time.
 //
 // llgo:link (*RWLock).Timedwrlock C.pthread_rwlock_timedwrlock
 func (self *RWLock) Timedwrlock(__abstime *lltime.Timespec) c.Int {
+	return 0
+}
+
+// Unlock RWLOCK.
+//
+// llgo:link (*RWLock).NativeUnlock C.pthread_rwlock_unlock
+func (self *RWLock) NativeUnlock() c.Int {
+	return 0
+}
+
+// Initialize attribute object ATTR with default values.
+//
+// llgo:link (*RWLockAttr).NativeInit C.pthread_rwlockattr_init
+func (self *RWLockAttr) NativeInit() c.Int {
+	return 0
+}
+
+// Destroy attribute object ATTR.
+//
+// llgo:link (*RWLockAttr).NativeDestroy C.pthread_rwlockattr_destroy
+func (self *RWLockAttr) NativeDestroy() c.Int {
+	return 0
+}
+
+// Return current setting of process-shared attribute of ATTR in PSHARED.
+//
+// llgo:link (*RWLockAttr).NativeGetpshared C.pthread_rwlockattr_getpshared
+func (self *RWLockAttr) NativeGetpshared(__pshared *c.Int) c.Int {
+	return 0
+}
+
+// Set process-shared attribute of ATTR to PSHARED.
+//
+// llgo:link (*RWLockAttr).NativeSetpshared C.pthread_rwlockattr_setpshared
+func (self *RWLockAttr) NativeSetpshared(__pshared c.Int) c.Int {
 	return 0
 }
 
@@ -171,6 +322,73 @@ func (self *RWLockAttr) SetkindNp(__pref c.Int) c.Int {
 	return 0
 }
 
+// Initialize condition variable COND using attributes ATTR, or use
+// the default values if later is NULL.
+//
+// llgo:link (*Cond).NativeInit C.pthread_cond_init
+func (self *Cond) NativeInit(__cond_attr *CondAttr) c.Int {
+	return 0
+}
+
+// Destroy condition variable COND.
+//
+// llgo:link (*Cond).NativeDestroy C.pthread_cond_destroy
+func (self *Cond) NativeDestroy() c.Int {
+	return 0
+}
+
+// Wake up one thread waiting for condition variable COND.
+//
+// llgo:link (*Cond).NativeSignal C.pthread_cond_signal
+func (self *Cond) NativeSignal() c.Int {
+	return 0
+}
+
+// Wake up all threads waiting for condition variables COND.
+//
+// llgo:link (*Cond).NativeBroadcast C.pthread_cond_broadcast
+func (self *Cond) NativeBroadcast() c.Int {
+	return 0
+}
+
+// Wait for condition variable COND to be signaled or broadcast.
+// MUTEX is assumed to be locked before.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+// llgo:link (*Cond).NativeWait C.pthread_cond_wait
+func (self *Cond) NativeWait(__mutex *Mutex) c.Int {
+	return 0
+}
+
+// Wait for condition variable COND to be signaled or broadcast until
+// ABSTIME.  MUTEX is assumed to be locked before.  ABSTIME is an
+// absolute time specification; zero is the beginning of the epoch
+// (00:00:00 GMT, January 1, 1970).
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+// llgo:link (*Cond).NativeTimedwait C.pthread_cond_timedwait
+func (self *Cond) NativeTimedwait(__mutex *Mutex, __abstime *lltime.Timespec) c.Int {
+	return 0
+}
+
+// Initialize condition variable attribute ATTR.
+//
+// llgo:link (*CondAttr).NativeInit C.pthread_condattr_init
+func (self *CondAttr) NativeInit() c.Int {
+	return 0
+}
+
+// Destroy condition variable attribute ATTR.
+//
+// llgo:link (*CondAttr).NativeDestroy C.pthread_condattr_destroy
+func (self *CondAttr) NativeDestroy() c.Int {
+	return 0
+}
+
 // Get the process-shared flag of the condition variable attribute ATTR.
 //
 // llgo:link (*CondAttr).Getpshared C.pthread_condattr_getpshared
@@ -182,6 +400,20 @@ func (self *CondAttr) Getpshared(__pshared *c.Int) c.Int {
 //
 // llgo:link (*CondAttr).Setpshared C.pthread_condattr_setpshared
 func (self *CondAttr) Setpshared(__pshared c.Int) c.Int {
+	return 0
+}
+
+// Get the clock selected for the condition variable attribute ATTR.
+//
+// llgo:link (*CondAttr).NativeGetclock C.pthread_condattr_getclock
+func (self *CondAttr) NativeGetclock(__clock_id *c.Int) c.Int {
+	return 0
+}
+
+// Set the clock selected for the condition variable attribute ATTR.
+//
+// llgo:link (*CondAttr).NativeSetclock C.pthread_condattr_setclock
+func (self *CondAttr) NativeSetclock(__clock_id c.Int) c.Int {
 	return 0
 }
 

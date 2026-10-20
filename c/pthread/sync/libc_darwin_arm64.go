@@ -12,6 +12,49 @@ import (
 	_ "unsafe"
 )
 
+// llgo:type C
+type llcppgCallback25 = func()
+
+// llgo:link (*Cond).NativeBroadcast C.pthread_cond_broadcast
+func (self *Cond) NativeBroadcast() c.Int {
+	return 0
+}
+
+// llgo:link (*Cond).NativeDestroy C.pthread_cond_destroy
+func (self *Cond) NativeDestroy() c.Int {
+	return 0
+}
+
+// llgo:link (*Cond).NativeInit C.pthread_cond_init
+func (self *Cond) NativeInit(_llcppg_param2 *CondAttr) c.Int {
+	return 0
+}
+
+// llgo:link (*Cond).NativeSignal C.pthread_cond_signal
+func (self *Cond) NativeSignal() c.Int {
+	return 0
+}
+
+// llgo:link (*Cond).NativeTimedwait C.pthread_cond_timedwait
+func (self *Cond) NativeTimedwait(_llcppg_param2 *Mutex, _llcppg_param3 *lltime.Timespec) c.Int {
+	return 0
+}
+
+// llgo:link (*Cond).NativeWait C.pthread_cond_wait
+func (self *Cond) NativeWait(_llcppg_param2 *Mutex) c.Int {
+	return 0
+}
+
+// llgo:link (*CondAttr).NativeDestroy C.pthread_condattr_destroy
+func (self *CondAttr) NativeDestroy() c.Int {
+	return 0
+}
+
+// llgo:link (*CondAttr).NativeInit C.pthread_condattr_init
+func (self *CondAttr) NativeInit() c.Int {
+	return 0
+}
+
 // llgo:link (*CondAttr).Getpshared C.pthread_condattr_getpshared
 func (self *CondAttr) Getpshared(_llcppg_param2 *c.Int) c.Int {
 	return 0
@@ -22,13 +65,43 @@ func (self *CondAttr) Setpshared(_llcppg_param2 c.Int) c.Int {
 	return 0
 }
 
+// llgo:link (*Mutex).NativeDestroy C.pthread_mutex_destroy
+func (self *Mutex) NativeDestroy() c.Int {
+	return 0
+}
+
 // llgo:link (*Mutex).Getprioceiling C.pthread_mutex_getprioceiling
 func (self *Mutex) Getprioceiling(_llcppg_param2 *c.Int) c.Int {
 	return 0
 }
 
+// llgo:link (*Mutex).NativeInit C.pthread_mutex_init
+func (self *Mutex) NativeInit(_llcppg_param2 *MutexAttr) c.Int {
+	return 0
+}
+
+// llgo:link (*Mutex).NativeLock C.pthread_mutex_lock
+func (self *Mutex) NativeLock() c.Int {
+	return 0
+}
+
 // llgo:link (*Mutex).Setprioceiling C.pthread_mutex_setprioceiling
 func (self *Mutex) Setprioceiling(_llcppg_param2 c.Int, _llcppg_param3 *c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*Mutex).NativeTrylock C.pthread_mutex_trylock
+func (self *Mutex) NativeTrylock() c.Int {
+	return 0
+}
+
+// llgo:link (*Mutex).NativeUnlock C.pthread_mutex_unlock
+func (self *Mutex) NativeUnlock() c.Int {
+	return 0
+}
+
+// llgo:link (*MutexAttr).NativeDestroy C.pthread_mutexattr_destroy
+func (self *MutexAttr) NativeDestroy() c.Int {
 	return 0
 }
 
@@ -57,6 +130,11 @@ func (self *MutexAttr) GetpolicyNp(_llcppg_param2 *c.Int) c.Int {
 	return 0
 }
 
+// llgo:link (*MutexAttr).NativeInit C.pthread_mutexattr_init
+func (self *MutexAttr) NativeInit() c.Int {
+	return 0
+}
+
 // llgo:link (*MutexAttr).Setprioceiling C.pthread_mutexattr_setprioceiling
 func (self *MutexAttr) Setprioceiling(_llcppg_param2 c.Int) c.Int {
 	return 0
@@ -72,8 +150,73 @@ func (self *MutexAttr) Setpshared(_llcppg_param2 c.Int) c.Int {
 	return 0
 }
 
+// llgo:link (*MutexAttr).NativeSettype C.pthread_mutexattr_settype
+func (self *MutexAttr) NativeSettype(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
 // llgo:link (*MutexAttr).SetpolicyNp C.pthread_mutexattr_setpolicy_np
 func (self *MutexAttr) SetpolicyNp(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*Once).NativePthreadOnce C.pthread_once
+func (self *Once) NativePthreadOnce(_llcppg_param2 llcppgCallback25) c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeDestroy C.pthread_rwlock_destroy
+func (self *RWLock) NativeDestroy() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeInit C.pthread_rwlock_init
+func (self *RWLock) NativeInit(_llcppg_param2 *RWLockAttr) c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeRdlock C.pthread_rwlock_rdlock
+func (self *RWLock) NativeRdlock() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeTryrdlock C.pthread_rwlock_tryrdlock
+func (self *RWLock) NativeTryrdlock() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeTrywrlock C.pthread_rwlock_trywrlock
+func (self *RWLock) NativeTrywrlock() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeWrlock C.pthread_rwlock_wrlock
+func (self *RWLock) NativeWrlock() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLock).NativeUnlock C.pthread_rwlock_unlock
+func (self *RWLock) NativeUnlock() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLockAttr).NativeDestroy C.pthread_rwlockattr_destroy
+func (self *RWLockAttr) NativeDestroy() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLockAttr).NativeGetpshared C.pthread_rwlockattr_getpshared
+func (self *RWLockAttr) NativeGetpshared(_llcppg_param2 *c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*RWLockAttr).NativeInit C.pthread_rwlockattr_init
+func (self *RWLockAttr) NativeInit() c.Int {
+	return 0
+}
+
+// llgo:link (*RWLockAttr).NativeSetpshared C.pthread_rwlockattr_setpshared
+func (self *RWLockAttr) NativeSetpshared(_llcppg_param2 c.Int) c.Int {
 	return 0
 }
 
