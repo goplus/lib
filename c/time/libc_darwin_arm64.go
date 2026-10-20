@@ -27,11 +27,37 @@ func (self *Tm) Asctime() *c.Char {
 	return nil
 }
 
+//go:linkname NativeClock C.clock
+func NativeClock() ClockT
+
+//go:linkname NativeCtime C.ctime
+func NativeCtime(_llcppg_param1 *TimeT) *c.Char
+
+//go:linkname NativeDifftime C.difftime
+func NativeDifftime(_llcppg_param1 TimeT, _llcppg_param2 TimeT) c.Double
+
 //go:linkname Getdate C.getdate
 func Getdate(_llcppg_param1 *c.Char) *Tm
 
+//go:linkname NativeGmtime C.gmtime
+func NativeGmtime(_llcppg_param1 *TimeT) *Tm
+
+//go:linkname NativeLocaltime C.localtime
+func NativeLocaltime(_llcppg_param1 *TimeT) *Tm
+
+// llgo:link (*Tm).NativeMktime C.mktime
+func (self *Tm) NativeMktime() TimeT {
+	return 0
+}
+
+//go:linkname NativeStrftime C.strftime
+func NativeStrftime(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT, _llcppg_param3 *c.Char, _llcppg_param4 *Tm) c.SizeT
+
 //go:linkname Strptime C.strptime
 func Strptime(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char, _llcppg_param3 *Tm) *c.Char
+
+//go:linkname NativeTime C.time
+func NativeTime(_llcppg_param1 *TimeT) TimeT
 
 //go:linkname Tzset C.tzset
 func Tzset()
@@ -76,8 +102,23 @@ func (self *Timespec) Nanosleep(__rmtp *Timespec) c.Int {
 	return 0
 }
 
+// llgo:link ClockidT.NativeClockGetres C.clock_getres
+func (self ClockidT) NativeClockGetres(__res *Timespec) c.Int {
+	return 0
+}
+
+// llgo:link ClockidT.NativeClockGettime C.clock_gettime
+func (self ClockidT) NativeClockGettime(__tp *Timespec) c.Int {
+	return 0
+}
+
 // llgo:link ClockidT.ClockGettimeNsecNp C.clock_gettime_nsec_np
 func (self ClockidT) ClockGettimeNsecNp() c.UlongLong {
+	return 0
+}
+
+// llgo:link ClockidT.NativeClockSettime C.clock_settime
+func (self ClockidT) NativeClockSettime(__tp *Timespec) c.Int {
 	return 0
 }
 
