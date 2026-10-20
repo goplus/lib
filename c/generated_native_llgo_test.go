@@ -11,18 +11,18 @@ import (
 func TestGeneratedMemoryCalls(t *testing.T) {
 	input := [6]byte{0, 1, 127, 128, 254, 255}
 	var output [6]byte
-	if p := c.NativeMemcpy(unsafe.Pointer(&output[0]), unsafe.Pointer(&input[0]), 6); p != unsafe.Pointer(&output[0]) {
+	if p := c.Memcpy(unsafe.Pointer(&output[0]), unsafe.Pointer(&input[0]), 6); p != unsafe.Pointer(&output[0]) {
 		t.Fatal("memcpy returned another buffer")
 	}
-	if output != input || c.NativeMemcmp(unsafe.Pointer(&output[0]), unsafe.Pointer(&input[0]), 6) != 0 {
+	if output != input || c.Memcmp(unsafe.Pointer(&output[0]), unsafe.Pointer(&input[0]), 6) != 0 {
 		t.Fatal("native memory copy differs")
 	}
-	c.NativeMemset(unsafe.Pointer(&output[0]), 0, 6)
+	c.Memset(unsafe.Pointer(&output[0]), 0, 6)
 	if output != [6]byte{} {
 		t.Fatalf("memset result %v", output)
 	}
-	value := (*nativeChar)(unsafe.Pointer(c.Str("native libc")))
-	if got := c.NativeStrlen(value); got != 11 {
+	value := c.Str("native libc")
+	if got := c.Strlen(value); got != 11 {
 		t.Fatalf("strlen = %d, want 11", got)
 	}
 }
@@ -32,19 +32,19 @@ func TestGeneratedStdioCalls(t *testing.T) {
 		t.Fatal("tmpfile returned nil")
 	}
 	defer func() {
-		if result := c.NativeFclose(stream); result != 0 {
+		if result := c.Fclose(stream); result != 0 {
 			t.Errorf("fclose = %d", result)
 		}
 	}()
 	input := [6]byte{0, 1, 127, 128, 254, 255}
 	var output [6]byte
-	if got := c.NativeFwrite(unsafe.Pointer(&input[0]), 1, 6, stream); got != 6 {
+	if got := c.Fwrite(unsafe.Pointer(&input[0]), 1, 6, stream); got != 6 {
 		t.Fatalf("fwrite = %d", got)
 	}
 	if got := c.Fseek(stream, 0, 0); got != 0 {
 		t.Fatalf("fseek = %d", got)
 	}
-	if got := c.NativeFread(unsafe.Pointer(&output[0]), 1, 6, stream); got != 6 {
+	if got := c.Fread(unsafe.Pointer(&output[0]), 1, 6, stream); got != 6 {
 		t.Fatalf("fread = %d", got)
 	}
 	if output != input {

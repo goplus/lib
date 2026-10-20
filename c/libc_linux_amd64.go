@@ -9,11 +9,6 @@ import (
 	"unsafe"
 )
 
-// Allocate a block that will be freed when the calling function exits.
-//
-//go:linkname NativeAlloca C.alloca
-func NativeAlloca(__size SizeT) unsafe.Pointer
-
 // This prints an "Assertion failed" message and aborts.
 //
 //go:linkname X__AssertFail C.__assert_fail
@@ -248,13 +243,6 @@ const FNM_NOMATCH = 1
 //
 //go:linkname Fnmatch C.fnmatch
 func Fnmatch(__pattern *Char, __name *Char, __flags Int) Int
-
-// Many other libraries have conflicting prototypes for getopt, with
-// differences in the consts, in stdlib.h.  To avoid compilation
-// errors, only prototype getopt for the GNU C library.
-//
-//go:linkname NativeGetopt C.getopt
-func NativeGetopt(___argc Int, ___argv **Char, __shortopts *Char) Int
 
 // Decimal notation.
 const (
@@ -793,16 +781,6 @@ const PTmpdir = "/tmp"
 
 type FposT = X_GFposT
 
-// NativeRemove file FILENAME.
-//
-//go:linkname NativeRemove C.remove
-func NativeRemove(__filename *Char) Int
-
-// NativeRename file OLD to NEW.
-//
-//go:linkname NativeRename C.rename
-func NativeRename(__old *Char, __new *Char) Int
-
 // Rename file OLD relative to OLDFD to NEW relative to NEWFD.
 //
 //go:linkname Renameat C.renameat
@@ -835,22 +813,6 @@ func TmpnamR(__s *Char) *Char
 //go:linkname Tempnam C.tempnam
 func Tempnam(__dir *Char, __pfx *Char) *Char
 
-// Close STREAM.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFclose C.fclose
-func NativeFclose(__stream *FILE) Int
-
-// Flush STREAM, or all streams if STREAM is NULL.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFflush C.fflush
-func NativeFflush(__stream *FILE) Int
-
 // Faster versions when locking is not required.
 //
 // This function is not part of POSIX and therefore no official
@@ -860,14 +822,6 @@ func NativeFflush(__stream *FILE) Int
 //
 //go:linkname FflushUnlocked C.fflush_unlocked
 func FflushUnlocked(__stream *FILE) Int
-
-// Open a file and create a new stream for it.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFopen C.fopen
-func NativeFopen(__filename *Char, __modes *Char) *FILE
 
 // Open a file, replacing an existing stream with it.
 //
@@ -917,32 +871,6 @@ func Setbuffer(__stream *FILE, __buf *Char, __size SizeT)
 //
 //go:linkname Setlinebuf C.setlinebuf
 func Setlinebuf(__stream *FILE)
-
-// Write formatted output to STREAM.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFprintf C.fprintf
-func NativeFprintf(__stream *FILE, __format *Char, __llgo_va_list ...any) Int
-
-// Write formatted output to stdout.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativePrintf C.printf
-func NativePrintf(__format *Char, __llgo_va_list ...any) Int
-
-// Write formatted output to S.
-//
-//go:linkname NativeSprintf C.sprintf
-func NativeSprintf(__s *Char, __format *Char, __llgo_va_list ...any) Int
-
-// Maximum chars of output to write in MAXLEN.
-//
-//go:linkname NativeSnprintf C.snprintf
-func NativeSnprintf(__s *Char, __maxlen SizeT, __format *Char, __llgo_va_list ...any) Int
 
 //go:linkname Dprintf C.dprintf
 func Dprintf(__fd Int, __fmt *Char, __llgo_va_list ...any) Int
@@ -1007,17 +935,6 @@ func GetcharUnlocked() Int
 //
 //go:linkname FgetcUnlocked C.fgetc_unlocked
 func FgetcUnlocked(__stream *FILE) Int
-
-// Write a character to STREAM.
-//
-// These functions are possible cancellation points and therefore not
-// marked with __THROW.
-//
-// These functions is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFputc C.fputc
-func NativeFputc(__c Int, __stream *FILE) Int
 
 //go:linkname Putc C.putc
 func Putc(__c Int, __stream *FILE) Int
@@ -1098,14 +1015,6 @@ func Getdelim(__lineptr **Char, __n *SizeT, __delimiter Int, __stream *FILE) Lon
 //go:linkname Getline C.getline
 func Getline(__lineptr **Char, __n *SizeT, __stream *FILE) Long
 
-// Write a string to STREAM.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFputs C.fputs
-func NativeFputs(__s *Char, __stream *FILE) Int
-
 // Write a string, followed by a newline, to stdout.
 //
 // This function is a possible cancellation point and therefore not
@@ -1121,22 +1030,6 @@ func Puts(__s *Char) Int
 //
 //go:linkname Ungetc C.ungetc
 func Ungetc(__c Int, __stream *FILE) Int
-
-// Read chunks of generic data from STREAM.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFread C.fread
-func NativeFread(__ptr unsafe.Pointer, __size SizeT, __n SizeT, __stream *FILE) SizeT
-
-// Write chunks of generic data to STREAM.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativeFwrite C.fwrite
-func NativeFwrite(__ptr unsafe.Pointer, __size SizeT, __n SizeT, __s *FILE) SizeT
 
 // Faster versions when locking is not necessary.
 //
@@ -1236,14 +1129,6 @@ func FeofUnlocked(__stream *FILE) Int
 //
 //go:linkname FerrorUnlocked C.ferror_unlocked
 func FerrorUnlocked(__stream *FILE) Int
-
-// Print a message describing the meaning of the value of errno.
-//
-// This function is a possible cancellation point and therefore not
-// marked with __THROW.
-//
-//go:linkname NativePerror C.perror
-func NativePerror(__s *Char)
 
 // Return the system file descriptor for STREAM.
 //
@@ -1351,11 +1236,6 @@ func X__CtypeGetMbCurMax() SizeT
 //go:linkname Atof C.atof
 func Atof(__nptr *Char) Double
 
-// Convert a string to an integer.
-//
-//go:linkname NativeAtoi C.atoi
-func NativeAtoi(__nptr *Char) Int
-
 // Convert a string to a long integer.
 //
 //go:linkname Atol C.atol
@@ -1452,11 +1332,6 @@ func InitstateR(__seed Uint, __statebuf *Char, __statelen SizeT, __buf *RandomDa
 //go:linkname SetstateR C.setstate_r
 func SetstateR(__statebuf *Char, __buf *RandomData) Int
 
-// Return a random integer between 0 and RAND_MAX inclusive.
-//
-//go:linkname NativeRand C.rand
-func NativeRand() Int
-
 // Seed the random number generator with the given number.
 //
 //go:linkname Srand C.srand
@@ -1543,28 +1418,6 @@ func Seed48R(__seed16v *uint16, __buffer *Drand48Data) Int
 //go:linkname Lcong48R C.lcong48_r
 func Lcong48R(__param *uint16, __buffer *Drand48Data) Int
 
-// Allocate SIZE bytes of memory.
-//
-//go:linkname NativeMalloc C.malloc
-func NativeMalloc(__size SizeT) unsafe.Pointer
-
-// Allocate NMEMB elements of SIZE bytes each, all initialized to 0.
-//
-//go:linkname NativeCalloc C.calloc
-func NativeCalloc(__nmemb SizeT, __size SizeT) unsafe.Pointer
-
-// __attribute_malloc__ is not used, because if realloc returns
-// the same pointer that was passed to it, aliasing needs to be allowed
-// between objects pointed by the old and new pointers.
-//
-//go:linkname NativeRealloc C.realloc
-func NativeRealloc(__ptr unsafe.Pointer, __size SizeT) unsafe.Pointer
-
-// NativeFree a block allocated by `malloc', `realloc' or `calloc'.
-//
-//go:linkname NativeFree C.free
-func NativeFree(__ptr unsafe.Pointer)
-
 // Free a block.  An alias for `free'.	(Sun Unices).
 //
 //go:linkname Cfree C.cfree
@@ -1599,13 +1452,6 @@ func AtQuickExit(__func llcppgCallback1) Int
 //go:linkname OnExit C.on_exit
 func OnExit(__func llcppgCallback0, __arg unsafe.Pointer) Int
 
-// Call all functions registered with `atexit' and `on_exit',
-// in the reverse of the order in which they were registered,
-// perform stdio cleanup, and terminate program execution with STATUS.
-//
-//go:linkname NativeExit C.exit
-func NativeExit(__status Int)
-
 // Call all functions registered with `at_quick_exit' in the reverse
 // of the order in which they were registered and terminate program
 // execution with STATUS.
@@ -1618,35 +1464,6 @@ func QuickExit(__status Int)
 //
 //go:linkname X_Exit C._Exit
 func X_Exit(__status Int)
-
-// Return the value of envariable NAME, or NULL if it doesn't exist.
-//
-//go:linkname NativeGetenv C.getenv
-func NativeGetenv(__name *Char) *Char
-
-// Put STRING, which is of the form "NAME=VALUE", in the environment.
-// If there is no `=', remove NAME from the environment.
-//
-//go:linkname NativePutenv C.putenv
-func NativePutenv(__string *Char) Int
-
-// Set NAME to VALUE in the environment.
-// If REPLACE is nonzero, overwrite an existing value.
-//
-//go:linkname NativeSetenv C.setenv
-func NativeSetenv(__name *Char, __value *Char, __replace Int) Int
-
-// Remove the variable NAME from the environment.
-//
-//go:linkname NativeUnsetenv C.unsetenv
-func NativeUnsetenv(__name *Char) Int
-
-// The `clearenv' was planned to be added to POSIX.1 but probably
-// never made it.  Nevertheless the POSIX.9 standard (POSIX bindings
-// for Fortran 77) requires this function.
-//
-//go:linkname NativeClearenv C.clearenv
-func NativeClearenv() Int
 
 // Generate a unique temporary file name from TEMPLATE.
 // The last six characters of TEMPLATE must be "XXXXXX";
@@ -1698,12 +1515,6 @@ func Realpath(__name *Char, __resolved *Char) *Char
 //
 //go:linkname Bsearch C.bsearch
 func Bsearch(__key unsafe.Pointer, __base unsafe.Pointer, __nmemb SizeT, __size SizeT, __compar X__ComparFnT) unsafe.Pointer
-
-// Sort NMEMB elements of BASE, of SIZE bytes each,
-// using COMPAR to perform the comparisons.
-//
-//go:linkname NativeQsort C.qsort
-func NativeQsort(__base unsafe.Pointer, __nmemb SizeT, __size SizeT, __compar X__ComparFnT)
 
 // Return the absolute value of X.
 //
@@ -1818,62 +1629,8 @@ func Getsubopt(__optionp **Char, __tokens **Char, __valuep **Char) Int
 //go:linkname Getloadavg C.getloadavg
 func Getloadavg(__loadavg *Double, __nelem Int) Int
 
-// Copy N bytes of SRC to DEST.
-//
-//go:linkname NativeMemcpy C.memcpy
-func NativeMemcpy(__dest unsafe.Pointer, __src unsafe.Pointer, __n SizeT) unsafe.Pointer
-
-// Copy N bytes of SRC to DEST, guaranteeing
-// correct behavior for overlapping strings.
-//
-//go:linkname NativeMemmove C.memmove
-func NativeMemmove(__dest unsafe.Pointer, __src unsafe.Pointer, __n SizeT) unsafe.Pointer
-
 //go:linkname Memccpy C.memccpy
 func Memccpy(__dest unsafe.Pointer, __src unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
-
-// Set N bytes of S to C.
-//
-//go:linkname NativeMemset C.memset
-func NativeMemset(__s unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
-
-// Compare N bytes of S1 and S2.
-//
-//go:linkname NativeMemcmp C.memcmp
-func NativeMemcmp(__s1 unsafe.Pointer, __s2 unsafe.Pointer, __n SizeT) Int
-
-//go:linkname NativeMemchr C.memchr
-func NativeMemchr(__s unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
-
-// Copy SRC to DEST.
-//
-//go:linkname NativeStrcpy C.strcpy
-func NativeStrcpy(__dest *Char, __src *Char) *Char
-
-// Copy no more than N characters of SRC to DEST.
-//
-//go:linkname NativeStrncpy C.strncpy
-func NativeStrncpy(__dest *Char, __src *Char, __n SizeT) *Char
-
-// Append SRC onto DEST.
-//
-//go:linkname NativeStrcat C.strcat
-func NativeStrcat(__dest *Char, __src *Char) *Char
-
-// Append no more than N characters from SRC onto DEST.
-//
-//go:linkname NativeStrncat C.strncat
-func NativeStrncat(__dest *Char, __src *Char, __n SizeT) *Char
-
-// Compare S1 and S2.
-//
-//go:linkname NativeStrcmp C.strcmp
-func NativeStrcmp(__s1 *Char, __s2 *Char) Int
-
-// Compare N characters of S1 and S2.
-//
-//go:linkname NativeStrncmp C.strncmp
-func NativeStrncmp(__s1 *Char, __s2 *Char, __n SizeT) Int
 
 // Compare the collated forms of S1 and S2.
 //
@@ -1895,20 +1652,6 @@ func StrcollL(__s1 *Char, __s2 *Char, __l X__LocaleT) Int
 //go:linkname StrxfrmL C.strxfrm_l
 func StrxfrmL(__dest *Char, __src *Char, __n SizeT, __l X__LocaleT) SizeT
 
-// Duplicate S, returning an identical malloc'd string.
-//
-//go:linkname NativeStrdup C.strdup
-func NativeStrdup(__s *Char) *Char
-
-//go:linkname NativeStrndup C.strndup
-func NativeStrndup(__string *Char, __n SizeT) *Char
-
-//go:linkname NativeStrchr C.strchr
-func NativeStrchr(__s *Char, __c Int) *Char
-
-//go:linkname NativeStrrchr C.strrchr
-func NativeStrrchr(__s *Char, __c Int) *Char
-
 // Return the length of the initial segment of S which
 // consists entirely of characters not in REJECT.
 //
@@ -1924,14 +1667,6 @@ func Strspn(__s *Char, __accept *Char) SizeT
 //go:linkname Strpbrk C.strpbrk
 func Strpbrk(__s *Char, __accept *Char) *Char
 
-//go:linkname NativeStrstr C.strstr
-func NativeStrstr(__haystack *Char, __needle *Char) *Char
-
-// Divide S into tokens separated by characters in DELIM.
-//
-//go:linkname NativeStrtok C.strtok
-func NativeStrtok(__s *Char, __delim *Char) *Char
-
 // Divide S into tokens separated by characters in DELIM.  Information
 // passed between calls are stored in SAVE_PTR.
 //
@@ -1941,21 +1676,11 @@ func X__StrtokR(__s *Char, __delim *Char, __save_ptr **Char) *Char
 //go:linkname StrtokR C.strtok_r
 func StrtokR(__s *Char, __delim *Char, __save_ptr **Char) *Char
 
-// Return the length of S.
-//
-//go:linkname NativeStrlen C.strlen
-func NativeStrlen(__s *Char) SizeT
-
 // Find the length of STRING, but scan at most MAXLEN characters.
 // If no '\0' terminator is found in that many characters, return MAXLEN.
 //
 //go:linkname Strnlen C.strnlen
 func Strnlen(__string *Char, __maxlen SizeT) SizeT
-
-// Return a string describing the meaning of the `errno' code in ERRNUM.
-//
-//go:linkname NativeStrerror C.strerror
-func NativeStrerror(__errnum Int) *Char
 
 //go:linkname StrerrorR C.__xpg_strerror_r
 func StrerrorR(__errnum Int, __buf *Char, __buflen SizeT) Int
@@ -1985,9 +1710,6 @@ func Bzero(__s unsafe.Pointer, __n SizeT)
 //
 //go:linkname Bcmp C.bcmp
 func Bcmp(__s1 unsafe.Pointer, __s2 unsafe.Pointer, __n SizeT) Int
-
-//go:linkname NativeIndex C.index
-func NativeIndex(__s *Char, __c Int) *Char
 
 //go:linkname Rindex C.rindex
 func Rindex(__s *Char, __c Int) *Char
