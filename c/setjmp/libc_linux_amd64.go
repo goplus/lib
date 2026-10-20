@@ -12,11 +12,24 @@ import (
 
 type X__JmpBuf = [8]c.Long
 
+// llgo:link (*X__JmpBufTag).NativeX__Sigsetjmp C.__sigsetjmp
+func (self *X__JmpBufTag) NativeX__Sigsetjmp(__savemask c.Int) c.Int {
+	return 0
+}
+
 // Calling environment, plus possibly a saved signal mask.
 type X__JmpBufTag struct {
 	X__Jmpbuf       X__JmpBuf
 	X__MaskWasSaved c.Int
 	X__SavedMask    llsignal.SigsetT
+}
+
+// Store the calling environment in ENV, also saving the signal mask.
+// Return 0.
+//
+// llgo:link (*X__JmpBufTag).NativeSetjmp C.setjmp
+func (self *X__JmpBufTag) NativeSetjmp() c.Int {
+	return 0
 }
 
 // Store the calling environment in ENV, not saving the signal mask.
@@ -27,10 +40,26 @@ func (self *X__JmpBufTag) X_setjmp() c.Int {
 	return 0
 }
 
+// Jump to the environment saved in ENV, making the
+// `setjmp' call there return VAL, or 1 if VAL is 0.
+//
+// llgo:link (*X__JmpBufTag).NativeLongjmp C.longjmp
+func (self *X__JmpBufTag) NativeLongjmp(__val c.Int) {
+}
+
 // Same.  Usually `_longjmp' is used with `_setjmp', which does not save
 // the signal mask.  But it is how ENV was saved that determines whether
 // `longjmp' restores the mask; `_longjmp' is just an alias.
 //
 // llgo:link (*X__JmpBufTag).X_longjmp C._longjmp
 func (self *X__JmpBufTag) X_longjmp(__val c.Int) {
+}
+
+// Jump to the environment saved in ENV, making the
+// sigsetjmp call there return VAL, or 1 if VAL is 0.
+// Restore the signal mask if that sigsetjmp call saved it.
+// This is just an alias `longjmp'.
+//
+// llgo:link (*X__JmpBufTag).NativeSiglongjmp C.siglongjmp
+func (self *X__JmpBufTag) NativeSiglongjmp(__val c.Int) {
 }

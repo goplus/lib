@@ -1,2 +1,4 @@
 T __jmp_buf X__JmpBuf
 T __jmp_buf_tag X__JmpBufTag
+T jmp_buf JmpBuf
+T sigjmp_buf SigjmpBuf

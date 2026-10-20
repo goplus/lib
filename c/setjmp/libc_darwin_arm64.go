@@ -10,8 +10,23 @@ import (
 	_ "unsafe"
 )
 
+//go:linkname NativeSetjmp C.setjmp
+func NativeSetjmp(_llcppg_param1 *c.Int) c.Int
+
+//go:linkname NativeLongjmp C.longjmp
+func NativeLongjmp(_llcppg_param1 *c.Int, _llcppg_param2 c.Int)
+
 //go:linkname X_setjmp C._setjmp
-func X_setjmp(_llcppg_param1 JmpBuf) c.Int
+func X_setjmp(_llcppg_param1 *c.Int) c.Int
 
 //go:linkname X_longjmp C._longjmp
-func X_longjmp(_llcppg_param1 JmpBuf, _llcppg_param2 c.Int)
+func X_longjmp(_llcppg_param1 *c.Int, _llcppg_param2 c.Int)
+
+//go:linkname NativeSigsetjmp C.sigsetjmp
+func NativeSigsetjmp(_llcppg_param1 *c.Int, _llcppg_param2 c.Int) c.Int
+
+//go:linkname NativeSiglongjmp C.siglongjmp
+func NativeSiglongjmp(_llcppg_param1 *c.Int, _llcppg_param2 c.Int)
+
+//go:linkname Longjmperror C.longjmperror
+func Longjmperror()
