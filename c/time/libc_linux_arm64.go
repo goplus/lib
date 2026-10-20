@@ -28,25 +28,23 @@ type TimerT = X__TimerT
 // Time used by the program so far (user time + system time).
 // The result / CLOCKS_PER_SECOND is program time in seconds.
 //
-//go:linkname NativeClock C.clock
-func NativeClock() ClockT
+//go:linkname Clock C.clock
+func Clock() ClockT
 
 // Return the current time and put it in *TIMER if TIMER is not NULL.
 //
-//go:linkname NativeTime C.time
-func NativeTime(__timer *TimeT) TimeT
+//go:linkname Time C.time
+func Time(__timer *TimeT) TimeT
 
 // Return the difference between TIME1 and TIME0.
 //
-//go:linkname NativeDifftime C.difftime
-func NativeDifftime(__time1 TimeT, __time0 TimeT) c.Double
+//go:linkname Difftime C.difftime
+func Difftime(__time1 TimeT, __time0 TimeT) c.Double
 
 // Return the `time_t' representation of TP and normalize TP.
 //
-// llgo:link (*Tm).NativeMktime C.mktime
-func (self *Tm) NativeMktime() TimeT {
-	return 0
-}
+//go:linkname Mktime C.mktime
+func Mktime(self *Tm) TimeT
 
 // Format TP into S according to FORMAT.
 // Write no more than MAXSIZE characters and return the number
@@ -61,14 +59,14 @@ func StrftimeL(__s *uint8, __maxsize c.SizeT, __format *uint8, __tp *Tm, __loc c
 // Return the `struct tm' representation of *TIMER
 // in Universal Coordinated Time (aka Greenwich Mean Time).
 //
-//go:linkname NativeGmtime C.gmtime
-func NativeGmtime(__timer *TimeT) *Tm
+//go:linkname Gmtime C.gmtime
+func Gmtime(__timer *TimeT) *Tm
 
 // Return the `struct tm' representation
 // of *TIMER in the local timezone.
 //
-//go:linkname NativeLocaltime C.localtime
-func NativeLocaltime(__timer *TimeT) *Tm
+//go:linkname Localtime C.localtime
+func Localtime(__timer *TimeT) *Tm
 
 // Return the `struct tm' representation of *TIMER in UTC,
 // using *TP to store the result.
@@ -159,18 +157,18 @@ func (self *Timespec) Nanosleep(__remaining *Timespec) c.Int {
 
 // Get resolution of clock CLOCK_ID.
 //
-//go:linkname NativeClockGetres C.clock_getres
-func NativeClockGetres(__clock_id ClockidT, __res *Timespec) c.Int
+//go:linkname ClockGetres C.clock_getres
+func ClockGetres(__clock_id ClockidT, __res *Timespec) c.Int
 
 // Get current value of clock CLOCK_ID and store it in TP.
 //
-//go:linkname NativeClockGettime C.clock_gettime
-func NativeClockGettime(__clock_id ClockidT, __tp *Timespec) c.Int
+//go:linkname ClockGettime C.clock_gettime
+func ClockGettime(__clock_id ClockidT, __tp *Timespec) c.Int
 
 // Set clock CLOCK_ID to value TP.
 //
-//go:linkname NativeClockSettime C.clock_settime
-func NativeClockSettime(__clock_id ClockidT, __tp *Timespec) c.Int
+//go:linkname ClockSettime C.clock_settime
+func ClockSettime(__clock_id ClockidT, __tp *Timespec) c.Int
 
 // High-resolution sleep with the specified clock.
 //
