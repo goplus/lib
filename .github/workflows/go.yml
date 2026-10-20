@@ -45,9 +45,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: xgo-dev/llgo
-        # Includes the merged stdcall support required by the direct Winsock
-        # declarations while keeping this library test independent of R9.
-        ref: 6fc2ef150f95d8b9331433f325fcb1b6ee5ad4e4
+        # Includes C-prefixed native variable bindings as well as stdcall.
+        ref: 9959a7f6dd1c36f205f2bc9da78463caf021b5d9
         path: .llgo
 
     - name: Set up LLGo dependencies
@@ -58,15 +57,12 @@ jobs:
     - name: Build LLGo
       working-directory: .llgo
       run: |
-        # Stable LLGo predates the default-version switch, but its source can
-        # build against system LLVM 22 through the released binding package.
+        # Use the LLVM binding version declared by the pinned compiler.
         llvm_version="$(llvm-config --version)"
         test "${llvm_version%%.*}" = 22
         export CGO_CPPFLAGS="$(llvm-config --cflags)"
         export CGO_CXXFLAGS="$(llvm-config --cxxflags)"
         export CGO_LDFLAGS="$(llvm-config --ldflags --libs --system-libs)"
-        go mod edit -require=github.com/xgo-dev/llvm@v0.9.8
-        go mod download github.com/xgo-dev/llvm@v0.9.8
         go build -tags=dev,byollvm -o "$RUNNER_TEMP/llgo" ./cmd/llgo
 
     - name: Test LLGo native bindings

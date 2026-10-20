@@ -8,3 +8,8 @@ LLGo Standard Libraries
 <!--
 [![Coverage Status](https://codecov.io/gh/goplus/lib/branch/main/graph/badge.svg)](https://codecov.io/gh/goplus/lib)
 -->
+
+Native C bindings use the `C.` linkname prefix for both functions and variables.
+This revision requires LLGo with
+[C-prefixed variable support](https://github.com/xgo-dev/llgo/pull/2882);
+older compilers do not recognize the prefix on variables.
