@@ -9,6 +9,99 @@ import (
 	"unsafe"
 )
 
+// Allocate a block that will be freed when the calling function exits.
+//
+//go:linkname NativeAlloca C.alloca
+func NativeAlloca(__size SizeT) unsafe.Pointer
+
+// This prints an "Assertion failed" message and aborts.
+//
+//go:linkname X__AssertFail C.__assert_fail
+func X__AssertFail(__assertion *uint8, __file *uint8, __line Uint, __function *uint8)
+
+// Likewise, but prints the error text for ERRNUM.
+//
+//go:linkname X__AssertPerrorFail C.__assert_perror_fail
+func X__AssertPerrorFail(__errnum Int, __file *uint8, __line Uint, __function *uint8)
+
+// The following is not at all used here but needed for standard
+// compliance.
+//
+//go:linkname X__Assert C.__assert
+func X__Assert(__assertion *uint8, __file *uint8, __line Int)
+
+// Function to get address of global `errno' variable.
+//
+//go:linkname X__ErrnoLocation C.__errno_location
+func X__ErrnoLocation() *Int
+
+// Data structure to describe CPU mask.
+type CpuSetT struct {
+	X__Bits [16]Ulong
+}
+
+//go:linkname X__SchedCpucount C.__sched_cpucount
+func X__SchedCpucount(__setsize SizeT, __setp *CpuSetT) Int
+
+// Ignore
+//
+//go:linkname X__SchedCpualloc C.__sched_cpualloc
+func X__SchedCpualloc(__count SizeT) *CpuSetT
+
+// llgo:link (*CpuSetT).X__SchedCpufree C.__sched_cpufree
+func (self *CpuSetT) X__SchedCpufree() {
+}
+
+// Structure describing messages sent by
+// `sendmsg' and received by `recvmsg'.
+type Msghdr struct {
+	MsgName       unsafe.Pointer
+	MsgNamelen    Uint
+	MsgIov        *Iovec
+	MsgIovlen     SizeT
+	MsgControl    unsafe.Pointer
+	MsgControllen SizeT
+	MsgFlags      Int
+}
+
+// Structure used for storage of ancillary data object information.
+type Cmsghdr struct {
+	CmsgLen   SizeT
+	CmsgLevel Int
+	CmsgType  Int
+}
+
+// llgo:link (*Msghdr).X__CmsgNxthdr C.__cmsg_nxthdr
+func (self *Msghdr) X__CmsgNxthdr(__cmsg *Cmsghdr) *Cmsghdr {
+	return nil
+}
+
+// These are defined in ctype-info.
+// The declarations here must match those in localeinfo.h.
+//
+// In the thread-specific locale model (see `uselocale' in <locale.h>)
+// we cannot use global variables for these as was done in the past.
+// Instead, the following accessor functions return the address of
+// each variable, which is local to the current thread if multithreaded.
+//
+// These point into arrays of 384, so they can be indexed by any `unsigned
+// char' value [0,255]; by EOF (-1); or by any `signed char' value
+// [-128,-1).  ISO C requires that the ctype functions work for `unsigned
+// char' values and for EOF; we also support negative `signed char' values
+// for broken old programs.  The case conversion arrays are of `int's
+// rather than `unsigned char's because tolower (EOF) must be EOF, which
+// doesn't fit into an `unsigned char'.  But today more important is that
+// the arrays are also used for multi-byte character sets.
+//
+//go:linkname X__CtypeBLoc C.__ctype_b_loc
+func X__CtypeBLoc() **uint16
+
+//go:linkname X__CtypeTolowerLoc C.__ctype_tolower_loc
+func X__CtypeTolowerLoc() **Int
+
+//go:linkname X__CtypeToupperLoc C.__ctype_toupper_loc
+func X__CtypeToupperLoc() **Int
+
 // The following names are all functions:
 // int isCHARACTERISTIC(int c);
 // which return nonzero iff C has CHARACTERISTIC.
@@ -122,8 +215,18 @@ func IsxdigitL(_llcppg_param1 Int, _llcppg_param2 X__LocaleT) Int
 //go:linkname IsblankL C.isblank_l
 func IsblankL(_llcppg_param1 Int, _llcppg_param2 X__LocaleT) Int
 
+// Return the lowercase version of C in locale L.
+//
+//go:linkname X__TolowerL C.__tolower_l
+func X__TolowerL(__c Int, __l X__LocaleT) Int
+
 //go:linkname TolowerL C.tolower_l
 func TolowerL(__c Int, __l X__LocaleT) Int
+
+// Return the uppercase version of C.
+//
+//go:linkname X__ToupperL C.__toupper_l
+func X__ToupperL(__c Int, __l X__LocaleT) Int
 
 //go:linkname ToupperL C.toupper_l
 func ToupperL(__c Int, __l X__LocaleT) Int
@@ -145,6 +248,13 @@ const FNM_NOMATCH = 1
 //
 //go:linkname Fnmatch C.fnmatch
 func Fnmatch(__pattern *uint8, __name *uint8, __flags Int) Int
+
+// Many other libraries have conflicting prototypes for getopt, with
+// differences in the consts, in stdlib.h.  To avoid compilation
+// errors, only prototype getopt for the GNU C library.
+//
+//go:linkname NativeGetopt C.getopt
+func NativeGetopt(___argc Int, ___argv **uint8, __shortopts *uint8) Int
 
 // Decimal notation.
 const (
@@ -351,6 +461,129 @@ func Wcstoumax(__nptr *Uint, __endptr **Uint, __base Int) Ulong
 //go:linkname Dirname C.dirname
 func Dirname(__path *uint8) *uint8
 
+// Return final component of PATH.
+//
+// This is the weird XPG version of this function.  It sometimes will
+// modify its argument.  Therefore we normally use the GNU version (in
+// <string.h>) and only if this header is included make the XPG
+// version available under the real name.
+//
+//go:linkname X__XpgBasename C.__xpg_basename
+func X__XpgBasename(__path *uint8) *uint8
+
+type X_IO_marker struct {
+	X_next *X_IO_marker
+	X_sbuf *X_IO_FILE
+	X_pos  Int
+}
+
+type X_IO_FILE struct {
+	X_flags          Int
+	X_IO_read_ptr    *uint8
+	X_IO_read_end    *uint8
+	X_IO_read_base   *uint8
+	X_IO_write_base  *uint8
+	X_IO_write_ptr   *uint8
+	X_IO_write_end   *uint8
+	X_IO_buf_base    *uint8
+	X_IO_buf_end     *uint8
+	X_IO_save_base   *uint8
+	X_IO_backup_base *uint8
+	X_IO_save_end    *uint8
+	X_markers        *X_IO_marker
+	X_chain          *X_IO_FILE
+	X_fileno         Int
+	X_flags2         Int
+	X_oldOffset      Long
+	X_curColumn      uint16
+	X_vtableOffset   int8
+	X_shortbuf       [1]uint8
+	X_lock           *Void
+	X_offset         Long
+	X__Pad1          unsafe.Pointer
+	X__Pad2          unsafe.Pointer
+	X__Pad3          unsafe.Pointer
+	X__Pad4          unsafe.Pointer
+	X__Pad5          SizeT
+	X_mode           Int
+	X_unused2        [20]uint8
+}
+
+// llgo:link (*X_IO_FILE).X__Underflow C.__underflow
+func (self *X_IO_FILE) X__Underflow() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X__Uflow C.__uflow
+func (self *X_IO_FILE) X__Uflow() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X__Overflow C.__overflow
+func (self *X_IO_FILE) X__Overflow(_llcppg_param2 Int) Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_getc C._IO_getc
+func (self *X_IO_FILE) X_IO_getc() Int {
+	return 0
+}
+
+//go:linkname X_IO_putc C._IO_putc
+func X_IO_putc(__c Int, __fp *X_IO_FILE) Int
+
+// llgo:link (*X_IO_FILE).X_IO_feof C._IO_feof
+func (self *X_IO_FILE) X_IO_feof() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_ferror C._IO_ferror
+func (self *X_IO_FILE) X_IO_ferror() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_peekc_locked C._IO_peekc_locked
+func (self *X_IO_FILE) X_IO_peekc_locked() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_flockfile C._IO_flockfile
+func (self *X_IO_FILE) X_IO_flockfile() {
+}
+
+// llgo:link (*X_IO_FILE).X_IO_funlockfile C._IO_funlockfile
+func (self *X_IO_FILE) X_IO_funlockfile() {
+}
+
+// llgo:link (*X_IO_FILE).X_IO_ftrylockfile C._IO_ftrylockfile
+func (self *X_IO_FILE) X_IO_ftrylockfile() Int {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_padn C._IO_padn
+func (self *X_IO_FILE) X_IO_padn(_llcppg_param2 Int, _llcppg_param3 Long) Long {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_sgetn C._IO_sgetn
+func (self *X_IO_FILE) X_IO_sgetn(_llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT) SizeT {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_seekoff C._IO_seekoff
+func (self *X_IO_FILE) X_IO_seekoff(_llcppg_param2 Long, _llcppg_param3 Int, _llcppg_param4 Int) Long {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_seekpos C._IO_seekpos
+func (self *X_IO_FILE) X_IO_seekpos(_llcppg_param2 Long, _llcppg_param3 Int) Long {
+	return 0
+}
+
+// llgo:link (*X_IO_FILE).X_IO_free_backup_area C._IO_free_backup_area
+func (self *X_IO_FILE) X_IO_free_backup_area() {
+}
+
 // Maximum length of any multibyte character in any locale.
 // We define this value here since the gcc header does not define
 // the correct value.
@@ -466,6 +699,38 @@ func (self X__LocaleT) Uselocale() X__LocaleT {
 	return self
 }
 
+type Rpcent struct {
+	RName    *uint8
+	RAliases **uint8
+	RNumber  Int
+}
+
+//go:linkname Setrpcent C.setrpcent
+func Setrpcent(__stayopen Int)
+
+//go:linkname Endrpcent C.endrpcent
+func Endrpcent()
+
+//go:linkname Getrpcbyname C.getrpcbyname
+func Getrpcbyname(__name *uint8) *Rpcent
+
+//go:linkname Getrpcbynumber C.getrpcbynumber
+func Getrpcbynumber(__number Int) *Rpcent
+
+//go:linkname Getrpcent C.getrpcent
+func Getrpcent() *Rpcent
+
+//go:linkname GetrpcbynameR C.getrpcbyname_r
+func GetrpcbynameR(__name *uint8, __result_buf *Rpcent, __buffer *uint8, __buflen SizeT, __result **Rpcent) Int
+
+//go:linkname GetrpcbynumberR C.getrpcbynumber_r
+func GetrpcbynumberR(__number Int, __result_buf *Rpcent, __buffer *uint8, __buflen SizeT, __result **Rpcent) Int
+
+// llgo:link (*Rpcent).GetrpcentR C.getrpcent_r
+func (self *Rpcent) GetrpcentR(__buffer *uint8, __buflen SizeT, __result **Rpcent) Int {
+	return 0
+}
+
 // Minimum of signed integral types.
 const (
 	INT8_MIN  = -128
@@ -528,6 +793,16 @@ const PTmpdir = "/tmp"
 
 type FposT = X_GFposT
 
+// NativeRemove file FILENAME.
+//
+//go:linkname NativeRemove C.remove
+func NativeRemove(__filename *uint8) Int
+
+// NativeRename file OLD to NEW.
+//
+//go:linkname NativeRename C.rename
+func NativeRename(__old *uint8, __new *uint8) Int
+
 // Rename file OLD relative to OLDFD to NEW relative to NEWFD.
 //
 //go:linkname Renameat C.renameat
@@ -560,6 +835,22 @@ func TmpnamR(__s *uint8) *uint8
 //go:linkname Tempnam C.tempnam
 func Tempnam(__dir *uint8, __pfx *uint8) *uint8
 
+// Close STREAM.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFclose C.fclose
+func NativeFclose(__stream *FILE) Int
+
+// Flush STREAM, or all streams if STREAM is NULL.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFflush C.fflush
+func NativeFflush(__stream *FILE) Int
+
 // Faster versions when locking is not required.
 //
 // This function is not part of POSIX and therefore no official
@@ -569,6 +860,14 @@ func Tempnam(__dir *uint8, __pfx *uint8) *uint8
 //
 //go:linkname FflushUnlocked C.fflush_unlocked
 func FflushUnlocked(__stream *FILE) Int
+
+// Open a file and create a new stream for it.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFopen C.fopen
+func NativeFopen(__filename *uint8, __modes *uint8) *FILE
 
 // Open a file, replacing an existing stream with it.
 //
@@ -618,6 +917,32 @@ func Setbuffer(__stream *FILE, __buf *uint8, __size SizeT)
 //
 //go:linkname Setlinebuf C.setlinebuf
 func Setlinebuf(__stream *FILE)
+
+// Write formatted output to STREAM.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFprintf C.fprintf
+func NativeFprintf(__stream *FILE, __format *uint8, __llgo_va_list ...any) Int
+
+// Write formatted output to stdout.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativePrintf C.printf
+func NativePrintf(__format *uint8, __llgo_va_list ...any) Int
+
+// Write formatted output to S.
+//
+//go:linkname NativeSprintf C.sprintf
+func NativeSprintf(__s *uint8, __format *uint8, __llgo_va_list ...any) Int
+
+// Maximum chars of output to write in MAXLEN.
+//
+//go:linkname NativeSnprintf C.snprintf
+func NativeSnprintf(__s *uint8, __maxlen SizeT, __format *uint8, __llgo_va_list ...any) Int
 
 //go:linkname Dprintf C.dprintf
 func Dprintf(__fd Int, __fmt *uint8, __llgo_va_list ...any) Int
@@ -683,6 +1008,17 @@ func GetcharUnlocked() Int
 //go:linkname FgetcUnlocked C.fgetc_unlocked
 func FgetcUnlocked(__stream *FILE) Int
 
+// Write a character to STREAM.
+//
+// These functions are possible cancellation points and therefore not
+// marked with __THROW.
+//
+// These functions is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFputc C.fputc
+func NativeFputc(__c Int, __stream *FILE) Int
+
 //go:linkname Putc C.putc
 func Putc(__c Int, __stream *FILE) Int
 
@@ -733,6 +1069,20 @@ func Putw(__w Int, __stream *FILE) Int
 //go:linkname Fgets C.fgets
 func Fgets(__s *uint8, __n Int, __stream *FILE) *uint8
 
+// Read up to (and including) a DELIMITER from STREAM into *LINEPTR
+// (and null-terminate it). *LINEPTR is a pointer returned from malloc (or
+// NULL), pointing to *N characters of space.  It is realloc'd as
+// necessary.  Returns the number of characters read (not including the
+// null terminator), or -1 on error or EOF.
+//
+// These functions are not part of POSIX and therefore no official
+// cancellation point.  But due to similarity with an POSIX interface
+// or due to the implementation they are cancellation points and
+// therefore not marked with __THROW.
+//
+//go:linkname X__Getdelim C.__getdelim
+func X__Getdelim(__lineptr **uint8, __n *SizeT, __delimiter Int, __stream *FILE) Long
+
 // Ignore
 //
 //go:linkname Getdelim C.getdelim
@@ -747,6 +1097,14 @@ func Getdelim(__lineptr **uint8, __n *SizeT, __delimiter Int, __stream *FILE) Lo
 //
 //go:linkname Getline C.getline
 func Getline(__lineptr **uint8, __n *SizeT, __stream *FILE) Long
+
+// Write a string to STREAM.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFputs C.fputs
+func NativeFputs(__s *uint8, __stream *FILE) Int
 
 // Write a string, followed by a newline, to stdout.
 //
@@ -763,6 +1121,22 @@ func Puts(__s *uint8) Int
 //
 //go:linkname Ungetc C.ungetc
 func Ungetc(__c Int, __stream *FILE) Int
+
+// Read chunks of generic data from STREAM.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFread C.fread
+func NativeFread(__ptr unsafe.Pointer, __size SizeT, __n SizeT, __stream *FILE) SizeT
+
+// Write chunks of generic data to STREAM.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFwrite C.fwrite
+func NativeFwrite(__ptr unsafe.Pointer, __size SizeT, __n SizeT, __s *FILE) SizeT
 
 // Faster versions when locking is not necessary.
 //
@@ -863,6 +1237,14 @@ func FeofUnlocked(__stream *FILE) Int
 //go:linkname FerrorUnlocked C.ferror_unlocked
 func FerrorUnlocked(__stream *FILE) Int
 
+// Print a message describing the meaning of the value of errno.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativePerror C.perror
+func NativePerror(__s *uint8)
+
 // Return the system file descriptor for STREAM.
 //
 //go:linkname Fileno C.fileno
@@ -942,13 +1324,37 @@ type Drand48Data struct {
 	X__A    UlongLong
 }
 
+// Register a function to be called when `exit' is called.
+//
+// llgo:type C
+type llcppgCallback2 = func()
+
+// llgo:type C
+type llcppgCallback1 = func()
+
+// Register a function to be called with the status
+// given to `exit' and the given argument.
+//
+// llgo:type C
+type llcppgCallback0 = func(_llcppg_param1 Int, _llcppg_param2 unsafe.Pointer)
+
 // llgo:type C
 type X__ComparFnT = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// Ignore
+//
+//go:linkname X__CtypeGetMbCurMax C.__ctype_get_mb_cur_max
+func X__CtypeGetMbCurMax() SizeT
 
 // Convert a string to a floating-point number.
 //
 //go:linkname Atof C.atof
 func Atof(__nptr *uint8) Double
+
+// Convert a string to an integer.
+//
+//go:linkname NativeAtoi C.atoi
+func NativeAtoi(__nptr *uint8) Int
 
 // Convert a string to a long integer.
 //
@@ -1046,6 +1452,11 @@ func InitstateR(__seed Uint, __statebuf *uint8, __statelen SizeT, __buf *RandomD
 //go:linkname SetstateR C.setstate_r
 func SetstateR(__statebuf *uint8, __buf *RandomData) Int
 
+// Return a random integer between 0 and RAND_MAX inclusive.
+//
+//go:linkname NativeRand C.rand
+func NativeRand() Int
+
 // Seed the random number generator with the given number.
 //
 //go:linkname Srand C.srand
@@ -1132,6 +1543,28 @@ func Seed48R(__seed16v *uint16, __buffer *Drand48Data) Int
 //go:linkname Lcong48R C.lcong48_r
 func Lcong48R(__param *uint16, __buffer *Drand48Data) Int
 
+// Allocate SIZE bytes of memory.
+//
+//go:linkname NativeMalloc C.malloc
+func NativeMalloc(__size SizeT) unsafe.Pointer
+
+// Allocate NMEMB elements of SIZE bytes each, all initialized to 0.
+//
+//go:linkname NativeCalloc C.calloc
+func NativeCalloc(__nmemb SizeT, __size SizeT) unsafe.Pointer
+
+// __attribute_malloc__ is not used, because if realloc returns
+// the same pointer that was passed to it, aliasing needs to be allowed
+// between objects pointed by the old and new pointers.
+//
+//go:linkname NativeRealloc C.realloc
+func NativeRealloc(__ptr unsafe.Pointer, __size SizeT) unsafe.Pointer
+
+// NativeFree a block allocated by `malloc', `realloc' or `calloc'.
+//
+//go:linkname NativeFree C.free
+func NativeFree(__ptr unsafe.Pointer)
+
 // Free a block.  An alias for `free'.	(Sun Unices).
 //
 //go:linkname Cfree C.cfree
@@ -1157,19 +1590,21 @@ func AlignedAlloc(__alignment SizeT, __size SizeT) unsafe.Pointer
 //go:linkname Abort C.abort
 func Abort()
 
-// Register a function to be called when `exit' is called.
-//
 //go:linkname Atexit C.atexit
-func Atexit(__func func()) Int
+func Atexit(__func llcppgCallback2) Int
 
 //go:linkname AtQuickExit C.at_quick_exit
-func AtQuickExit(__func func()) Int
+func AtQuickExit(__func llcppgCallback1) Int
 
-// Register a function to be called with the status
-// given to `exit' and the given argument.
-//
 //go:linkname OnExit C.on_exit
-func OnExit(__func func(_llcppg_param1 Int, _llcppg_param2 unsafe.Pointer), __arg unsafe.Pointer) Int
+func OnExit(__func llcppgCallback0, __arg unsafe.Pointer) Int
+
+// Call all functions registered with `atexit' and `on_exit',
+// in the reverse of the order in which they were registered,
+// perform stdio cleanup, and terminate program execution with STATUS.
+//
+//go:linkname NativeExit C.exit
+func NativeExit(__status Int)
 
 // Call all functions registered with `at_quick_exit' in the reverse
 // of the order in which they were registered and terminate program
@@ -1183,6 +1618,35 @@ func QuickExit(__status Int)
 //
 //go:linkname X_Exit C._Exit
 func X_Exit(__status Int)
+
+// Return the value of envariable NAME, or NULL if it doesn't exist.
+//
+//go:linkname NativeGetenv C.getenv
+func NativeGetenv(__name *uint8) *uint8
+
+// Put STRING, which is of the form "NAME=VALUE", in the environment.
+// If there is no `=', remove NAME from the environment.
+//
+//go:linkname NativePutenv C.putenv
+func NativePutenv(__string *uint8) Int
+
+// Set NAME to VALUE in the environment.
+// If REPLACE is nonzero, overwrite an existing value.
+//
+//go:linkname NativeSetenv C.setenv
+func NativeSetenv(__name *uint8, __value *uint8, __replace Int) Int
+
+// Remove the variable NAME from the environment.
+//
+//go:linkname NativeUnsetenv C.unsetenv
+func NativeUnsetenv(__name *uint8) Int
+
+// The `clearenv' was planned to be added to POSIX.1 but probably
+// never made it.  Nevertheless the POSIX.9 standard (POSIX bindings
+// for Fortran 77) requires this function.
+//
+//go:linkname NativeClearenv C.clearenv
+func NativeClearenv() Int
 
 // Generate a unique temporary file name from TEMPLATE.
 // The last six characters of TEMPLATE must be "XXXXXX";
@@ -1234,6 +1698,12 @@ func Realpath(__name *uint8, __resolved *uint8) *uint8
 //
 //go:linkname Bsearch C.bsearch
 func Bsearch(__key unsafe.Pointer, __base unsafe.Pointer, __nmemb SizeT, __size SizeT, __compar X__ComparFnT) unsafe.Pointer
+
+// Sort NMEMB elements of BASE, of SIZE bytes each,
+// using COMPAR to perform the comparisons.
+//
+//go:linkname NativeQsort C.qsort
+func NativeQsort(__base unsafe.Pointer, __nmemb SizeT, __size SizeT, __compar X__ComparFnT)
 
 // Return the absolute value of X.
 //
@@ -1348,13 +1818,72 @@ func Getsubopt(__optionp **uint8, __tokens **uint8, __valuep **uint8) Int
 //go:linkname Getloadavg C.getloadavg
 func Getloadavg(__loadavg *Double, __nelem Int) Int
 
+// Copy N bytes of SRC to DEST.
+//
+//go:linkname NativeMemcpy C.memcpy
+func NativeMemcpy(__dest unsafe.Pointer, __src unsafe.Pointer, __n SizeT) unsafe.Pointer
+
+// Copy N bytes of SRC to DEST, guaranteeing
+// correct behavior for overlapping strings.
+//
+//go:linkname NativeMemmove C.memmove
+func NativeMemmove(__dest unsafe.Pointer, __src unsafe.Pointer, __n SizeT) unsafe.Pointer
+
 //go:linkname Memccpy C.memccpy
 func Memccpy(__dest unsafe.Pointer, __src unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
+
+// Set N bytes of S to C.
+//
+//go:linkname NativeMemset C.memset
+func NativeMemset(__s unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
+
+// Compare N bytes of S1 and S2.
+//
+//go:linkname NativeMemcmp C.memcmp
+func NativeMemcmp(__s1 unsafe.Pointer, __s2 unsafe.Pointer, __n SizeT) Int
+
+//go:linkname NativeMemchr C.memchr
+func NativeMemchr(__s unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
+
+// Copy SRC to DEST.
+//
+//go:linkname NativeStrcpy C.strcpy
+func NativeStrcpy(__dest *uint8, __src *uint8) *uint8
+
+// Copy no more than N characters of SRC to DEST.
+//
+//go:linkname NativeStrncpy C.strncpy
+func NativeStrncpy(__dest *uint8, __src *uint8, __n SizeT) *uint8
+
+// Append SRC onto DEST.
+//
+//go:linkname NativeStrcat C.strcat
+func NativeStrcat(__dest *uint8, __src *uint8) *uint8
+
+// Append no more than N characters from SRC onto DEST.
+//
+//go:linkname NativeStrncat C.strncat
+func NativeStrncat(__dest *uint8, __src *uint8, __n SizeT) *uint8
+
+// Compare S1 and S2.
+//
+//go:linkname NativeStrcmp C.strcmp
+func NativeStrcmp(__s1 *uint8, __s2 *uint8) Int
+
+// Compare N characters of S1 and S2.
+//
+//go:linkname NativeStrncmp C.strncmp
+func NativeStrncmp(__s1 *uint8, __s2 *uint8, __n SizeT) Int
 
 // Compare the collated forms of S1 and S2.
 //
 //go:linkname Strcoll C.strcoll
 func Strcoll(__s1 *uint8, __s2 *uint8) Int
+
+// Put a transformation of SRC into no more than N bytes of DEST.
+//
+//go:linkname Strxfrm C.strxfrm
+func Strxfrm(__dest *uint8, __src *uint8, __n SizeT) SizeT
 
 // Compare the collated forms of S1 and S2 using rules from L.
 //
@@ -1366,17 +1895,67 @@ func StrcollL(__s1 *uint8, __s2 *uint8, __l X__LocaleT) Int
 //go:linkname StrxfrmL C.strxfrm_l
 func StrxfrmL(__dest *uint8, __src *uint8, __n SizeT, __l X__LocaleT) SizeT
 
+// Duplicate S, returning an identical malloc'd string.
+//
+//go:linkname NativeStrdup C.strdup
+func NativeStrdup(__s *uint8) *uint8
+
+//go:linkname NativeStrndup C.strndup
+func NativeStrndup(__string *uint8, __n SizeT) *uint8
+
+//go:linkname NativeStrchr C.strchr
+func NativeStrchr(__s *uint8, __c Int) *uint8
+
+//go:linkname NativeStrrchr C.strrchr
+func NativeStrrchr(__s *uint8, __c Int) *uint8
+
+// Return the length of the initial segment of S which
+// consists entirely of characters not in REJECT.
+//
+//go:linkname Strcspn C.strcspn
+func Strcspn(__s *uint8, __reject *uint8) SizeT
+
+// Return the length of the initial segment of S which
+// consists entirely of characters in ACCEPT.
+//
+//go:linkname Strspn C.strspn
+func Strspn(__s *uint8, __accept *uint8) SizeT
+
 //go:linkname Strpbrk C.strpbrk
 func Strpbrk(__s *uint8, __accept *uint8) *uint8
 
+//go:linkname NativeStrstr C.strstr
+func NativeStrstr(__haystack *uint8, __needle *uint8) *uint8
+
+// Divide S into tokens separated by characters in DELIM.
+//
+//go:linkname NativeStrtok C.strtok
+func NativeStrtok(__s *uint8, __delim *uint8) *uint8
+
+// Divide S into tokens separated by characters in DELIM.  Information
+// passed between calls are stored in SAVE_PTR.
+//
+//go:linkname X__StrtokR C.__strtok_r
+func X__StrtokR(__s *uint8, __delim *uint8, __save_ptr **uint8) *uint8
+
 //go:linkname StrtokR C.strtok_r
 func StrtokR(__s *uint8, __delim *uint8, __save_ptr **uint8) *uint8
+
+// Return the length of S.
+//
+//go:linkname NativeStrlen C.strlen
+func NativeStrlen(__s *uint8) SizeT
 
 // Find the length of STRING, but scan at most MAXLEN characters.
 // If no '\0' terminator is found in that many characters, return MAXLEN.
 //
 //go:linkname Strnlen C.strnlen
 func Strnlen(__string *uint8, __maxlen SizeT) SizeT
+
+// Return a string describing the meaning of the `errno' code in ERRNUM.
+//
+//go:linkname NativeStrerror C.strerror
+func NativeStrerror(__errnum Int) *uint8
 
 //go:linkname StrerrorR C.__xpg_strerror_r
 func StrerrorR(__errnum Int, __buf *uint8, __buflen SizeT) Int
@@ -1385,6 +1964,12 @@ func StrerrorR(__errnum Int, __buf *uint8, __buflen SizeT) Int
 //
 //go:linkname StrerrorL C.strerror_l
 func StrerrorL(__errnum Int, __l X__LocaleT) *uint8
+
+// We define this function always since `bzero' is sometimes needed when
+// the namespace rules does not allow this.
+//
+//go:linkname X__Bzero C.__bzero
+func X__Bzero(__s unsafe.Pointer, __n SizeT)
 
 // Copy N bytes of SRC to DEST (like memmove, but args reversed).
 //
@@ -1434,8 +2019,19 @@ func Strsep(__stringp **uint8, __delim *uint8) *uint8
 //go:linkname Strsignal C.strsignal
 func Strsignal(__sig Int) *uint8
 
+// Copy SRC to DEST, returning the address of the terminating '\0' in DEST.
+//
+//go:linkname X__Stpcpy C.__stpcpy
+func X__Stpcpy(__dest *uint8, __src *uint8) *uint8
+
 //go:linkname Stpcpy C.stpcpy
 func Stpcpy(__dest *uint8, __src *uint8) *uint8
+
+// Copy no more than N characters of SRC to DEST, returning the address of
+// the last character written into DEST.
+//
+//go:linkname X__Stpncpy C.__stpncpy
+func X__Stpncpy(__dest *uint8, __src *uint8, __n SizeT) *uint8
 
 //go:linkname Stpncpy C.stpncpy
 func Stpncpy(__dest *uint8, __src *uint8, __n SizeT) *uint8
@@ -1443,18 +2039,18 @@ func Stpncpy(__dest *uint8, __src *uint8, __n SizeT) *uint8
 // Conversion state information.
 type X__MbstateT struct {
 	X__Count Int
-	X__Value _llcppg_anon_7
+	X__Value _llcppg_anon_8
 }
 
-type _llcppg_anon_7 struct {
+type _llcppg_anon_8 struct {
 	_xgo_union [1]uint32
 }
 
-func (p *_llcppg_anon_7) XGof_ref___wch() *Uint {
+func (p *_llcppg_anon_8) XGof_ref___wch() *Uint {
 	return (*Uint)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_7) XGof_ref___wchb() *[4]uint8 {
+func (p *_llcppg_anon_8) XGof_ref___wchb() *[4]uint8 {
 	return (*[4]uint8)(unsafe.Pointer(p))
 }
 

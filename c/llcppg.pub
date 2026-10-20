@@ -5,14 +5,19 @@ D github.com/goplus/lib/c/time
 D github.com/goplus/lib/c/types
 T FILE FILE
 T _G_fpos_t X_GFposT
+T _IO_FILE X_IO_FILE
+T _IO_marker X_IO_marker
 T __compar_fn_t X__ComparFnT
 T __locale_data X__LocaleData
 T __locale_struct X__LocaleStruct
 T __locale_t X__LocaleT
 T __mbstate_t X__MbstateT
+T _malloc_zone_t X_mallocZoneT
 T char16_t Char16T
 T char32_t Char32T
 T char8_t Char8T
+T cmsghdr Cmsghdr
+T cpu_set_t CpuSetT
 T div_t DivT
 T drand48_data Drand48Data
 T fpos_t FposT
@@ -29,9 +34,12 @@ T lconv Lconv
 T ldiv_t LdivT
 T lldiv_t LldivT
 T locale_t LocaleT
+T malloc_zone_t MallocZoneT
+T msghdr Msghdr
 T option Option
 T ptrdiff_t PtrdiffT
 T random_data RandomData
+T rpcent Rpcent
 T size_t SizeT
 T ssize_t SsizeT
 T uint16_t Uint16T

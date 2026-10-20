@@ -9,6 +9,14 @@ import (
 	"unsafe"
 )
 
+// built-in for gcc
+//
+//go:linkname NativeAlloca C.alloca
+func NativeAlloca(_llcppg_param1 SizeT) unsafe.Pointer
+
+//go:linkname X__AssertRtn C.__assert_rtn
+func X__AssertRtn(_llcppg_param1 *Char, _llcppg_param2 *Char, _llcppg_param3 Int, _llcppg_param4 *Char)
+
 // Match failed.
 const FNM_NOMATCH = 1
 
@@ -198,6 +206,33 @@ func BasenameR(_llcppg_param1 *Char, _llcppg_param2 *Char) *Char
 //go:linkname DirnameR C.dirname_r
 func DirnameR(_llcppg_param1 *Char, _llcppg_param2 *Char) *Char
 
+//go:linkname X_OSSwapInt16 C._llcppg__OSSwapInt16
+func X_OSSwapInt16(_data Uint16T) Uint16T
+
+//go:linkname X_OSSwapInt32 C._llcppg__OSSwapInt32
+func X_OSSwapInt32(_data Uint) Uint
+
+//go:linkname X_OSSwapInt64 C._llcppg__OSSwapInt64
+func X_OSSwapInt64(_data UlongLong) UlongLong
+
+//go:linkname OSReadSwapInt16 C._llcppg_OSReadSwapInt16
+func OSReadSwapInt16(_base unsafe.Pointer, _offset UintptrT) Uint16T
+
+//go:linkname OSReadSwapInt32 C._llcppg_OSReadSwapInt32
+func OSReadSwapInt32(_base unsafe.Pointer, _offset UintptrT) Uint
+
+//go:linkname OSReadSwapInt64 C._llcppg_OSReadSwapInt64
+func OSReadSwapInt64(_base unsafe.Pointer, _offset UintptrT) UlongLong
+
+//go:linkname OSWriteSwapInt16 C._llcppg_OSWriteSwapInt16
+func OSWriteSwapInt16(_base unsafe.Pointer, _offset UintptrT, _data Uint16T)
+
+//go:linkname OSWriteSwapInt32 C._llcppg_OSWriteSwapInt32
+func OSWriteSwapInt32(_base unsafe.Pointer, _offset UintptrT, _data Uint)
+
+//go:linkname OSWriteSwapInt64 C._llcppg_OSWriteSwapInt64
+func OSWriteSwapInt64(_base unsafe.Pointer, _offset UintptrT, _data UlongLong)
+
 const (
 	PTHREAD_DESTRUCTOR_ITERATIONS = 4
 	PTHREAD_KEYS_MAX              = 512
@@ -232,6 +267,96 @@ const (
 
 //go:linkname Setlocale C.setlocale
 func Setlocale(_llcppg_param1 Int, _llcppg_param2 *Char) *Char
+
+//go:linkname NativeMalloc C.malloc
+func NativeMalloc(__size SizeT) unsafe.Pointer
+
+//go:linkname NativeCalloc C.calloc
+func NativeCalloc(__count SizeT, __size SizeT) unsafe.Pointer
+
+//go:linkname NativeFree C.free
+func NativeFree(_llcppg_param1 unsafe.Pointer)
+
+//go:linkname NativeRealloc C.realloc
+func NativeRealloc(__ptr unsafe.Pointer, __size SizeT) unsafe.Pointer
+
+//go:linkname Valloc C.valloc
+func Valloc(_llcppg_param1 SizeT) unsafe.Pointer
+
+//go:linkname AlignedAlloc C.aligned_alloc
+func AlignedAlloc(__alignment SizeT, __size SizeT) unsafe.Pointer
+
+//go:linkname PosixMemalign C.posix_memalign
+func PosixMemalign(__memptr *unsafe.Pointer, __alignment SizeT, __size SizeT) Int
+
+type X_mallocZoneT struct {
+}
+
+type MallocZoneT X_mallocZoneT
+
+//go:linkname MallocTypeMalloc C.malloc_type_malloc
+func MallocTypeMalloc(size SizeT, type_id UlongLong) unsafe.Pointer
+
+//go:linkname MallocTypeCalloc C.malloc_type_calloc
+func MallocTypeCalloc(count SizeT, size SizeT, type_id UlongLong) unsafe.Pointer
+
+//go:linkname MallocTypeFree C.malloc_type_free
+func MallocTypeFree(ptr unsafe.Pointer, type_id UlongLong)
+
+//go:linkname MallocTypeRealloc C.malloc_type_realloc
+func MallocTypeRealloc(ptr unsafe.Pointer, size SizeT, type_id UlongLong) unsafe.Pointer
+
+//go:linkname MallocTypeValloc C.malloc_type_valloc
+func MallocTypeValloc(size SizeT, type_id UlongLong) unsafe.Pointer
+
+//go:linkname MallocTypeAlignedAlloc C.malloc_type_aligned_alloc
+func MallocTypeAlignedAlloc(alignment SizeT, size SizeT, type_id UlongLong) unsafe.Pointer
+
+// __alloc_size(3)
+//
+//go:linkname MallocTypePosixMemalign C.malloc_type_posix_memalign
+func MallocTypePosixMemalign(memptr *unsafe.Pointer, alignment SizeT, size SizeT, type_id UlongLong) Int
+
+// llgo:link (*MallocZoneT).MallocTypeZoneMalloc C.malloc_type_zone_malloc
+func (self *MallocZoneT) MallocTypeZoneMalloc(size SizeT, type_id UlongLong) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link (*MallocZoneT).MallocTypeZoneCalloc C.malloc_type_zone_calloc
+func (self *MallocZoneT) MallocTypeZoneCalloc(count SizeT, size SizeT, type_id UlongLong) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link (*MallocZoneT).MallocTypeZoneFree C.malloc_type_zone_free
+func (self *MallocZoneT) MallocTypeZoneFree(ptr unsafe.Pointer, type_id UlongLong) {
+}
+
+// llgo:link (*MallocZoneT).MallocTypeZoneRealloc C.malloc_type_zone_realloc
+func (self *MallocZoneT) MallocTypeZoneRealloc(ptr unsafe.Pointer, size SizeT, type_id UlongLong) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link (*MallocZoneT).MallocTypeZoneValloc C.malloc_type_zone_valloc
+func (self *MallocZoneT) MallocTypeZoneValloc(size SizeT, type_id UlongLong) unsafe.Pointer {
+	return nil
+}
+
+// llgo:link (*MallocZoneT).MallocTypeZoneMemalign C.malloc_type_zone_memalign
+func (self *MallocZoneT) MallocTypeZoneMemalign(alignment SizeT, size SizeT, type_id UlongLong) unsafe.Pointer {
+	return nil
+}
+
+//go:linkname X__SprintfChk C.__sprintf_chk
+func X__SprintfChk(_llcppg_param1 *Char, _llcppg_param2 Int, _llcppg_param3 SizeT, _llcppg_param4 *Char, __llgo_va_list ...any) Int
+
+//go:linkname X__SnprintfChk C.__snprintf_chk
+func X__SnprintfChk(_llcppg_param1 *Char, _llcppg_param2 SizeT, _llcppg_param3 Int, _llcppg_param4 SizeT, _llcppg_param5 *Char, __llgo_va_list ...any) Int
+
+//go:linkname X__VsprintfChk C.__vsprintf_chk
+func X__VsprintfChk(_llcppg_param1 *Char, _llcppg_param2 Int, _llcppg_param3 SizeT, _llcppg_param4 *Char, _llcppg_param5 VaList) Int
+
+//go:linkname X__VsnprintfChk C.__vsnprintf_chk
+func X__VsnprintfChk(_llcppg_param1 *Char, _llcppg_param2 SizeT, _llcppg_param3 Int, _llcppg_param4 SizeT, _llcppg_param5 *Char, _llcppg_param6 VaList) Int
 
 // 7.18.2.1 Limits of exact-width integer types
 const (
@@ -330,14 +455,34 @@ const (
 // size for ctermid(); PATH_MAX
 const LCtermid = 1024
 
+// Stdio function-access interface.
+//
+// llgo:type C
+type llcppgCallback8 = func(_llcppg_param1 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback9 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 LongLong, _llcppg_param3 Int) LongLong
+
+// llgo:type C
+type llcppgCallback10 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *Char, _llcppg_param3 Int) Int
+
+// llgo:type C
+type llcppgCallback11 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *Char, _llcppg_param3 Int) Int
+
 //go:linkname Clearerr C.clearerr
 func Clearerr(_llcppg_param1 *FILE)
+
+//go:linkname NativeFclose C.fclose
+func NativeFclose(_llcppg_param1 *FILE) Int
 
 //go:linkname Feof C.feof
 func Feof(_llcppg_param1 *FILE) Int
 
 //go:linkname Ferror C.ferror
 func Ferror(_llcppg_param1 *FILE) Int
+
+//go:linkname NativeFflush C.fflush
+func NativeFflush(_llcppg_param1 *FILE) Int
 
 //go:linkname Fgetc C.fgetc
 func Fgetc(_llcppg_param1 *FILE) Int
@@ -347,6 +492,21 @@ func Fgetpos(_llcppg_param1 *FILE, _llcppg_param2 *LongLong) Int
 
 //go:linkname Fgets C.fgets
 func Fgets(_llcppg_param1 *Char, _llcppg_param2 Int, _llcppg_param3 *FILE) *Char
+
+//go:linkname NativeFopen C.fopen
+func NativeFopen(__filename *Char, __mode *Char) *FILE
+
+//go:linkname NativeFprintf C.fprintf
+func NativeFprintf(_llcppg_param1 *FILE, _llcppg_param2 *Char, __llgo_va_list ...any) Int
+
+//go:linkname NativeFputc C.fputc
+func NativeFputc(_llcppg_param1 Int, _llcppg_param2 *FILE) Int
+
+//go:linkname NativeFputs C.fputs
+func NativeFputs(_llcppg_param1 *Char, _llcppg_param2 *FILE) Int
+
+//go:linkname NativeFread C.fread
+func NativeFread(__ptr unsafe.Pointer, __size SizeT, __nitems SizeT, __stream *FILE) SizeT
 
 //go:linkname Freopen C.freopen
 func Freopen(_llcppg_param1 *Char, _llcppg_param2 *Char, _llcppg_param3 *FILE) *FILE
@@ -363,6 +523,9 @@ func Fsetpos(_llcppg_param1 *FILE, _llcppg_param2 *LongLong) Int
 //go:linkname Ftell C.ftell
 func Ftell(_llcppg_param1 *FILE) Long
 
+//go:linkname NativeFwrite C.fwrite
+func NativeFwrite(__ptr unsafe.Pointer, __size SizeT, __nitems SizeT, __stream *FILE) SizeT
+
 //go:linkname Getc C.getc
 func Getc(_llcppg_param1 *FILE) Int
 
@@ -372,6 +535,12 @@ func Getchar() Int
 //go:linkname Gets C.gets
 func Gets(_llcppg_param1 *Char) *Char
 
+//go:linkname NativePerror C.perror
+func NativePerror(_llcppg_param1 *Char)
+
+//go:linkname NativePrintf C.printf
+func NativePrintf(_llcppg_param1 *Char, __llgo_va_list ...any) Int
+
 //go:linkname Putc C.putc
 func Putc(_llcppg_param1 Int, _llcppg_param2 *FILE) Int
 
@@ -380,6 +549,12 @@ func Putchar(_llcppg_param1 Int) Int
 
 //go:linkname Puts C.puts
 func Puts(_llcppg_param1 *Char) Int
+
+//go:linkname NativeRemove C.remove
+func NativeRemove(_llcppg_param1 *Char) Int
+
+//go:linkname NativeRename C.rename
+func NativeRename(__old *Char, __new *Char) Int
 
 //go:linkname Rewind C.rewind
 func Rewind(_llcppg_param1 *FILE)
@@ -392,6 +567,9 @@ func Setbuf(_llcppg_param1 *FILE, _llcppg_param2 *Char)
 
 //go:linkname Setvbuf C.setvbuf
 func Setvbuf(_llcppg_param1 *FILE, _llcppg_param2 *Char, _llcppg_param3 Int, _llcppg_param4 SizeT) Int
+
+//go:linkname NativeSprintf C.sprintf
+func NativeSprintf(_llcppg_param1 *Char, _llcppg_param2 *Char, __llgo_va_list ...any) Int
 
 //go:linkname Sscanf C.sscanf
 func Sscanf(_llcppg_param1 *Char, _llcppg_param2 *Char, __llgo_va_list ...any) Int
@@ -416,6 +594,18 @@ func Pclose(_llcppg_param1 *FILE) Int
 
 //go:linkname Popen C.popen
 func Popen(_llcppg_param1 *Char, _llcppg_param2 *Char) *FILE
+
+//go:linkname X__Srget C.__srget
+func X__Srget(_llcppg_param1 *FILE) Int
+
+//go:linkname X__Svfscanf C.__svfscanf
+func X__Svfscanf(_llcppg_param1 *FILE, _llcppg_param2 *Char, _llcppg_param3 VaList) Int
+
+//go:linkname X__Swbuf C.__swbuf
+func X__Swbuf(_llcppg_param1 Int, _llcppg_param2 *FILE) Int
+
+//go:linkname X__Sputc C._llcppg___sputc
+func X__Sputc(_c Int, _p *FILE) Int
 
 //go:linkname Flockfile C.flockfile
 func Flockfile(_llcppg_param1 *FILE)
@@ -452,6 +642,9 @@ func Fseeko(__stream *FILE, __offset LongLong, __whence Int) Int
 
 //go:linkname Ftello C.ftello
 func Ftello(__stream *FILE) LongLong
+
+//go:linkname NativeSnprintf C.snprintf
+func NativeSnprintf(__str *Char, __size SizeT, __format *Char, __llgo_va_list ...any) Int
 
 //go:linkname Dprintf C.dprintf
 func Dprintf(_llcppg_param1 Int, _llcppg_param2 *Char, __llgo_va_list ...any) Int
@@ -497,10 +690,8 @@ func Setbuffer(_llcppg_param1 *FILE, _llcppg_param2 *Char, _llcppg_param3 Int)
 //go:linkname Setlinebuf C.setlinebuf
 func Setlinebuf(_llcppg_param1 *FILE) Int
 
-// Stdio function-access interface.
-//
 //go:linkname Funopen C.funopen
-func Funopen(_llcppg_param1 unsafe.Pointer, _llcppg_param2 func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *Char, _llcppg_param3 Int) Int, _llcppg_param3 func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 *Char, _llcppg_param3 Int) Int, _llcppg_param4 func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 LongLong, _llcppg_param3 Int) LongLong, _llcppg_param5 func(_llcppg_param1 unsafe.Pointer) Int) *FILE
+func Funopen(_llcppg_param1 unsafe.Pointer, _llcppg_param2 llcppgCallback11, _llcppg_param3 llcppgCallback10, _llcppg_param4 llcppgCallback9, _llcppg_param5 llcppgCallback8) *FILE
 
 const (
 	EXIT_FAILURE = 1
@@ -509,6 +700,32 @@ const (
 
 const RAND_MAX = 2147483647
 
+// llgo:type C
+type llcppgCallback7 = func()
+
+// llgo:type C
+type llcppgCallback6 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// posix_memalign is now declared in _malloc.h
+//
+// llgo:type C
+type llcppgCallback5 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback4 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback3 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback2 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback1 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer) Int
+
+// llgo:type C
+type llcppgCallback0 = func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer) Int
+
 //go:linkname Abort C.abort
 func Abort()
 
@@ -516,10 +733,13 @@ func Abort()
 func Abs(_llcppg_param1 Int) Int
 
 //go:linkname Atexit C.atexit
-func Atexit(_llcppg_param1 func()) Int
+func Atexit(_llcppg_param1 llcppgCallback7) Int
 
 //go:linkname Atof C.atof
 func Atof(_llcppg_param1 *Char) Double
+
+//go:linkname NativeAtoi C.atoi
+func NativeAtoi(_llcppg_param1 *Char) Int
 
 //go:linkname Atol C.atol
 func Atol(_llcppg_param1 *Char) Long
@@ -530,12 +750,22 @@ func Atoll(_llcppg_param1 *Char) LongLong
 // calloc is now declared in _malloc.h
 //
 //go:linkname Bsearch C.bsearch
-func Bsearch(__key unsafe.Pointer, __base unsafe.Pointer, __nel SizeT, __width SizeT, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int) unsafe.Pointer
+func Bsearch(__key unsafe.Pointer, __base unsafe.Pointer, __nel SizeT, __width SizeT, __compar llcppgCallback6) unsafe.Pointer
 
 // calloc is now declared in _malloc.h
 //
 //go:linkname Div C.div
 func Div(_llcppg_param1 Int, _llcppg_param2 Int) DivT
+
+// free is now declared in _malloc.h
+//
+//go:linkname NativeExit C.exit
+func NativeExit(_llcppg_param1 Int)
+
+// free is now declared in _malloc.h
+//
+//go:linkname NativeGetenv C.getenv
+func NativeGetenv(_llcppg_param1 *Char) *Char
 
 //go:linkname Labs C.labs
 func Labs(_llcppg_param1 Long) Long
@@ -562,6 +792,14 @@ func Mbstowcs(_llcppg_param1 *Int, _llcppg_param2 *Char, _llcppg_param3 SizeT) S
 //go:linkname Mbtowc C.mbtowc
 func Mbtowc(_llcppg_param1 *Int, _llcppg_param2 *Char, _llcppg_param3 SizeT) Int
 
+//go:linkname NativeQsort C.qsort
+func NativeQsort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar llcppgCallback5)
+
+// realloc is now declared in _malloc.h
+//
+//go:linkname NativeRand C.rand
+func NativeRand() Int
+
 // realloc is now declared in _malloc.h
 //
 //go:linkname Srand C.srand
@@ -575,6 +813,9 @@ func Strtof(_llcppg_param1 *Char, _llcppg_param2 **Char) Float
 
 //go:linkname Strtol C.strtol
 func Strtol(__str *Char, __endptr **Char, __base Int) Long
+
+//go:linkname Strtold C.strtold
+func Strtold(_llcppg_param1 *Char, _llcppg_param2 **Char) LongDouble
 
 //go:linkname Strtoll C.strtoll
 func Strtoll(__str *Char, __endptr **Char, __base Int) LongLong
@@ -665,6 +906,9 @@ func Ptsname(_llcppg_param1 Int) *Char
 //go:linkname PtsnameR C.ptsname_r
 func PtsnameR(fildes Int, buffer *Char, buflen SizeT) Int
 
+//go:linkname NativePutenv C.putenv
+func NativePutenv(_llcppg_param1 *Char) Int
+
 //go:linkname Random C.random
 func Random() Long
 
@@ -676,6 +920,9 @@ func Realpath(_llcppg_param1 *Char, _llcppg_param2 *Char) *Char
 
 //go:linkname Seed48 C.seed48
 func Seed48(_llcppg_param1 *uint16) *uint16
+
+//go:linkname NativeSetenv C.setenv
+func NativeSetenv(__name *Char, __value *Char, __overwrite Int) Int
 
 //go:linkname Setkey C.setkey
 func Setkey(_llcppg_param1 *Char)
@@ -691,6 +938,9 @@ func Srandom(_llcppg_param1 Uint)
 
 //go:linkname Unlockpt C.unlockpt
 func Unlockpt(_llcppg_param1 Int) Int
+
+//go:linkname NativeUnsetenv C.unsetenv
+func NativeUnsetenv(_llcppg_param1 *Char) Int
 
 //go:linkname Arc4random C.arc4random
 func Arc4random() Uint
@@ -761,19 +1011,19 @@ func Getprogname() *Char
 func Setprogname(_llcppg_param1 *Char)
 
 //go:linkname Heapsort C.heapsort
-func Heapsort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int) Int
+func Heapsort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar llcppgCallback4) Int
 
 //go:linkname Mergesort C.mergesort
-func Mergesort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int) Int
+func Mergesort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar llcppgCallback3) Int
 
 //go:linkname Psort C.psort
-func Psort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer) Int)
+func Psort(__base unsafe.Pointer, __nel SizeT, __width SizeT, __compar llcppgCallback2)
 
 //go:linkname PsortR C.psort_r
-func PsortR(__base unsafe.Pointer, __nel SizeT, __width SizeT, _llcppg_param4 unsafe.Pointer, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer) Int)
+func PsortR(__base unsafe.Pointer, __nel SizeT, __width SizeT, _llcppg_param4 unsafe.Pointer, __compar llcppgCallback1)
 
 //go:linkname QsortR C.qsort_r
-func QsortR(__base unsafe.Pointer, __nel SizeT, __width SizeT, _llcppg_param4 unsafe.Pointer, __compar func(_llcppg_param1 unsafe.Pointer, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer) Int)
+func QsortR(__base unsafe.Pointer, __nel SizeT, __width SizeT, _llcppg_param4 unsafe.Pointer, __compar llcppgCallback0)
 
 //go:linkname Radixsort C.radixsort
 func Radixsort(__base **uint8, __nel Int, __table *uint8, __endbyte Uint) Int
@@ -807,17 +1057,68 @@ func Strtouq(__str *Char, __endptr **Char, __base Int) UlongLong
 //go:linkname Suboptarg C.suboptarg
 var Suboptarg *Char
 
+//go:linkname NativeMemchr C.memchr
+func NativeMemchr(__s unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
+
+//go:linkname NativeMemcmp C.memcmp
+func NativeMemcmp(__s1 unsafe.Pointer, __s2 unsafe.Pointer, __n SizeT) Int
+
+//go:linkname NativeMemcpy C.memcpy
+func NativeMemcpy(__dst unsafe.Pointer, __src unsafe.Pointer, __n SizeT) unsafe.Pointer
+
+//go:linkname NativeMemmove C.memmove
+func NativeMemmove(__dst unsafe.Pointer, __src unsafe.Pointer, __len SizeT) unsafe.Pointer
+
+//go:linkname NativeMemset C.memset
+func NativeMemset(__b unsafe.Pointer, __c Int, __len SizeT) unsafe.Pointer
+
+//go:linkname NativeStrcat C.strcat
+func NativeStrcat(__s1 *Char, __s2 *Char) *Char
+
+//go:linkname NativeStrchr C.strchr
+func NativeStrchr(__s *Char, __c Int) *Char
+
+//go:linkname NativeStrcmp C.strcmp
+func NativeStrcmp(__s1 *Char, __s2 *Char) Int
+
 //go:linkname Strcoll C.strcoll
 func Strcoll(__s1 *Char, __s2 *Char) Int
+
+//go:linkname NativeStrcpy C.strcpy
+func NativeStrcpy(__dst *Char, __src *Char) *Char
 
 //go:linkname Strcspn C.strcspn
 func Strcspn(__s *Char, __charset *Char) SizeT
 
+//go:linkname NativeStrerror C.strerror
+func NativeStrerror(__errnum Int) *Char
+
+//go:linkname NativeStrlen C.strlen
+func NativeStrlen(__s *Char) SizeT
+
+//go:linkname NativeStrncat C.strncat
+func NativeStrncat(__s1 *Char, __s2 *Char, __n SizeT) *Char
+
+//go:linkname NativeStrncmp C.strncmp
+func NativeStrncmp(__s1 *Char, __s2 *Char, __n SizeT) Int
+
+//go:linkname NativeStrncpy C.strncpy
+func NativeStrncpy(__dst *Char, __src *Char, __n SizeT) *Char
+
 //go:linkname Strpbrk C.strpbrk
 func Strpbrk(__s *Char, __charset *Char) *Char
 
+//go:linkname NativeStrrchr C.strrchr
+func NativeStrrchr(__s *Char, __c Int) *Char
+
 //go:linkname Strspn C.strspn
 func Strspn(__s *Char, __charset *Char) SizeT
+
+//go:linkname NativeStrstr C.strstr
+func NativeStrstr(__big *Char, __little *Char) *Char
+
+//go:linkname NativeStrtok C.strtok
+func NativeStrtok(__str *Char, __sep *Char) *Char
 
 //go:linkname Strxfrm C.strxfrm
 func Strxfrm(__s1 *Char, __s2 *Char, __n SizeT) SizeT
@@ -828,6 +1129,9 @@ func StrtokR(__str *Char, __sep *Char, __lasts **Char) *Char
 //go:linkname StrerrorR C.strerror_r
 func StrerrorR(__errnum Int, __strerrbuf *Char, __buflen SizeT) Int
 
+//go:linkname NativeStrdup C.strdup
+func NativeStrdup(__s1 *Char) *Char
+
 //go:linkname Memccpy C.memccpy
 func Memccpy(__dst unsafe.Pointer, __src unsafe.Pointer, __c Int, __n SizeT) unsafe.Pointer
 
@@ -836,6 +1140,9 @@ func Stpcpy(__dst *Char, __src *Char) *Char
 
 //go:linkname Stpncpy C.stpncpy
 func Stpncpy(__dst *Char, __src *Char, __n SizeT) *Char
+
+//go:linkname NativeStrndup C.strndup
+func NativeStrndup(__s1 *Char, __n SizeT) *Char
 
 //go:linkname Strnlen C.strnlen
 func Strnlen(__s1 *Char, __n SizeT) SizeT
@@ -926,7 +1233,159 @@ func Flsl(_llcppg_param1 Long) Int
 //go:linkname Flsll C.flsll
 func Flsll(_llcppg_param1 LongLong) Int
 
+const (
+	RENAME_SECLUDE      = 1
+	RENAME_SWAP         = 2
+	RENAME_EXCL         = 4
+	RENAME_RESERVED1    = 8
+	RENAME_NOFOLLOW_ANY = 16
+)
+
+//go:linkname Renameat C.renameat
+func Renameat(_llcppg_param1 Int, _llcppg_param2 *Char, _llcppg_param3 Int, _llcppg_param4 *Char) Int
+
+//go:linkname RenamexNp C.renamex_np
+func RenamexNp(_llcppg_param1 *Char, _llcppg_param2 *Char, _llcppg_param3 Uint) Int
+
+//go:linkname RenameatxNp C.renameatx_np
+func RenameatxNp(_llcppg_param1 Int, _llcppg_param2 *Char, _llcppg_param3 Int, _llcppg_param4 *Char, _llcppg_param5 Uint) Int
+
+//go:linkname Ctermid C.ctermid
+func Ctermid(_llcppg_param1 *Char) *Char
+
+//go:linkname X___Runetype C.___runetype
+func X___Runetype(_llcppg_param1 Int) Ulong
+
+//go:linkname X___Tolower C.___tolower
+func X___Tolower(_llcppg_param1 Int) Int
+
+//go:linkname X___Toupper C.___toupper
+func X___Toupper(_llcppg_param1 Int) Int
+
+//go:linkname Isascii C._llcppg_isascii
+func Isascii(_c Int) Int
+
+//go:linkname X__Maskrune C.__maskrune
+func X__Maskrune(_llcppg_param1 Int, _llcppg_param2 Ulong) Int
+
+//go:linkname X__Istype C._llcppg___istype
+func X__Istype(_c Int, _f Ulong) Int
+
+//go:linkname X__Isctype C._llcppg___isctype
+func X__Isctype(_c Int, _f Ulong) Int
+
+//go:linkname X__Toupper C.__toupper
+func X__Toupper(_llcppg_param1 Int) Int
+
+//go:linkname X__Tolower C.__tolower
+func X__Tolower(_llcppg_param1 Int) Int
+
+//go:linkname X__Wcwidth C._llcppg___wcwidth
+func X__Wcwidth(_c Int) Int
+
+//go:linkname Isalnum C._llcppg_isalnum
+func Isalnum(_c Int) Int
+
+//go:linkname Isalpha C._llcppg_isalpha
+func Isalpha(_c Int) Int
+
+//go:linkname Isblank C._llcppg_isblank
+func Isblank(_c Int) Int
+
+//go:linkname Iscntrl C._llcppg_iscntrl
+func Iscntrl(_c Int) Int
+
+// ANSI -- locale independent
+//
+//go:linkname Isdigit C._llcppg_isdigit
+func Isdigit(_c Int) Int
+
+//go:linkname Isgraph C._llcppg_isgraph
+func Isgraph(_c Int) Int
+
+//go:linkname Islower C._llcppg_islower
+func Islower(_c Int) Int
+
+//go:linkname Isprint C._llcppg_isprint
+func Isprint(_c Int) Int
+
+//go:linkname Ispunct C._llcppg_ispunct
+func Ispunct(_c Int) Int
+
+//go:linkname Isspace C._llcppg_isspace
+func Isspace(_c Int) Int
+
+//go:linkname Isupper C._llcppg_isupper
+func Isupper(_c Int) Int
+
+// ANSI -- locale independent
+//
+//go:linkname Isxdigit C._llcppg_isxdigit
+func Isxdigit(_c Int) Int
+
+//go:linkname Toascii C._llcppg_toascii
+func Toascii(_c Int) Int
+
+//go:linkname Tolower C._llcppg_tolower
+func Tolower(_c Int) Int
+
+//go:linkname Toupper C._llcppg_toupper
+func Toupper(_c Int) Int
+
+//go:linkname Digittoint C._llcppg_digittoint
+func Digittoint(_c Int) Int
+
+//go:linkname Ishexnumber C._llcppg_ishexnumber
+func Ishexnumber(_c Int) Int
+
+//go:linkname Isideogram C._llcppg_isideogram
+func Isideogram(_c Int) Int
+
+//go:linkname Isnumber C._llcppg_isnumber
+func Isnumber(_c Int) Int
+
+//go:linkname Isphonogram C._llcppg_isphonogram
+func Isphonogram(_c Int) Int
+
+//go:linkname Isrune C._llcppg_isrune
+func Isrune(_c Int) Int
+
+//go:linkname Isspecial C._llcppg_isspecial
+func Isspecial(_c Int) Int
+
+type Lconv struct {
+	DecimalPoint    *Char
+	ThousandsSep    *Char
+	Grouping        *Char
+	IntCurrSymbol   *Char
+	CurrencySymbol  *Char
+	MonDecimalPoint *Char
+	MonThousandsSep *Char
+	MonGrouping     *Char
+	PositiveSign    *Char
+	NegativeSign    *Char
+	IntFracDigits   Char
+	FracDigits      Char
+	PCsPrecedes     Char
+	PSepBySpace     Char
+	NCsPrecedes     Char
+	NSepBySpace     Char
+	PSignPosn       Char
+	NSignPosn       Char
+	IntPCsPrecedes  Char
+	IntNCsPrecedes  Char
+	IntPSepBySpace  Char
+	IntNSepBySpace  Char
+	IntPSignPosn    Char
+	IntNSignPosn    Char
+}
+
+//go:linkname Localeconv C.localeconv
+func Localeconv() *Lconv
+
 type Iovec struct {
 	IovBase unsafe.Pointer
 	IovLen  uint64
 }
+
+const LLGoFiles = "$LIBC_CC_FLAGS: _libc_darwin_arm64.c"
