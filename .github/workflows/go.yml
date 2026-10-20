@@ -36,45 +36,24 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Set up Go
-      uses: actions/setup-go@v5
+    - name: Set up LLGo
+      uses: xgo-dev/setup-llgo@v0.2.0
       with:
+        llgo-version: v1.0.7
         go-version: '1.27.0'
-
-    - name: Check out LLGo
-      uses: actions/checkout@v4
-      with:
-        repository: xgo-dev/llgo
-        # Includes the merged stdcall support required by the direct Winsock
-        # declarations while keeping this library test independent of R9.
-        ref: 6fc2ef150f95d8b9331433f325fcb1b6ee5ad4e4
-        path: .llgo
-
-    - name: Set up LLGo dependencies
-      uses: ./.llgo/.github/actions/setup-deps
-      with:
         llvm-version: '22'
 
-    - name: Build LLGo
-      working-directory: .llgo
+    - name: Install macOS arm64 linker
+      if: runner.os == 'macOS' && runner.arch == 'ARM64'
       run: |
-        # Stable LLGo predates the default-version switch, but its source can
-        # build against system LLVM 22 through the released binding package.
-        llvm_version="$(llvm-config --version)"
-        test "${llvm_version%%.*}" = 22
-        export CGO_CPPFLAGS="$(llvm-config --cflags)"
-        export CGO_CXXFLAGS="$(llvm-config --cxxflags)"
-        export CGO_LDFLAGS="$(llvm-config --ldflags --libs --system-libs)"
-        go mod edit -require=github.com/xgo-dev/llvm@v0.9.8
-        go mod download github.com/xgo-dev/llvm@v0.9.8
-        go build -tags=dev,byollvm -o "$RUNNER_TEMP/llgo" ./cmd/llgo
+        brew install --skip-link lld@23
+        echo "LDFLAGS=--ld-path=$(brew --prefix lld@23)/bin/ld64.lld" >> "$GITHUB_ENV"
 
     - name: Test LLGo native bindings
       env:
         LLGO_BUILD_CACHE: 'off'
-        LLGO_ROOT: ${{ github.workspace }}/.llgo
       run: |
-        "$RUNNER_TEMP/llgo" test -count=1 -v ./c ./c/math/rand ./c/net ./c/os ./c/setjmp ./c/time ./cpp/std
+        llgo test -count=1 -v ./c ./c/math/rand ./c/net ./c/os ./c/setjmp ./c/time ./cpp/std
 
     # The Unix binding exposes libc++'s C++ ABI and is therefore exercised on
     # macOS. Linux LLVM packages use libstdc++; Windows is tested below through
@@ -83,9 +62,8 @@ jobs:
       if: runner.os == 'macOS'
       env:
         LLGO_BUILD_CACHE: 'off'
-        LLGO_ROOT: ${{ github.workspace }}/.llgo
       run: |
-        "$RUNNER_TEMP/llgo" test -v ./cpp/llvm
+        llgo test -v ./cpp/llvm
 
   windows-llvm-demangle:
     name: Windows LLVM 22 demangle bridge
