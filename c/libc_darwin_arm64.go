@@ -201,33 +201,6 @@ func BasenameR(_llcppg_param1 *Char, _llcppg_param2 *Char) *Char
 //go:linkname DirnameR C.dirname_r
 func DirnameR(_llcppg_param1 *Char, _llcppg_param2 *Char) *Char
 
-//go:linkname X_OSSwapInt16 C._llcppg__OSSwapInt16
-func X_OSSwapInt16(_data Uint16T) Uint16T
-
-//go:linkname X_OSSwapInt32 C._llcppg__OSSwapInt32
-func X_OSSwapInt32(_data Uint) Uint
-
-//go:linkname X_OSSwapInt64 C._llcppg__OSSwapInt64
-func X_OSSwapInt64(_data UlongLong) UlongLong
-
-//go:linkname OSReadSwapInt16 C._llcppg_OSReadSwapInt16
-func OSReadSwapInt16(_base unsafe.Pointer, _offset UintptrT) Uint16T
-
-//go:linkname OSReadSwapInt32 C._llcppg_OSReadSwapInt32
-func OSReadSwapInt32(_base unsafe.Pointer, _offset UintptrT) Uint
-
-//go:linkname OSReadSwapInt64 C._llcppg_OSReadSwapInt64
-func OSReadSwapInt64(_base unsafe.Pointer, _offset UintptrT) UlongLong
-
-//go:linkname OSWriteSwapInt16 C._llcppg_OSWriteSwapInt16
-func OSWriteSwapInt16(_base unsafe.Pointer, _offset UintptrT, _data Uint16T)
-
-//go:linkname OSWriteSwapInt32 C._llcppg_OSWriteSwapInt32
-func OSWriteSwapInt32(_base unsafe.Pointer, _offset UintptrT, _data Uint)
-
-//go:linkname OSWriteSwapInt64 C._llcppg_OSWriteSwapInt64
-func OSWriteSwapInt64(_base unsafe.Pointer, _offset UintptrT, _data UlongLong)
-
 const (
 	PTHREAD_DESTRUCTOR_ITERATIONS = 4
 	PTHREAD_KEYS_MAX              = 512
@@ -547,9 +520,6 @@ func X__Svfscanf(_llcppg_param1 *FILE, _llcppg_param2 *Char, _llcppg_param3 VaLi
 
 //go:linkname X__Swbuf C.__swbuf
 func X__Swbuf(_llcppg_param1 Int, _llcppg_param2 *FILE) Int
-
-//go:linkname X__Sputc C._llcppg___sputc
-func X__Sputc(_c Int, _p *FILE) Int
 
 //go:linkname Flockfile C.flockfile
 func Flockfile(_llcppg_param1 *FILE)
@@ -1113,96 +1083,14 @@ func X___Tolower(_llcppg_param1 Int) Int
 //go:linkname X___Toupper C.___toupper
 func X___Toupper(_llcppg_param1 Int) Int
 
-//go:linkname Isascii C._llcppg_isascii
-func Isascii(_c Int) Int
-
 //go:linkname X__Maskrune C.__maskrune
 func X__Maskrune(_llcppg_param1 Int, _llcppg_param2 Ulong) Int
-
-//go:linkname X__Istype C._llcppg___istype
-func X__Istype(_c Int, _f Ulong) Int
-
-//go:linkname X__Isctype C._llcppg___isctype
-func X__Isctype(_c Int, _f Ulong) Int
 
 //go:linkname X__Toupper C.__toupper
 func X__Toupper(_llcppg_param1 Int) Int
 
 //go:linkname X__Tolower C.__tolower
 func X__Tolower(_llcppg_param1 Int) Int
-
-//go:linkname X__Wcwidth C._llcppg___wcwidth
-func X__Wcwidth(_c Int) Int
-
-//go:linkname Isalnum C._llcppg_isalnum
-func Isalnum(_c Int) Int
-
-//go:linkname Isalpha C._llcppg_isalpha
-func Isalpha(_c Int) Int
-
-//go:linkname Isblank C._llcppg_isblank
-func Isblank(_c Int) Int
-
-//go:linkname Iscntrl C._llcppg_iscntrl
-func Iscntrl(_c Int) Int
-
-// ANSI -- locale independent
-//
-//go:linkname Isdigit C._llcppg_isdigit
-func Isdigit(_c Int) Int
-
-//go:linkname Isgraph C._llcppg_isgraph
-func Isgraph(_c Int) Int
-
-//go:linkname Islower C._llcppg_islower
-func Islower(_c Int) Int
-
-//go:linkname Isprint C._llcppg_isprint
-func Isprint(_c Int) Int
-
-//go:linkname Ispunct C._llcppg_ispunct
-func Ispunct(_c Int) Int
-
-//go:linkname Isspace C._llcppg_isspace
-func Isspace(_c Int) Int
-
-//go:linkname Isupper C._llcppg_isupper
-func Isupper(_c Int) Int
-
-// ANSI -- locale independent
-//
-//go:linkname Isxdigit C._llcppg_isxdigit
-func Isxdigit(_c Int) Int
-
-//go:linkname Toascii C._llcppg_toascii
-func Toascii(_c Int) Int
-
-//go:linkname Tolower C._llcppg_tolower
-func Tolower(_c Int) Int
-
-//go:linkname Toupper C._llcppg_toupper
-func Toupper(_c Int) Int
-
-//go:linkname Digittoint C._llcppg_digittoint
-func Digittoint(_c Int) Int
-
-//go:linkname Ishexnumber C._llcppg_ishexnumber
-func Ishexnumber(_c Int) Int
-
-//go:linkname Isideogram C._llcppg_isideogram
-func Isideogram(_c Int) Int
-
-//go:linkname Isnumber C._llcppg_isnumber
-func Isnumber(_c Int) Int
-
-//go:linkname Isphonogram C._llcppg_isphonogram
-func Isphonogram(_c Int) Int
-
-//go:linkname Isrune C._llcppg_isrune
-func Isrune(_c Int) Int
-
-//go:linkname Isspecial C._llcppg_isspecial
-func Isspecial(_c Int) Int
 
 type Lconv struct {
 	DecimalPoint    *Char
@@ -1238,5 +1126,3 @@ type Iovec struct {
 	IovBase unsafe.Pointer
 	IovLen  uint64
 }
-
-const LLGoFiles = "$LIBC_CC_FLAGS: _libc_darwin_arm64.c"
