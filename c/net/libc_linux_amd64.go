@@ -15,6 +15,12 @@ const LLGoPackage = "link: -lc -lresolv"
 
 const X_ARPA_INET_H = 1
 
+// Convert Internet host address from numbers-and-dots notation in CP
+// into binary data in network byte order.
+//
+//go:linkname NativeInetAddr C.inet_addr
+func NativeInetAddr(__cp *c.Char) InAddrT
+
 // Return the local host address part of the Internet address in IN.
 //
 // llgo:link InAddr.InetLnaof C.inet_lnaof
@@ -55,6 +61,13 @@ func (self InAddr) InetNtoa() *c.Char {
 //
 //go:linkname InetPton C.inet_pton
 func InetPton(__af c.Int, __cp *c.Char, __buf unsafe.Pointer) c.Int
+
+// Convert a Internet address in binary network format for interface
+// type AF in buffer starting at CP to presentation form and place
+// result in buffer of length LEN astarting at BUF.
+//
+//go:linkname NativeInetNtop C.inet_ntop
+func NativeInetNtop(__af c.Int, __cp unsafe.Pointer, __buf *c.Char, __len SocklenT) *c.Char
 
 // Convert Internet host address from numbers-and-dots notation in CP
 // into binary data and store the result in the structure INP.
@@ -1232,6 +1245,14 @@ func Gethostent() *Hostent
 //go:linkname Gethostbyaddr C.gethostbyaddr
 func Gethostbyaddr(__addr unsafe.Pointer, __len X__SocklenT, __type c.Int) *Hostent
 
+// Return entry from host data base for host with NAME.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeGethostbyname C.gethostbyname
+func NativeGethostbyname(__name *c.Char) *Hostent
+
 // Return entry from host data base for host with NAME.  AF must be
 // set to the address type which is `AF_INET' for IPv4 or `AF_INET6'
 // for IPv6.
@@ -1631,6 +1652,21 @@ func Rresvport(__alport *c.Int) c.Int
 //go:linkname RresvportAf C.rresvport_af
 func RresvportAf(__alport *c.Int, __af SaFamilyT) c.Int
 
+// Translate name of a service location and/or a service name to set of
+// socket addresses.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeGetaddrinfo C.getaddrinfo
+func NativeGetaddrinfo(__name *c.Char, __service *c.Char, __req *AddrInfo, __pai **AddrInfo) c.Int
+
+// NativeFree `addrinfo' structure AI including associated storage.
+//
+// llgo:link (*AddrInfo).NativeFree C.freeaddrinfo
+func (self *AddrInfo) NativeFree() {
+}
+
 // Convert error return from getaddrinfo() to a string.
 //
 //go:linkname GaiStrerror C.gai_strerror
@@ -1840,6 +1876,18 @@ var In6addrAny In6Addr
 //go:linkname In6addrLoopback C.in6addr_loopback
 var In6addrLoopback In6Addr
 
+//go:linkname NativeNtohl C.ntohl
+func NativeNtohl(__netlong Uint32T) Uint32T
+
+//go:linkname NativeNtohs C.ntohs
+func NativeNtohs(__netshort Uint16T) Uint16T
+
+//go:linkname NativeHtonl C.htonl
+func NativeHtonl(__hostlong Uint32T) Uint32T
+
+//go:linkname NativeHtons C.htons
+func NativeHtons(__hostshort Uint16T) Uint16T
+
 // Bind socket to a privileged IP port.
 //
 //go:linkname Bindresvport C.bindresvport
@@ -1906,6 +1954,13 @@ const (
 	SHUT_RDWR = 2
 )
 
+// Create a new socket of type TYPE in domain DOMAIN, using
+// protocol PROTOCOL.  If PROTOCOL is zero, one is chosen automatically.
+// Returns a file descriptor for the new socket, or -1 for errors.
+//
+//go:linkname NativeSocket C.socket
+func NativeSocket(__domain c.Int, __type c.Int, __protocol c.Int) c.Int
+
 // Create two new sockets, of type TYPE in domain DOMAIN and using
 // protocol PROTOCOL, which are connected to each other, and put file
 // descriptors for them in FDS[0] and FDS[1].  If PROTOCOL is zero,
@@ -1914,16 +1969,49 @@ const (
 //go:linkname Socketpair C.socketpair
 func Socketpair(__domain c.Int, __type c.Int, __protocol c.Int, __fds *c.Int) c.Int
 
+// Give the socket FD the local address ADDR (which is LEN bytes long).
+//
+//go:linkname NativeBind C.bind
+func NativeBind(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
+
 // Put the local address of FD into *ADDR and its length in *LEN.
 //
 //go:linkname Getsockname C.getsockname
 func Getsockname(__fd c.Int, __addr *SockAddr, __len *SocklenT) c.Int
+
+// Open a connection on socket FD to peer at ADDR (which LEN bytes long).
+// For connectionless socket types, just set the default address to send to
+// and the only address from which to accept transmissions.
+// Return 0 on success, -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeConnect C.connect
+func NativeConnect(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
 
 // Put the address of the peer connected to socket FD into *ADDR
 // (which is *LEN bytes long), and its actual length into *LEN.
 //
 //go:linkname Getpeername C.getpeername
 func Getpeername(__fd c.Int, __addr *SockAddr, __len *SocklenT) c.Int
+
+// NativeSend N bytes of BUF to socket FD.  Returns the number sent or -1.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeSend C.send
+func NativeSend(__fd c.Int, __buf unsafe.Pointer, __n SizeT, __flags c.Int) SsizeT
+
+// Read N bytes into BUF from socket FD.
+// Returns the number read or -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeRecv C.recv
+func NativeRecv(__fd c.Int, __buf unsafe.Pointer, __n SizeT, __flags c.Int) SsizeT
 
 // Send N bytes of BUF on socket FD to peer at address ADDR (which is
 // ADDR_LEN bytes long).  Returns the number sent, or -1 for errors.
@@ -1969,6 +2057,32 @@ func Recvmsg(__fd c.Int, __message *Msghdr, __flags c.Int) SsizeT
 //
 //go:linkname Getsockopt C.getsockopt
 func Getsockopt(__fd c.Int, __level c.Int, __optname c.Int, __optval unsafe.Pointer, __optlen *SocklenT) c.Int
+
+// Set socket FD's option OPTNAME at protocol level LEVEL
+// to *OPTVAL (which is OPTLEN bytes long).
+// Returns 0 on success, -1 for errors.
+//
+//go:linkname NativeSetsockopt C.setsockopt
+func NativeSetsockopt(__fd c.Int, __level c.Int, __optname c.Int, __optval unsafe.Pointer, __optlen SocklenT) c.Int
+
+// Prepare to accept connections on socket FD.
+// N connection requests will be queued before further requests are refused.
+// Returns 0 on success, -1 for errors.
+//
+//go:linkname NativeListen C.listen
+func NativeListen(__fd c.Int, __n c.Int) c.Int
+
+// Await a connection on socket FD.
+// When a connection arrives, open a new socket to communicate with it,
+// set *ADDR (which is *ADDR_LEN bytes long) to the address of the connecting
+// peer and *ADDR_LEN to the address's actual length, and return the
+// new socket's descriptor, or -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeAccept C.accept
+func NativeAccept(__fd c.Int, __addr *SockAddr, __addr_len *SocklenT) c.Int
 
 // Shut down all or part of the connection open on socket FD.
 // HOW determines what to shut down:
