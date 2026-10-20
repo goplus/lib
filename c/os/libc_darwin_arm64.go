@@ -31,6 +31,25 @@ const (
 type X_telldir struct {
 }
 
+// llgo:type C
+type llcppgCallback38 = func(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c.Int
+
+// llgo:type C
+type llcppgCallback39 = func(_llcppg_param1 *Dirent) c.Int
+
+// llgo:link (*DIR).NativeClosedir C.closedir
+func (self *DIR) NativeClosedir() c.Int {
+	return 0
+}
+
+//go:linkname NativeOpendir C.opendir
+func NativeOpendir(_llcppg_param1 *c.Char) *DIR
+
+// llgo:link (*DIR).NativeReaddir C.readdir
+func (self *DIR) NativeReaddir() *Dirent {
+	return nil
+}
+
 // llgo:link (*DIR).ReaddirR C.readdir_r
 func (self *DIR) ReaddirR(_llcppg_param2 *Dirent, _llcppg_param3 **Dirent) c.Int {
 	return 0
@@ -49,6 +68,9 @@ func (self *DIR) Telldir() c.Long {
 	return 0
 }
 
+//go:linkname NativeFdopendir C.fdopendir
+func NativeFdopendir(_llcppg_param1 c.Int) *DIR
+
 //go:linkname Alphasort C.alphasort
 func Alphasort(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c.Int
 
@@ -58,7 +80,13 @@ func (self *DIR) Dirfd() c.Int {
 }
 
 //go:linkname Scandir C.scandir
-func Scandir(_llcppg_param1 *c.Char, _llcppg_param2 ***Dirent, _llcppg_param3 func(_llcppg_param1 *Dirent) c.Int, _llcppg_param4 func(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c.Int) c.Int
+func Scandir(_llcppg_param1 *c.Char, _llcppg_param2 ***Dirent, _llcppg_param3 llcppgCallback39, _llcppg_param4 llcppgCallback38) c.Int
+
+//go:linkname Getdirentries C.getdirentries_is_not_available_when_64_bit_inodes_are_in_effect
+func Getdirentries(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Int, _llcppg_param4 *c.Long) c.Int
+
+//go:linkname X__Opendir2 C.__opendir2
+func X__Opendir2(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) *DIR
 
 const (
 	RTLD_LAZY   = 1
@@ -99,6 +127,9 @@ func Dlsym(__handle unsafe.Pointer, __symbol *c.Char) unsafe.Pointer
 
 //go:linkname DlopenPreflight C.dlopen_preflight
 func DlopenPreflight(__path *c.Char) bool
+
+//go:linkname Gethostuuid C.gethostuuid
+func Gethostuuid(_llcppg_param1 *uint8, _llcppg_param2 *lltime.Timespec) c.Int
 
 // Believed to have been introduced in 1003.2-1992
 const (
@@ -157,34 +188,37 @@ type GlobT struct {
 	GlOffs     c.SizeT
 	GlFlags    c.Int
 	GlPathv    **c.Char
-	GlErrfunc  llcppgCallback14
-	GlClosedir llcppgCallback13
-	GlReaddir  llcppgCallback12
-	GlOpendir  llcppgCallback11
-	GlLstat    llcppgCallback10
-	GlStat     llcppgCallback9
+	GlErrfunc  llcppgCallback37
+	GlClosedir llcppgCallback36
+	GlReaddir  llcppgCallback35
+	GlOpendir  llcppgCallback34
+	GlLstat    llcppgCallback33
+	GlStat     llcppgCallback32
 }
 
 // llgo:type C
-type llcppgCallback9 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+type llcppgCallback32 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
 
 // llgo:type C
-type llcppgCallback10 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+type llcppgCallback33 = func(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
 
 // llgo:type C
-type llcppgCallback11 = func(_llcppg_param1 *c.Char) unsafe.Pointer
+type llcppgCallback34 = func(_llcppg_param1 *c.Char) unsafe.Pointer
 
 // llgo:type C
-type llcppgCallback12 = func(_llcppg_param1 unsafe.Pointer) *Dirent
+type llcppgCallback35 = func(_llcppg_param1 unsafe.Pointer) *Dirent
 
 // llgo:type C
-type llcppgCallback13 = func(_llcppg_param1 unsafe.Pointer)
+type llcppgCallback36 = func(_llcppg_param1 unsafe.Pointer)
 
 // llgo:type C
-type llcppgCallback14 = func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
+type llcppgCallback37 = func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
+
+// llgo:type C
+type llcppgCallback31 = func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
 
 //go:linkname Glob C.glob
-func Glob(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 func(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int, _llcppg_param4 *GlobT) c.Int
+func Glob(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 llcppgCallback31, _llcppg_param4 *GlobT) c.Int
 
 // llgo:link (*GlobT).Globfree C.globfree
 func (self *GlobT) Globfree() {
@@ -232,15 +266,71 @@ func Endgrent()
 func GroupFromGid(_llcppg_param1 c.Uint, _llcppg_param2 c.Int) *c.Char
 
 //go:linkname Getgruuid C.getgruuid
-func Getgruuid(_llcppg_param1 UuidT) *Group
+func Getgruuid(_llcppg_param1 *uint8) *Group
 
 //go:linkname GetgruuidR C.getgruuid_r
-func GetgruuidR(_llcppg_param1 UuidT, _llcppg_param2 *Group, _llcppg_param3 *c.Char, _llcppg_param4 c.SizeT, _llcppg_param5 **Group) c.Int
+func GetgruuidR(_llcppg_param1 *uint8, _llcppg_param2 *Group, _llcppg_param3 *c.Char, _llcppg_param4 c.SizeT, _llcppg_param5 **Group) c.Int
+
+//go:linkname Setgrfile C.setgrfile
+func Setgrfile(_llcppg_param1 *c.Char)
 
 //go:linkname Setgroupent C.setgroupent
 func Setgroupent(_llcppg_param1 c.Int) c.Int
 
 type SemaphoreT = MachPortT
+
+type MachMsgHeaderT struct {
+	MsghBits        c.Uint
+	MsghSize        c.Uint
+	MsghRemotePort  MachPortT
+	MsghLocalPort   MachPortT
+	MsghVoucherPort c.Uint
+	MsghId          c.Int
+}
+
+//	Routine:	mach_msg_overwrite
+//	Purpose:
+//		Send and/or receive a message.  If the message operation
+//		is interrupted, and the user did not request an indication
+//		of that fact, then restart the appropriate parts of the
+//		operation silently (trap version does not restart).
+//
+//		Distinct send and receive buffers may be specified.  If
+//		no separate receive buffer is specified, the msg parameter
+//		will be used for both send and receive operations.
+//
+//		In addition to a distinct receive buffer, that buffer may
+//		already contain scatter control information to direct the
+//		receiving of the message.
+//
+// llgo:link (*MachMsgHeaderT).MachMsgOverwrite C.mach_msg_overwrite
+func (self *MachMsgHeaderT) MachMsgOverwrite(option c.Int, send_size c.Uint, rcv_size c.Uint, rcv_name c.Uint, timeout c.Uint, notify c.Uint, rcv_msg *MachMsgHeaderT, rcv_limit c.Uint) c.Int {
+	return 0
+}
+
+//	Routine:	mach_msg
+//	Purpose:
+//		Send and/or receive a message.  If the message operation
+//		is interrupted, and the user did not request an indication
+//		of that fact, then restart the appropriate parts of the
+//		operation silently (trap version does not restart).
+//
+// llgo:link (*MachMsgHeaderT).MachMsg C.mach_msg
+func (self *MachMsgHeaderT) MachMsg(option c.Int, send_size c.Uint, rcv_size c.Uint, rcv_name c.Uint, timeout c.Uint, notify c.Uint) c.Int {
+	return 0
+}
+
+// Routine:    mach_voucher_deallocate
+// Purpose:
+//
+//	Deallocate a mach voucher created or received in a message.  Drops
+//	one (send right) reference to the voucher.
+//
+//go:linkname MachVoucherDeallocate C.mach_voucher_deallocate
+func MachVoucherDeallocate(voucher c.Uint) c.Int
+
+//go:linkname VmStats C.vm_stats
+func VmStats(info unsafe.Pointer, count *c.Uint) c.Int
 
 type SchedParam struct {
 	SchedPriority c.Int
@@ -297,10 +387,10 @@ func Setpassent(_llcppg_param1 c.Int) c.Int
 func UserFromUid(_llcppg_param1 c.Uint, _llcppg_param2 c.Int) *c.Char
 
 //go:linkname Getpwuuid C.getpwuuid
-func Getpwuuid(_llcppg_param1 UuidT) *Passwd
+func Getpwuuid(_llcppg_param1 *uint8) *Passwd
 
 //go:linkname GetpwuuidR C.getpwuuid_r
-func GetpwuuidR(_llcppg_param1 UuidT, _llcppg_param2 *Passwd, _llcppg_param3 *c.Char, _llcppg_param4 c.SizeT, _llcppg_param5 **Passwd) c.Int
+func GetpwuuidR(_llcppg_param1 *uint8, _llcppg_param2 *Passwd, _llcppg_param3 *c.Char, _llcppg_param4 c.SizeT, _llcppg_param5 **Passwd) c.Int
 
 // flags for CPU Security Mitigation attribute
 // POSIX_SPAWN_NP_CSM_ALL should be used in most cases,
@@ -462,6 +552,20 @@ func (self *PosixSpawnFileActionsT) PosixSpawnFileActionsAddfchdirNp(_llcppg_par
 	return 0
 }
 
+//go:linkname NativeSelect C.select
+func NativeSelect(_llcppg_param1 c.Int, _llcppg_param2 *llsys.FdSet, _llcppg_param3 *llsys.FdSet, _llcppg_param4 *llsys.FdSet, _llcppg_param5 *llsys.Timeval) c.Int
+
+//go:linkname X__DarwinCheckFdSetOverflow C.__darwin_check_fd_set_overflow
+func X__DarwinCheckFdSetOverflow(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 c.Int) c.Int
+
+//go:linkname X__DarwinCheckFdSet C._llcppg___darwin_check_fd_set
+func X__DarwinCheckFdSet(_a c.Int, _b unsafe.Pointer) c.Int
+
+// This inline avoids argument side-effect issues with FD_ISSET()
+//
+//go:linkname X__DarwinFdIsset C._llcppg___darwin_fd_isset
+func X__DarwinFdIsset(_fd c.Int, _p *llsys.FdSet) c.Int
+
 type X_filesec struct {
 }
 
@@ -472,6 +576,8 @@ type MachPortT = c.Uint
 type UuidT = X__DarwinUuidT
 
 type X__DarwinUuidT = [16]uint8
+
+type X__DarwinUuidStringT = [37]c.Char
 
 // File types
 const MAXNAMLEN = 255
@@ -488,6 +594,9 @@ const (
 	DT_SOCK    = 12
 	DT_WHT     = 14
 )
+
+//go:linkname X__Error C.__error
+func X__Error() *c.Int
 
 const (
 	FREAD  = 1
@@ -984,6 +1093,18 @@ type FspecreadT = Fspecread
 
 type FattributiontagT = Fattributiontag
 
+//go:linkname NativeOpen C.open
+func NativeOpen(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeOpenat C.openat
+func NativeOpenat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Int, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeCreat C.creat
+func NativeCreat(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname NativeFcntl C.fcntl
+func NativeFcntl(_llcppg_param1 c.Int, _llcppg_param2 c.Int, __llgo_va_list ...any) c.Int
+
 // data-protected non-portable open(2) :
 //
 //	int open_dprotected_np(user_addr_t path, int flags, int class, int dpflags, int mode)
@@ -1270,6 +1391,95 @@ func Mincore(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.SizeT, _llcppg_para
 
 //go:linkname Minherit C.minherit
 func Minherit(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.SizeT, _llcppg_param3 c.Int) c.Int
+
+// Requestable events.  If poll(2) finds any of these set, they are
+// copied to revents on return.
+const (
+	POLLIN = 1
+	// OOB/Urgent readable data
+	POLLPRI = 2
+	// file descriptor is writeable
+	POLLOUT = 4
+	// non-OOB/URG data available
+	POLLRDNORM = 64
+	// no write type differentiation
+	POLLWRNORM = 4
+	// OOB/Urgent readable data
+	POLLRDBAND = 128
+	// OOB/Urgent data can be written
+	POLLWRBAND = 256
+)
+
+// FreeBSD extensions: polling on a regular file might return one
+// of these events (currently only supported on local filesystems).
+const (
+	POLLEXTEND = 512
+	// file attributes may have changed
+	POLLATTRIB = 1024
+	// (un)link/rename may have happened
+	POLLNLINK = 2048
+	// file's contents may have changed
+	POLLWRITE = 4096
+)
+
+// These events are set if they occur regardless of whether they were
+// requested.
+const (
+	POLLERR = 8
+	// file descriptor was "hung up"
+	POLLHUP = 16
+	// requested events "invalid"
+	POLLNVAL = 32
+)
+
+const POLLSTANDARD = 511
+
+type Pollfd struct {
+	Fd      c.Int
+	Events  int16
+	Revents int16
+}
+
+// This is defined here (instead of <poll.h>) because this is where
+// traditional SVR4 code will look to find it.
+//
+// llgo:link (*Pollfd).Poll C.poll
+func (self *Pollfd) Poll(_llcppg_param2 c.Uint, _llcppg_param3 c.Int) c.Int {
+	return 0
+}
+
+// !
+// @function qos_class_self
+//
+// @abstract
+// Returns the requested QOS class of the current thread.
+//
+// @return
+// One of the QOS class values in qos_class_t.
+//
+//go:linkname QosClassSelf C.qos_class_self
+func QosClassSelf() c.Uint
+
+// !
+// @function qos_class_main
+//
+// @abstract
+// Returns the initial requested QOS class of the main thread.
+//
+// @discussion
+// The QOS class that the main thread of a process is created with depends on
+// the type of process (e.g. application or daemon) and on how it has been
+// launched.
+//
+// This function returns that initial requested QOS class value chosen by the
+// system to enable propagation of that classification to matching work not
+// executing on the main thread.
+//
+// @return
+// One of the QOS class values in qos_class_t.
+//
+//go:linkname QosClassMain C.qos_class_main
+func QosClassMain() c.Uint
 
 // Possible values of the first parameter to getpriority()/setpriority(),
 // used to indicate the type of the second parameter.
@@ -1736,6 +1946,9 @@ func Getpriority(_llcppg_param1 c.Int, _llcppg_param2 c.Uint) c.Int
 //go:linkname GetiopolicyNp C.getiopolicy_np
 func GetiopolicyNp(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
+//go:linkname NativeGetrlimit C.getrlimit
+func NativeGetrlimit(_llcppg_param1 c.Int, _llcppg_param2 *Rlimit) c.Int
+
 //go:linkname Getrusage C.getrusage
 func Getrusage(_llcppg_param1 c.Int, _llcppg_param2 *Rusage) c.Int
 
@@ -1744,6 +1957,9 @@ func Setpriority(_llcppg_param1 c.Int, _llcppg_param2 c.Uint, _llcppg_param3 c.I
 
 //go:linkname SetiopolicyNp C.setiopolicy_np
 func SetiopolicyNp(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int) c.Int
+
+//go:linkname NativeSetrlimit C.setrlimit
+func NativeSetrlimit(_llcppg_param1 c.Int, _llcppg_param2 *Rlimit) c.Int
 
 // 0777
 const ACCESSPERMS = 511
@@ -1859,6 +2075,41 @@ type Ostat struct {
 	StFlags     c.Uint
 	StGen       c.Uint
 }
+
+// [XSI]
+//
+//go:linkname NativeChmod C.chmod
+func NativeChmod(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname NativeFchmod C.fchmod
+func NativeFchmod(_llcppg_param1 c.Int, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname NativeFstat C.fstat
+func NativeFstat(_llcppg_param1 c.Int, _llcppg_param2 *StatT) c.Int
+
+//go:linkname NativeLstat C.lstat
+func NativeLstat(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+
+//go:linkname NativeMkdir C.mkdir
+func NativeMkdir(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname NativeMkfifo C.mkfifo
+func NativeMkfifo(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T) c.Int
+
+//go:linkname NativeStat C.stat
+func NativeStat(_llcppg_param1 *c.Char, _llcppg_param2 *StatT) c.Int
+
+//go:linkname NativeMknod C.mknod
+func NativeMknod(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint16T, _llcppg_param3 c.Int) c.Int
+
+//go:linkname NativeUmask C.umask
+func NativeUmask(_llcppg_param1 c.Uint16T) c.Uint16T
+
+//go:linkname NativeFchmodat C.fchmodat
+func NativeFchmodat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Uint16T, _llcppg_param4 c.Int) c.Int
+
+//go:linkname NativeFstatat C.fstatat
+func NativeFstatat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 *StatT, _llcppg_param4 c.Int) c.Int
 
 //go:linkname Mkdirat C.mkdirat
 func Mkdirat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Uint16T) c.Int
@@ -2373,11 +2624,63 @@ func Preadv(_llcppg_param1 c.Int, _llcppg_param2 *c.Iovec, _llcppg_param3 c.Int,
 //go:linkname Pwritev C.pwritev
 func Pwritev(_llcppg_param1 c.Int, _llcppg_param2 *c.Iovec, _llcppg_param3 c.Int, _llcppg_param4 c.LongLong) c.SsizeT
 
+// access function
+const (
+	F_OK = 0
+	// test for execute or search permission
+	// test for write permission
+	W_OK = 2
+	// test for read permission
+	R_OK = 4
+)
+
+// whence values for lseek(2); renamed by POSIX 1003.1
+const (
+	L_SET  = 0
+	L_INCR = 1
+	L_XTND = 2
+)
+
+const (
+	ACCESSX_MAX_DESCRIPTORS = 100
+	ACCESSX_MAX_TABLESIZE   = 16384
+)
+
 type AccessxDescriptor struct {
 	AdNameOffset c.Uint
 	AdFlags      c.Int
 	AdPad        [2]c.Int
 }
+
+//go:linkname Getattrlistbulk C.getattrlistbulk
+func Getattrlistbulk(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer, _llcppg_param4 c.SizeT, _llcppg_param5 c.UlongLong) c.Int
+
+//go:linkname Getattrlistat C.getattrlistat
+func Getattrlistat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 unsafe.Pointer, _llcppg_param4 unsafe.Pointer, _llcppg_param5 c.SizeT, _llcppg_param6 c.Ulong) c.Int
+
+//go:linkname Setattrlistat C.setattrlistat
+func Setattrlistat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 unsafe.Pointer, _llcppg_param4 unsafe.Pointer, _llcppg_param5 c.SizeT, _llcppg_param6 c.Uint) c.Int
+
+//go:linkname Freadlink C.freadlink
+func Freadlink(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.SsizeT
+
+//go:linkname NativeFaccessat C.faccessat
+func NativeFaccessat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Int, _llcppg_param4 c.Int) c.Int
+
+//go:linkname NativeFchownat C.fchownat
+func NativeFchownat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Uint, _llcppg_param4 c.Uint, _llcppg_param5 c.Int) c.Int
+
+//go:linkname Linkat C.linkat
+func Linkat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Int, _llcppg_param4 *c.Char, _llcppg_param5 c.Int) c.Int
+
+//go:linkname Readlinkat C.readlinkat
+func Readlinkat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 *c.Char, _llcppg_param4 c.SizeT) c.SsizeT
+
+//go:linkname Symlinkat C.symlinkat
+func Symlinkat(_llcppg_param1 *c.Char, _llcppg_param2 c.Int, _llcppg_param3 *c.Char) c.Int
+
+//go:linkname NativeUnlinkat C.unlinkat
+func NativeUnlinkat(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.Int) c.Int
 
 type Utsname struct {
 	Sysname  [256]c.Char
@@ -2437,10 +2740,22 @@ const (
 	P_PGID IdtypeT = 2
 )
 
+//go:linkname NativeWait C.wait
+func NativeWait(_llcppg_param1 *c.Int) c.Int
+
+//go:linkname NativeWaitpid C.waitpid
+func NativeWaitpid(_llcppg_param1 c.Int, _llcppg_param2 *c.Int, _llcppg_param3 c.Int) c.Int
+
 // llgo:link IdtypeT.Waitid C.waitid
 func (self IdtypeT) Waitid(_llcppg_param2 c.Uint, _llcppg_param3 *llsignal.SiginfoT, _llcppg_param4 c.Int) c.Int {
 	return 0
 }
+
+//go:linkname NativeWait3 C.wait3
+func NativeWait3(_llcppg_param1 *c.Int, _llcppg_param2 c.Int, _llcppg_param3 *Rusage) c.Int
+
+//go:linkname NativeWait4 C.wait4
+func NativeWait4(_llcppg_param1 c.Int, _llcppg_param2 *c.Int, _llcppg_param3 c.Int, _llcppg_param4 *Rusage) c.Int
 
 //go:linkname Tcgetsid C.tcgetsid
 func Tcgetsid(_llcppg_param1 c.Int) c.Int
@@ -2487,8 +2802,56 @@ func Access(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
 //go:linkname Alarm C.alarm
 func Alarm(_llcppg_param1 c.Uint) c.Uint
 
+//go:linkname NativeChdir C.chdir
+func NativeChdir(_llcppg_param1 *c.Char) c.Int
+
+//go:linkname NativeChown C.chown
+func NativeChown(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint, _llcppg_param3 c.Uint) c.Int
+
+//go:linkname NativeClose C.close
+func NativeClose(_llcppg_param1 c.Int) c.Int
+
+//go:linkname NativeDup C.dup
+func NativeDup(_llcppg_param1 c.Int) c.Int
+
+//go:linkname NativeDup2 C.dup2
+func NativeDup2(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+
+//go:linkname NativeExecl C.execl
+func NativeExecl(__path *c.Char, __arg0 *c.Char, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeExecle C.execle
+func NativeExecle(__path *c.Char, __arg0 *c.Char, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeExeclp C.execlp
+func NativeExeclp(__file *c.Char, __arg0 *c.Char, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeExecv C.execv
+func NativeExecv(__path *c.Char, __argv **c.Char) c.Int
+
+//go:linkname NativeExecve C.execve
+func NativeExecve(__file *c.Char, __argv **c.Char, __envp **c.Char) c.Int
+
+//go:linkname NativeExecvp C.execvp
+func NativeExecvp(__file *c.Char, __argv **c.Char) c.Int
+
+//go:linkname NativeFork C.fork
+func NativeFork() c.Int
+
 //go:linkname Fpathconf C.fpathconf
 func Fpathconf(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Long
+
+//go:linkname NativeGetcwd C.getcwd
+func NativeGetcwd(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT) *c.Char
+
+//go:linkname NativeGetegid C.getegid
+func NativeGetegid() c.Uint
+
+//go:linkname NativeGeteuid C.geteuid
+func NativeGeteuid() c.Uint
+
+//go:linkname NativeGetgid C.getgid
+func NativeGetgid() c.Uint
 
 //go:linkname Getgroups C.getgroups
 func Getgroups(_llcppg_param1 c.Int, _llcppg_param2 *c.Uint) c.Int
@@ -2499,11 +2862,38 @@ func Getlogin() *c.Char
 //go:linkname Getpgrp C.getpgrp
 func Getpgrp() c.Int
 
+//go:linkname NativeGetpid C.getpid
+func NativeGetpid() c.Int
+
+//go:linkname NativeGetppid C.getppid
+func NativeGetppid() c.Int
+
+//go:linkname NativeGetuid C.getuid
+func NativeGetuid() c.Uint
+
+//go:linkname NativeIsatty C.isatty
+func NativeIsatty(_llcppg_param1 c.Int) c.Int
+
+//go:linkname NativeLink C.link
+func NativeLink(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char) c.Int
+
+//go:linkname NativeLseek C.lseek
+func NativeLseek(_llcppg_param1 c.Int, _llcppg_param2 c.LongLong, _llcppg_param3 c.Int) c.LongLong
+
 //go:linkname Pathconf C.pathconf
 func Pathconf(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Long
 
 //go:linkname Pause C.pause
 func Pause() c.Int
+
+//go:linkname NativePipe C.pipe
+func NativePipe(_llcppg_param1 *c.Int) c.Int
+
+//go:linkname NativeRead C.read
+func NativeRead(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 c.SizeT) c.SsizeT
+
+//go:linkname NativeRmdir C.rmdir
+func NativeRmdir(_llcppg_param1 *c.Char) c.Int
 
 //go:linkname Setgid C.setgid
 func Setgid(_llcppg_param1 c.Uint) c.Int
@@ -2535,8 +2925,17 @@ func Ttyname(_llcppg_param1 c.Int) *c.Char
 //go:linkname TtynameR C.ttyname_r
 func TtynameR(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.Int
 
+//go:linkname NativeUnlink C.unlink
+func NativeUnlink(_llcppg_param1 *c.Char) c.Int
+
+//go:linkname NativeWrite C.write
+func NativeWrite(__fd c.Int, __buf unsafe.Pointer, __nbyte c.SizeT) c.SsizeT
+
 //go:linkname Confstr C.confstr
 func Confstr(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.SizeT
+
+//go:linkname NativeGetopt C.getopt
+func NativeGetopt(_llcppg_param1 c.Int, _llcppg_param2 **c.Char, _llcppg_param3 *c.Char) c.Int
 
 // getopt(3) external variables
 //
@@ -2555,11 +2954,17 @@ var Optopt c.Int
 //go:linkname Brk C.brk
 func Brk(_llcppg_param1 unsafe.Pointer) unsafe.Pointer
 
+//go:linkname NativeChroot C.chroot
+func NativeChroot(_llcppg_param1 *c.Char) c.Int
+
 //go:linkname Crypt C.crypt
 func Crypt(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char) *c.Char
 
 //go:linkname Encrypt C.encrypt
 func Encrypt(_llcppg_param1 *c.Char, _llcppg_param2 c.Int)
+
+//go:linkname NativeFchdir C.fchdir
+func NativeFchdir(_llcppg_param1 c.Int) c.Int
 
 //go:linkname Gethostid C.gethostid
 func Gethostid() c.Long
@@ -2583,6 +2988,9 @@ func Getpass(_llcppg_param1 *c.Char) *c.Char
 //
 //go:linkname Getwd C.getwd
 func Getwd(_llcppg_param1 *c.Char) *c.Char
+
+//go:linkname NativeLchown C.lchown
+func NativeLchown(_llcppg_param1 *c.Char, _llcppg_param2 c.Uint, _llcppg_param3 c.Uint) c.Int
 
 //go:linkname Lockf C.lockf
 func Lockf(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.LongLong) c.Int
@@ -2611,25 +3019,46 @@ func Setreuid(_llcppg_param1 c.Uint, _llcppg_param2 c.Uint) c.Int
 //go:linkname Sync C.sync
 func Sync()
 
+//go:linkname NativeTruncate C.truncate
+func NativeTruncate(_llcppg_param1 *c.Char, _llcppg_param2 c.LongLong) c.Int
+
 //go:linkname Ualarm C.ualarm
 func Ualarm(_llcppg_param1 c.Uint, _llcppg_param2 c.Uint) c.Uint
+
+//go:linkname NativeUsleep C.usleep
+func NativeUsleep(_llcppg_param1 c.Uint) c.Int
 
 // End XSI
 //
 //go:linkname Vfork C.vfork
 func Vfork() c.Int
 
+//go:linkname NativeFsync C.fsync
+func NativeFsync(_llcppg_param1 c.Int) c.Int
+
+//go:linkname NativeFtruncate C.ftruncate
+func NativeFtruncate(_llcppg_param1 c.Int, _llcppg_param2 c.LongLong) c.Int
+
 //go:linkname GetloginR C.getlogin_r
 func GetloginR(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT) c.Int
 
+//go:linkname NativeFchown C.fchown
+func NativeFchown(_llcppg_param1 c.Int, _llcppg_param2 c.Uint, _llcppg_param3 c.Uint) c.Int
+
 //go:linkname Gethostname C.gethostname
 func Gethostname(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT) c.Int
+
+//go:linkname NativeReadlink C.readlink
+func NativeReadlink(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char, _llcppg_param3 c.SizeT) c.SsizeT
 
 //go:linkname Setegid C.setegid
 func Setegid(_llcppg_param1 c.Uint) c.Int
 
 //go:linkname Seteuid C.seteuid
 func Seteuid(_llcppg_param1 c.Uint) c.Int
+
+//go:linkname NativeSymlink C.symlink
+func NativeSymlink(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char) c.Int
 
 // llgo:link (*AccessxDescriptor).AccessxNp C.accessx_np
 func (self *AccessxDescriptor) AccessxNp(_llcppg_param2 c.SizeT, _llcppg_param3 *c.Int, _llcppg_param4 c.Uint) c.Int {
@@ -2638,6 +3067,9 @@ func (self *AccessxDescriptor) AccessxNp(_llcppg_param2 c.SizeT, _llcppg_param3 
 
 //go:linkname Acct C.acct
 func Acct(_llcppg_param1 *c.Char) c.Int
+
+//go:linkname AddProfil C.add_profil
+func AddProfil(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT, _llcppg_param3 c.Ulong, _llcppg_param4 c.Uint) c.Int
 
 //go:linkname Endusershell C.endusershell
 func Endusershell()
@@ -2661,13 +3093,13 @@ func Getmode(_llcppg_param1 unsafe.Pointer, _llcppg_param2 c.Uint16T) c.Uint16T
 func Getpeereid(_llcppg_param1 c.Int, _llcppg_param2 *c.Uint, _llcppg_param3 *c.Uint) c.Int
 
 //go:linkname GetsgroupsNp C.getsgroups_np
-func GetsgroupsNp(_llcppg_param1 *c.Int, _llcppg_param2 UuidT) c.Int
+func GetsgroupsNp(_llcppg_param1 *c.Int, _llcppg_param2 *uint8) c.Int
 
 //go:linkname Getusershell C.getusershell
 func Getusershell() *c.Char
 
 //go:linkname GetwgroupsNp C.getwgroups_np
-func GetwgroupsNp(_llcppg_param1 *c.Int, _llcppg_param2 UuidT) c.Int
+func GetwgroupsNp(_llcppg_param1 *c.Int, _llcppg_param2 *uint8) c.Int
 
 //go:linkname Initgroups C.initgroups
 func Initgroups(_llcppg_param1 *c.Char, _llcppg_param2 c.Int) c.Int
@@ -2713,6 +3145,9 @@ func MkostempsatNp(dfd c.Int, path *c.Char, slen c.Int, oflags c.Int) c.Int
 
 //go:linkname Nfssvc C.nfssvc
 func Nfssvc(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer) c.Int
+
+//go:linkname Profil C.profil
+func Profil(_llcppg_param1 *c.Char, _llcppg_param2 c.SizeT, _llcppg_param3 c.Ulong, _llcppg_param4 c.Uint) c.Int
 
 //go:linkname Reboot C.reboot
 func Reboot(_llcppg_param1 c.Int) c.Int
@@ -2766,13 +3201,13 @@ func Setrgid(_llcppg_param1 c.Uint) c.Int
 func Setruid(_llcppg_param1 c.Uint) c.Int
 
 //go:linkname SetsgroupsNp C.setsgroups_np
-func SetsgroupsNp(_llcppg_param1 c.Int, _llcppg_param2 UuidT) c.Int
+func SetsgroupsNp(_llcppg_param1 c.Int, _llcppg_param2 *uint8) c.Int
 
 //go:linkname Setusershell C.setusershell
 func Setusershell()
 
 //go:linkname SetwgroupsNp C.setwgroups_np
-func SetwgroupsNp(_llcppg_param1 c.Int, _llcppg_param2 UuidT) c.Int
+func SetwgroupsNp(_llcppg_param1 c.Int, _llcppg_param2 *uint8) c.Int
 
 //go:linkname Strtofflags C.strtofflags
 func Strtofflags(_llcppg_param1 **c.Char, _llcppg_param2 *c.Ulong, _llcppg_param3 *c.Ulong) c.Int
@@ -2785,6 +3220,12 @@ func Ttyslot() c.Int
 
 //go:linkname Undelete C.undelete
 func Undelete(_llcppg_param1 *c.Char) c.Int
+
+//go:linkname Unwhiteout C.unwhiteout
+func Unwhiteout(_llcppg_param1 *c.Char) c.Int
+
+//go:linkname NativeSyscall C.syscall
+func NativeSyscall(_llcppg_param1 c.Int, __llgo_va_list ...any) c.Int
 
 //go:linkname Fgetattrlist C.fgetattrlist
 func Fgetattrlist(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 unsafe.Pointer, _llcppg_param4 c.SizeT, _llcppg_param5 c.Uint) c.Int
@@ -2829,3 +3270,40 @@ type Utimbuf struct {
 
 //go:linkname Utime C.utime
 func Utime(_llcppg_param1 *c.Char, _llcppg_param2 *Utimbuf) c.Int
+
+type UuidStringT = X__DarwinUuidStringT
+
+//go:linkname UuidClear C.uuid_clear
+func UuidClear(uu *uint8)
+
+//go:linkname UuidCompare C.uuid_compare
+func UuidCompare(uu1 *uint8, uu2 *uint8) c.Int
+
+//go:linkname UuidCopy C.uuid_copy
+func UuidCopy(dst *uint8, src *uint8)
+
+//go:linkname UuidGenerate C.uuid_generate
+func UuidGenerate(out *uint8)
+
+//go:linkname UuidGenerateRandom C.uuid_generate_random
+func UuidGenerateRandom(out *uint8)
+
+//go:linkname UuidGenerateTime C.uuid_generate_time
+func UuidGenerateTime(out *uint8)
+
+//go:linkname UuidIsNull C.uuid_is_null
+func UuidIsNull(uu *uint8) c.Int
+
+//go:linkname UuidParse C.uuid_parse
+func UuidParse(in *c.Char, uu *uint8) c.Int
+
+//go:linkname UuidUnparse C.uuid_unparse
+func UuidUnparse(uu *uint8, out *c.Char)
+
+//go:linkname UuidUnparseLower C.uuid_unparse_lower
+func UuidUnparseLower(uu *uint8, out *c.Char)
+
+//go:linkname UuidUnparseUpper C.uuid_unparse_upper
+func UuidUnparseUpper(uu *uint8, out *c.Char)
+
+const LLGoFiles = "$LIBC_CC_FLAGS: _os/os.c; _libc_darwin_arm64.c"

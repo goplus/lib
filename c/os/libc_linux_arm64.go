@@ -21,6 +21,11 @@ type FlockT struct {
 	LPid    c.Int
 }
 
+type Rlimit struct {
+	RlimCur c.Ulong
+	RlimMax c.Ulong
+}
+
 // The purpose of all the unions is to have the kernel-compatible layout
 // while keeping the API type as 'long int', and among machines where
 // __syscall_slong_t is not 'long int', this only does the right thing
@@ -28,7 +33,6 @@ type FlockT struct {
 type Rusage struct {
 	RuUtime llsys.Timeval
 	RuStime llsys.Timeval
-	_llcppg_anon_8
 	_llcppg_anon_9
 	_llcppg_anon_10
 	_llcppg_anon_11
@@ -42,10 +46,7 @@ type Rusage struct {
 	_llcppg_anon_19
 	_llcppg_anon_20
 	_llcppg_anon_21
-}
-
-type _llcppg_anon_8 struct {
-	_xgo_union [1]uint64
+	_llcppg_anon_22
 }
 
 type _llcppg_anon_9 struct {
@@ -100,115 +101,119 @@ type _llcppg_anon_21 struct {
 	_xgo_union [1]uint64
 }
 
-func (p *_llcppg_anon_8) XGof_ref_ru_maxrss() *c.Long {
+type _llcppg_anon_22 struct {
+	_xgo_union [1]uint64
+}
+
+func (p *_llcppg_anon_9) XGof_ref_ru_maxrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_8) XGof_ref___ru_maxrss_word() *c.Long {
+func (p *_llcppg_anon_9) XGof_ref___ru_maxrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_9) XGof_ref_ru_ixrss() *c.Long {
+func (p *_llcppg_anon_10) XGof_ref_ru_ixrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_9) XGof_ref___ru_ixrss_word() *c.Long {
+func (p *_llcppg_anon_10) XGof_ref___ru_ixrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_10) XGof_ref_ru_idrss() *c.Long {
+func (p *_llcppg_anon_11) XGof_ref_ru_idrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_10) XGof_ref___ru_idrss_word() *c.Long {
+func (p *_llcppg_anon_11) XGof_ref___ru_idrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_11) XGof_ref_ru_isrss() *c.Long {
+func (p *_llcppg_anon_12) XGof_ref_ru_isrss() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_11) XGof_ref___ru_isrss_word() *c.Long {
+func (p *_llcppg_anon_12) XGof_ref___ru_isrss_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_12) XGof_ref_ru_minflt() *c.Long {
+func (p *_llcppg_anon_13) XGof_ref_ru_minflt() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_12) XGof_ref___ru_minflt_word() *c.Long {
+func (p *_llcppg_anon_13) XGof_ref___ru_minflt_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_13) XGof_ref_ru_majflt() *c.Long {
+func (p *_llcppg_anon_14) XGof_ref_ru_majflt() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_13) XGof_ref___ru_majflt_word() *c.Long {
+func (p *_llcppg_anon_14) XGof_ref___ru_majflt_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_14) XGof_ref_ru_nswap() *c.Long {
+func (p *_llcppg_anon_15) XGof_ref_ru_nswap() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_14) XGof_ref___ru_nswap_word() *c.Long {
+func (p *_llcppg_anon_15) XGof_ref___ru_nswap_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_15) XGof_ref_ru_inblock() *c.Long {
+func (p *_llcppg_anon_16) XGof_ref_ru_inblock() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_15) XGof_ref___ru_inblock_word() *c.Long {
+func (p *_llcppg_anon_16) XGof_ref___ru_inblock_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_16) XGof_ref_ru_oublock() *c.Long {
+func (p *_llcppg_anon_17) XGof_ref_ru_oublock() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_16) XGof_ref___ru_oublock_word() *c.Long {
+func (p *_llcppg_anon_17) XGof_ref___ru_oublock_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_17) XGof_ref_ru_msgsnd() *c.Long {
+func (p *_llcppg_anon_18) XGof_ref_ru_msgsnd() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_17) XGof_ref___ru_msgsnd_word() *c.Long {
+func (p *_llcppg_anon_18) XGof_ref___ru_msgsnd_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_18) XGof_ref_ru_msgrcv() *c.Long {
+func (p *_llcppg_anon_19) XGof_ref_ru_msgrcv() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_18) XGof_ref___ru_msgrcv_word() *c.Long {
+func (p *_llcppg_anon_19) XGof_ref___ru_msgrcv_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_19) XGof_ref_ru_nsignals() *c.Long {
+func (p *_llcppg_anon_20) XGof_ref_ru_nsignals() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_19) XGof_ref___ru_nsignals_word() *c.Long {
+func (p *_llcppg_anon_20) XGof_ref___ru_nsignals_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_20) XGof_ref_ru_nvcsw() *c.Long {
+func (p *_llcppg_anon_21) XGof_ref_ru_nvcsw() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_20) XGof_ref___ru_nvcsw_word() *c.Long {
+func (p *_llcppg_anon_21) XGof_ref___ru_nvcsw_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_21) XGof_ref_ru_nivcsw() *c.Long {
+func (p *_llcppg_anon_22) XGof_ref_ru_nivcsw() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_21) XGof_ref___ru_nivcsw_word() *c.Long {
+func (p *_llcppg_anon_22) XGof_ref___ru_nivcsw_word() *c.Long {
 	return (*c.Long)(unsafe.Pointer(p))
 }
 
@@ -267,6 +272,45 @@ const (
 type X__Dirstream struct {
 }
 
+// llgo:type C
+type llcppgCallback20 = func(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c.Int
+
+// llgo:type C
+type llcppgCallback21 = func(_llcppg_param1 *Dirent) c.Int
+
+// Open a directory stream on NAME.
+// Return a DIR stream on the directory, or NULL if it could not be opened.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeOpendir C.opendir
+func NativeOpendir(__name *uint8) *DIR
+
+// Same as opendir, but open the stream on the file descriptor FD.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+//go:linkname NativeFdopendir C.fdopendir
+func NativeFdopendir(__fd c.Int) *DIR
+
+// Close the directory stream DIRP.
+// Return 0 if successful, -1 if not.
+//
+// This function is a possible cancellation point and therefore not
+// marked with __THROW.
+//
+// llgo:link (*DIR).NativeClosedir C.closedir
+func (self *DIR) NativeClosedir() c.Int {
+	return 0
+}
+
+// llgo:link (*DIR).NativeReaddir C.readdir
+func (self *DIR) NativeReaddir() *Dirent {
+	return nil
+}
+
 // llgo:link (*DIR).ReaddirR C.readdir_r
 func (self *DIR) ReaddirR(__entry *Dirent, __result **Dirent) c.Int {
 	return 0
@@ -299,7 +343,7 @@ func (self *DIR) Dirfd() c.Int {
 }
 
 //go:linkname Scandir C.scandir
-func Scandir(__dir *uint8, __namelist ***Dirent, __selector func(_llcppg_param1 *Dirent) c.Int, __cmp func(_llcppg_param1 **Dirent, _llcppg_param2 **Dirent) c.Int) c.Int
+func Scandir(__dir *uint8, __namelist ***Dirent, __selector llcppgCallback21, __cmp llcppgCallback20) c.Int
 
 //go:linkname Alphasort C.alphasort
 func Alphasort(__e1 **Dirent, __e2 **Dirent) c.Int
@@ -443,6 +487,24 @@ const (
 	F_TEST = 3
 )
 
+// Do the file control operation described by CMD on FD.
+// The remaining arguments are interpreted depending on CMD.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeFcntl C.fcntl
+func NativeFcntl(__fd c.Int, __cmd c.Int, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeOpen C.open
+func NativeOpen(__file *uint8, __oflag c.Int, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeOpenat C.openat
+func NativeOpenat(__fd c.Int, __file *uint8, __oflag c.Int, __llgo_va_list ...any) c.Int
+
+//go:linkname NativeCreat C.creat
+func NativeCreat(__file *uint8, __mode c.Uint) c.Int
+
 //go:linkname Lockf C.lockf
 func Lockf(__fd c.Int, __cmd c.Int, __len c.Long) c.Int
 
@@ -501,34 +563,37 @@ const (
 )
 
 type GlobT struct {
-	GlPathc    c.Ulong
+	GlPathc    c.SizeT
 	GlPathv    **uint8
-	GlOffs     c.Ulong
+	GlOffs     c.SizeT
 	GlFlags    c.Int
-	GlClosedir llcppgCallback9
-	GlReaddir  llcppgCallback8
-	GlOpendir  llcppgCallback7
-	GlLstat    llcppgCallback6
-	GlStat     llcppgCallback5
+	GlClosedir llcppgCallback19
+	GlReaddir  llcppgCallback18
+	GlOpendir  llcppgCallback17
+	GlLstat    llcppgCallback16
+	GlStat     llcppgCallback15
 }
 
 // llgo:type C
-type llcppgCallback5 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
+type llcppgCallback15 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
 
 // llgo:type C
-type llcppgCallback6 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
+type llcppgCallback16 = func(_llcppg_param1 *uint8, _llcppg_param2 unsafe.Pointer) c.Int
 
 // llgo:type C
-type llcppgCallback7 = func(_llcppg_param1 *uint8) unsafe.Pointer
+type llcppgCallback17 = func(_llcppg_param1 *uint8) unsafe.Pointer
 
 // llgo:type C
-type llcppgCallback8 = func(_llcppg_param1 unsafe.Pointer) unsafe.Pointer
+type llcppgCallback18 = func(_llcppg_param1 unsafe.Pointer) unsafe.Pointer
 
 // llgo:type C
-type llcppgCallback9 = func(_llcppg_param1 unsafe.Pointer)
+type llcppgCallback19 = func(_llcppg_param1 unsafe.Pointer)
+
+// llgo:type C
+type llcppgCallback14 = func(_llcppg_param1 *uint8, _llcppg_param2 c.Int) c.Int
 
 //go:linkname Glob C.glob
-func Glob(__pattern *uint8, __flags c.Int, __errfunc func(_llcppg_param1 *uint8, _llcppg_param2 c.Int) c.Int, __pglob *GlobT) c.Int
+func Glob(__pattern *uint8, __flags c.Int, __errfunc llcppgCallback14, __pglob *GlobT) c.Int
 
 // Free storage allocated in PGLOB by a previous `glob' call.
 //
@@ -1080,6 +1145,33 @@ func ShmOpen(__name *uint8, __oflag c.Int, __mode c.Uint) c.Int
 //go:linkname ShmUnlink C.shm_unlink
 func ShmUnlink(__name *uint8) c.Int
 
+// Data structure describing a polling request.
+type Pollfd struct {
+	Fd      c.Int
+	Events  int16
+	Revents int16
+}
+
+// Poll the file descriptors described by the NFDS structures starting at
+// FDS.  If TIMEOUT is nonzero and not -1, allow TIMEOUT milliseconds for
+// an event to occur; if TIMEOUT is -1, block until an event occurs.
+// Returns the number of file descriptors with events, zero if timed out,
+// or -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+// llgo:link (*Pollfd).Poll C.poll
+func (self *Pollfd) Poll(__nfds c.Ulong, __timeout c.Int) c.Int {
+	return 0
+}
+
+//go:linkname NativeGetrlimit C.getrlimit
+func NativeGetrlimit(__resource c.Int, __rlimits *Rlimit) c.Int
+
+//go:linkname NativeSetrlimit C.setrlimit
+func NativeSetrlimit(__resource c.Int, __rlimits *Rlimit) c.Int
+
 // Return resource usage information on process indicated by WHO
 // and put it in *USAGE.  Returns 0 for success, -1 for failure.
 //
@@ -1118,12 +1210,58 @@ const (
 // Block size for `st_blocks'.
 const S_BLKSIZE = 512
 
+// Get file attributes for FILE and put them in BUF.
+//
+//go:linkname NativeStat C.stat
+func NativeStat(__file *uint8, __buf *StatT) c.Int
+
+// Get file attributes for the file, device, pipe, or socket
+// that file descriptor FD is open on and put them in BUF.
+//
+//go:linkname NativeFstat C.fstat
+func NativeFstat(__fd c.Int, __buf *StatT) c.Int
+
+//go:linkname NativeFstatat C.fstatat
+func NativeFstatat(__fd c.Int, __file *uint8, __buf *StatT, __flag c.Int) c.Int
+
+// Get file attributes about FILE and put them in BUF.
+// If FILE is a symbolic link, do not follow it.
+//
+//go:linkname NativeLstat C.lstat
+func NativeLstat(__file *uint8, __buf *StatT) c.Int
+
+// Set file access permissions for FILE to MODE.
+// If FILE is a symbolic link, this affects its target instead.
+//
+//go:linkname NativeChmod C.chmod
+func NativeChmod(__file *uint8, __mode c.Uint) c.Int
+
 // Set file access permissions for FILE to MODE.
 // If FILE is a symbolic link, this affects the link itself
 // rather than its target.
 //
 //go:linkname Lchmod C.lchmod
 func Lchmod(__file *uint8, __mode c.Uint) c.Int
+
+//go:linkname NativeFchmod C.fchmod
+func NativeFchmod(__fd c.Int, __mode c.Uint) c.Int
+
+// Set file access permissions of FILE relative to
+// the directory FD is open on.
+//
+//go:linkname NativeFchmodat C.fchmodat
+func NativeFchmodat(__fd c.Int, __file *uint8, __mode c.Uint, __flag c.Int) c.Int
+
+// Set the file creation mask of the current process to MASK,
+// and return the old creation mask.
+//
+//go:linkname NativeUmask C.umask
+func NativeUmask(__mask c.Uint) c.Uint
+
+// Create a new directory named PATH, with permission bits MODE.
+//
+//go:linkname NativeMkdir C.mkdir
+func NativeMkdir(__path *uint8, __mode c.Uint) c.Int
 
 // Like mkdir, create a new directory with permission bits MODE.  But
 // interpret relative PATH names relative to the directory associated
@@ -1132,12 +1270,20 @@ func Lchmod(__file *uint8, __mode c.Uint) c.Int
 //go:linkname Mkdirat C.mkdirat
 func Mkdirat(__fd c.Int, __path *uint8, __mode c.Uint) c.Int
 
+//go:linkname NativeMknod C.mknod
+func NativeMknod(__path *uint8, __mode c.Uint, __dev c.Ulong) c.Int
+
 // Like mknod, create a new device file with permission bits MODE and
 // device number DEV.  But interpret relative PATH names relative to
 // the directory associated with FD.
 //
 //go:linkname Mknodat C.mknodat
 func Mknodat(__fd c.Int, __path *uint8, __mode c.Uint, __dev c.Ulong) c.Int
+
+// Create a new FIFO named PATH, with permission bits MODE.
+//
+//go:linkname NativeMkfifo C.mkfifo
+func NativeMkfifo(__path *uint8, __mode c.Uint) c.Int
 
 // Like mkfifo, create a new FIFO with permission bits MODE.  But
 // interpret relative PATH names relative to the directory associated
@@ -1157,11 +1303,38 @@ func Utimensat(__fd c.Int, __path *uint8, __times *lltime.Timespec, __flags c.In
 //go:linkname Futimens C.futimens
 func Futimens(__fd c.Int, __times *lltime.Timespec) c.Int
 
+//go:linkname X__Fxstat C.__fxstat
+func X__Fxstat(__ver c.Int, __fildes c.Int, __stat_buf *StatT) c.Int
+
+//go:linkname X__Xstat C.__xstat
+func X__Xstat(__ver c.Int, __filename *uint8, __stat_buf *StatT) c.Int
+
+//go:linkname X__Lxstat C.__lxstat
+func X__Lxstat(__ver c.Int, __filename *uint8, __stat_buf *StatT) c.Int
+
+//go:linkname X__Fxstatat C.__fxstatat
+func X__Fxstatat(__ver c.Int, __fildes c.Int, __filename *uint8, __stat_buf *StatT, __flag c.Int) c.Int
+
+//go:linkname X__Xmknod C.__xmknod
+func X__Xmknod(__ver c.Int, __path *uint8, __mode c.Uint, __dev *c.Ulong) c.Int
+
+//go:linkname X__Xmknodat C.__xmknodat
+func X__Xmknodat(__ver c.Int, __fd c.Int, __path *uint8, __mode c.Uint, __dev *c.Ulong) c.Int
+
 //go:linkname Statvfs C.statvfs
 func Statvfs(__file *uint8, __buf *StatvfsT) c.Int
 
 //go:linkname Fstatvfs C.fstatvfs
 func Fstatvfs(__fildes c.Int, __buf *StatvfsT) c.Int
+
+//go:linkname GnuDevMajor C.gnu_dev_major
+func GnuDevMajor(__dev c.UlongLong) c.Uint
+
+//go:linkname GnuDevMinor C.gnu_dev_minor
+func GnuDevMinor(__dev c.UlongLong) c.Uint
+
+//go:linkname GnuDevMakedev C.gnu_dev_makedev
+func GnuDevMakedev(__major c.Uint, __minor c.Uint) c.UlongLong
 
 // Structure describing CPU time used by a process and its children.
 type Tms struct {
@@ -1273,6 +1446,34 @@ const (
 	P_PGID IdtypeT = 2
 )
 
+// NativeWait for a child to die.  When one does, put its status in *STAT_LOC
+// and return its process ID.  For errors, return (pid_t) -1.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeWait C.wait
+func NativeWait(__stat_loc *c.Int) c.Int
+
+// Wait for a child matching PID to die.
+// If PID is greater than 0, match any process whose process ID is PID.
+// If PID is (pid_t) -1, match any process.
+// If PID is (pid_t) 0, match any process with the
+// same process group as the current process.
+// If PID is less than -1, match any process whose
+// process group is the absolute value of PID.
+// If the WNOHANG bit is set in OPTIONS, and that child
+// is not already dead, return (pid_t) 0.  If successful,
+// return PID and store the dead child's status in STAT_LOC.
+// Return (pid_t) -1 for errors.  If the WUNTRACED bit is
+// set in OPTIONS, return status for stopped children; otherwise don't.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeWaitpid C.waitpid
+func NativeWaitpid(__pid c.Int, __stat_loc *c.Int, __options c.Int) c.Int
+
 // Wait for a childing matching IDTYPE and ID to change the status and
 // place appropriate information in *INFOP.
 // If IDTYPE is P_PID, match any process whose process ID is ID.
@@ -1289,6 +1490,20 @@ const (
 func (self IdtypeT) Waitid(__id c.Uint, __infop *llsignal.SiginfoT, __options c.Int) c.Int {
 	return 0
 }
+
+// Wait for a child to exit.  When one does, put its status in *STAT_LOC and
+// return its process ID.  For errors return (pid_t) -1.  If USAGE is not
+// nil, store information about the child's resource usage there.  If the
+// WUNTRACED bit is set in OPTIONS, return status for stopped children;
+// otherwise don't.
+//
+//go:linkname NativeWait3 C.wait3
+func NativeWait3(__stat_loc *c.Int, __options c.Int, __usage *Rusage) c.Int
+
+// PID is like waitpid.  Other args are like wait3.
+//
+//go:linkname NativeWait4 C.wait4
+func NativeWait4(__pid c.Int, __stat_loc *c.Int, __options c.Int, __usage *Rusage) c.Int
 
 // Return the output baud rate stored in *TERMIOS_P.
 //
@@ -1386,6 +1601,41 @@ const (
 //go:linkname Access C.access
 func Access(__name *uint8, __type c.Int) c.Int
 
+// Test for access to FILE relative to the directory FD is open on.
+// If AT_EACCESS is set in FLAG, then use effective IDs like `eaccess',
+// otherwise use real IDs like `access'.
+//
+//go:linkname NativeFaccessat C.faccessat
+func NativeFaccessat(__fd c.Int, __file *uint8, __type c.Int, __flag c.Int) c.Int
+
+//go:linkname NativeLseek C.lseek
+func NativeLseek(__fd c.Int, __offset c.Long, __whence c.Int) c.Long
+
+// NativeClose the file descriptor FD.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeClose C.close
+func NativeClose(__fd c.Int) c.Int
+
+// NativeRead NBYTES into BUF from FD.  Return the
+// number read, -1 for errors or 0 for EOF.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeRead C.read
+func NativeRead(__fd c.Int, __buf unsafe.Pointer, __nbytes c.SizeT) c.SsizeT
+
+// NativeWrite N bytes of BUF to FD.  Return the number written, or -1.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeWrite C.write
+func NativeWrite(__fd c.Int, __buf unsafe.Pointer, __n c.SizeT) c.SsizeT
+
 // Read NBYTES into BUF from FD at the given position OFFSET without
 // changing the file pointer.  Return the number read, -1 for errors
 // or 0 for EOF.
@@ -1404,6 +1654,14 @@ func Pread(__fd c.Int, __buf unsafe.Pointer, __nbytes c.SizeT, __offset c.Long) 
 //
 //go:linkname Pwrite C.pwrite
 func Pwrite(__fd c.Int, __buf unsafe.Pointer, __n c.SizeT, __offset c.Long) c.SsizeT
+
+// Create a one-way communication channel (pipe).
+// If successful, two file descriptors are stored in PIPEDES;
+// bytes written on PIPEDES[1] can be read from PIPEDES[0].
+// Returns 0 if successful, -1 if not.
+//
+//go:linkname NativePipe C.pipe
+func NativePipe(__pipedes *c.Int) c.Int
 
 // Schedule an alarm.  In SECONDS seconds, the process will get a SIGALRM.
 // If SECONDS is zero, any currently scheduled alarm will be cancelled.
@@ -1438,6 +1696,15 @@ func Sleep(__seconds c.Uint) c.Uint
 //go:linkname Ualarm C.ualarm
 func Ualarm(__value c.Uint, __interval c.Uint) c.Uint
 
+// Sleep USECONDS microseconds, or until a signal arrives that is not blocked
+// or ignored.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeUsleep C.usleep
+func NativeUsleep(__useconds c.Uint) c.Int
+
 // Suspend the process until a signal arrives.
 // This always returns -1 and sets `errno' to EINTR.
 //
@@ -1447,6 +1714,49 @@ func Ualarm(__value c.Uint, __interval c.Uint) c.Uint
 //go:linkname Pause C.pause
 func Pause() c.Int
 
+// Change the owner and group of FILE.
+//
+//go:linkname NativeChown C.chown
+func NativeChown(__file *uint8, __owner c.Uint, __group c.Uint) c.Int
+
+// Change the owner and group of the file that FD is open on.
+//
+//go:linkname NativeFchown C.fchown
+func NativeFchown(__fd c.Int, __owner c.Uint, __group c.Uint) c.Int
+
+// Change owner and group of FILE, if it is a symbolic
+// link the ownership of the symbolic link is changed.
+//
+//go:linkname NativeLchown C.lchown
+func NativeLchown(__file *uint8, __owner c.Uint, __group c.Uint) c.Int
+
+// Change the owner and group of FILE relative to the directory FD is open
+// on.
+//
+//go:linkname NativeFchownat C.fchownat
+func NativeFchownat(__fd c.Int, __file *uint8, __owner c.Uint, __group c.Uint, __flag c.Int) c.Int
+
+// Change the process's working directory to PATH.
+//
+//go:linkname NativeChdir C.chdir
+func NativeChdir(__path *uint8) c.Int
+
+// Change the process's working directory to the one FD is open on.
+//
+//go:linkname NativeFchdir C.fchdir
+func NativeFchdir(__fd c.Int) c.Int
+
+// Get the pathname of the current working directory,
+// and put it in SIZE bytes of BUF.  Returns NULL if the
+// directory couldn't be determined or SIZE was too small.
+// If successful, returns BUF.  In GNU, if BUF is NULL,
+// an array is allocated with `malloc'; the array is SIZE
+// bytes long, unless SIZE == 0, in which case it is as
+// big as necessary.
+//
+//go:linkname NativeGetcwd C.getcwd
+func NativeGetcwd(__buf *uint8, __size c.SizeT) *uint8
+
 // Put the absolute pathname of the current working directory in BUF.
 // If successful, return BUF.  If not, put an error message in
 // BUF and return NULL.  BUF should be at least PATH_MAX bytes long.
@@ -1454,11 +1764,57 @@ func Pause() c.Int
 //go:linkname Getwd C.getwd
 func Getwd(__buf *uint8) *uint8
 
+// Duplicate FD, returning a new file descriptor on the same file.
+//
+//go:linkname NativeDup C.dup
+func NativeDup(__fd c.Int) c.Int
+
+// Duplicate FD to FD2, closing FD2 and making it open on the same file.
+//
+//go:linkname NativeDup2 C.dup2
+func NativeDup2(__fd c.Int, __fd2 c.Int) c.Int
+
+// Replace the current process, executing PATH with arguments ARGV and
+// environment ENVP.  ARGV and ENVP are terminated by NULL pointers.
+//
+//go:linkname NativeExecve C.execve
+func NativeExecve(__path *uint8, __argv **uint8, __envp **uint8) c.Int
+
 // Execute the file FD refers to, overlaying the running program image.
 // ARGV and ENVP are passed to the new program, as for `execve'.
 //
 //go:linkname Fexecve C.fexecve
 func Fexecve(__fd c.Int, __argv **uint8, __envp **uint8) c.Int
+
+// Execute PATH with arguments ARGV and environment from `environ'.
+//
+//go:linkname NativeExecv C.execv
+func NativeExecv(__path *uint8, __argv **uint8) c.Int
+
+// Execute PATH with all arguments after PATH until a NULL pointer,
+// and the argument after that for environment.
+//
+//go:linkname NativeExecle C.execle
+func NativeExecle(__path *uint8, __arg *uint8, __llgo_va_list ...any) c.Int
+
+// Execute PATH with all arguments after PATH until
+// a NULL pointer and environment from `environ'.
+//
+//go:linkname NativeExecl C.execl
+func NativeExecl(__path *uint8, __arg *uint8, __llgo_va_list ...any) c.Int
+
+// Execute FILE, searching in the `PATH' environment variable if it contains
+// no slashes, with arguments ARGV and environment from `environ'.
+//
+//go:linkname NativeExecvp C.execvp
+func NativeExecvp(__file *uint8, __argv **uint8) c.Int
+
+// Execute FILE, searching in the `PATH' environment variable if
+// it contains no slashes, with all arguments after FILE until a
+// NULL pointer and environment from `environ'.
+//
+//go:linkname NativeExeclp C.execlp
+func NativeExeclp(__file *uint8, __arg *uint8, __llgo_va_list ...any) c.Int
 
 // Add INC to priority of the current process.
 //
@@ -1490,10 +1846,25 @@ func Sysconf(__name c.Int) c.Long
 //go:linkname Confstr C.confstr
 func Confstr(__name c.Int, __buf *uint8, __len c.SizeT) c.SizeT
 
+// Get the process ID of the calling process.
+//
+//go:linkname NativeGetpid C.getpid
+func NativeGetpid() c.Int
+
+// Get the process ID of the calling process's parent.
+//
+//go:linkname NativeGetppid C.getppid
+func NativeGetppid() c.Int
+
 // Get the process group ID of the calling process.
 //
 //go:linkname Getpgrp C.getpgrp
 func Getpgrp() c.Int
+
+// Get the process group ID of process PID.
+//
+//go:linkname X__Getpgid C.__getpgid
+func X__Getpgid(__pid c.Int) c.Int
 
 //go:linkname Getpgid C.getpgid
 func Getpgid(__pid c.Int) c.Int
@@ -1522,6 +1893,26 @@ func Setsid() c.Int
 //
 //go:linkname Getsid C.getsid
 func Getsid(__pid c.Int) c.Int
+
+// Get the real user ID of the calling process.
+//
+//go:linkname NativeGetuid C.getuid
+func NativeGetuid() c.Uint
+
+// Get the effective user ID of the calling process.
+//
+//go:linkname NativeGeteuid C.geteuid
+func NativeGeteuid() c.Uint
+
+// Get the real group ID of the calling process.
+//
+//go:linkname NativeGetgid C.getgid
+func NativeGetgid() c.Uint
+
+// Get the effective group ID of the calling process.
+//
+//go:linkname NativeGetegid C.getegid
+func NativeGetegid() c.Uint
 
 // If SIZE is zero, return the number of supplementary groups
 // the calling process is in.  Otherwise, fill in the group IDs
@@ -1568,6 +1959,13 @@ func Setregid(__rgid c.Uint, __egid c.Uint) c.Int
 //go:linkname Setegid C.setegid
 func Setegid(__gid c.Uint) c.Int
 
+// Clone the calling process, creating an exact copy.
+// Return -1 for errors, 0 to the new process,
+// and the process ID of the new process to the old process.
+//
+//go:linkname NativeFork C.fork
+func NativeFork() c.Int
+
 // Clone the calling process, but without copying the whole address space.
 // The calling process is suspended until the new process exits or is
 // replaced by a call to `execve'.  Return -1 for errors, 0 to the new process,
@@ -1588,17 +1986,40 @@ func Ttyname(__fd c.Int) *uint8
 //go:linkname TtynameR C.ttyname_r
 func TtynameR(__fd c.Int, __buf *uint8, __buflen c.SizeT) c.Int
 
+// Return 1 if FD is a valid descriptor associated
+// with a terminal, zero if not.
+//
+//go:linkname NativeIsatty C.isatty
+func NativeIsatty(__fd c.Int) c.Int
+
 // Return the index into the active-logins file (utmp) for
 // the controlling terminal.
 //
 //go:linkname Ttyslot C.ttyslot
 func Ttyslot() c.Int
 
+// Make a link to FROM named TO.
+//
+//go:linkname NativeLink C.link
+func NativeLink(__from *uint8, __to *uint8) c.Int
+
 // Like link but relative paths in TO and FROM are interpreted relative
 // to FROMFD and TOFD respectively.
 //
 //go:linkname Linkat C.linkat
 func Linkat(__fromfd c.Int, __from *uint8, __tofd c.Int, __to *uint8, __flags c.Int) c.Int
+
+// Make a symbolic link to FROM named TO.
+//
+//go:linkname NativeSymlink C.symlink
+func NativeSymlink(__from *uint8, __to *uint8) c.Int
+
+// Read the contents of the symbolic link PATH into no more than
+// LEN bytes of BUF.  The contents are not null-terminated.
+// Returns the number of characters read, or -1 for errors.
+//
+//go:linkname NativeReadlink C.readlink
+func NativeReadlink(__path *uint8, __buf *uint8, __len c.SizeT) c.SsizeT
 
 // Like symlink but a relative path in TO is interpreted relative to TOFD.
 //
@@ -1609,6 +2030,21 @@ func Symlinkat(__from *uint8, __tofd c.Int, __to *uint8) c.Int
 //
 //go:linkname Readlinkat C.readlinkat
 func Readlinkat(__fd c.Int, __path *uint8, __buf *uint8, __len c.SizeT) c.SsizeT
+
+// Remove the link NAME.
+//
+//go:linkname NativeUnlink C.unlink
+func NativeUnlink(__name *uint8) c.Int
+
+// Remove the link NAME relative to FD.
+//
+//go:linkname NativeUnlinkat C.unlinkat
+func NativeUnlinkat(__fd c.Int, __name *uint8, __flag c.Int) c.Int
+
+// Remove the directory PATH.
+//
+//go:linkname NativeRmdir C.rmdir
+func NativeRmdir(__path *uint8) c.Int
 
 // Return the foreground process group ID of FD.
 //
@@ -1724,11 +2160,25 @@ func Setusershell()
 //go:linkname Daemon C.daemon
 func Daemon(__nochdir c.Int, __noclose c.Int) c.Int
 
+// Make PATH be the root directory (the starting point for absolute paths).
+// This call is restricted to the super-user.
+//
+//go:linkname NativeChroot C.chroot
+func NativeChroot(__path *uint8) c.Int
+
 // Prompt with PROMPT and read a string from the terminal without echoing.
 // Uses /dev/tty if possible; otherwise stderr and stdin.
 //
 //go:linkname Getpass C.getpass
 func Getpass(__prompt *uint8) *uint8
+
+// Make all changes done to FD actually appear on disk.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname NativeFsync C.fsync
+func NativeFsync(__fd c.Int) c.Int
 
 // Return identifier for the current host.
 //
@@ -1752,6 +2202,16 @@ func Getpagesize() c.Int
 //go:linkname Getdtablesize C.getdtablesize
 func Getdtablesize() c.Int
 
+// Ignore
+//
+//go:linkname NativeTruncate C.truncate
+func NativeTruncate(__file *uint8, __length c.Long) c.Int
+
+// Ignore
+//
+//go:linkname NativeFtruncate C.ftruncate
+func NativeFtruncate(__fd c.Int, __length c.Long) c.Int
+
 // Set the end of accessible data space (aka "the break") to ADDR.
 // Returns zero on success and -1 for errors (with errno set).
 //
@@ -1765,6 +2225,20 @@ func Brk(__addr unsafe.Pointer) c.Int
 //
 //go:linkname Sbrk C.sbrk
 func Sbrk(__delta c.IntptrT) unsafe.Pointer
+
+// Invoke `system call' number SYSNO, passing it the remaining arguments.
+// This is completely system-dependent, and not often useful.
+//
+// In Unix, `syscall' sets `errno' for all errors and most calls return -1
+// for errors; in many systems you cannot pass arguments or get return
+// values for all system calls (`pipe', `fork', and `getppid' typically
+// among them).
+//
+// In Mach, all system calls take normal arguments and always return an
+// error code (zero for success).
+//
+//go:linkname NativeSyscall C.syscall
+func NativeSyscall(__sysno c.Long, __llgo_va_list ...any) c.Long
 
 // Synchronize at least the data part of a file with the underlying
 // media.

@@ -4,6 +4,7 @@ D github.com/goplus/lib/c/time
 T DIR DIR
 T Dl_info DlInfo
 T __caddr_t X__CaddrT
+T __darwin_uuid_string_t X__DarwinUuidStringT
 T __darwin_uuid_t X__DarwinUuidT
 T __dirstream X__Dirstream
 T __fsid_t X__FsidT
@@ -27,6 +28,7 @@ T flock FlockT
 T flocktimeout Flocktimeout
 T fpunchhole Fpunchhole
 T fpunchhole_t FpunchholeT
+T fsid Fsid
 T fsid_t FsidT
 T fsignatures Fsignatures
 T fsignatures_t FsignaturesT
@@ -44,12 +46,14 @@ T glob_t GlobT
 T group Group
 T idtype_t IdtypeT
 T kauth_cred_t KauthCredT
+T mach_msg_header_t MachMsgHeaderT
 T mach_port_t MachPortT
 T mode_t ModeT
 T off_t OffT
 T ostat Ostat
 T passwd Passwd
 T pid_t PidT
+T pollfd Pollfd
 T posix_cred PosixCred
 T posix_cred_t PosixCredT
 T posix_spawn_file_actions_t PosixSpawnFileActionsT
@@ -80,4 +84,5 @@ T uid_t UidT
 T uio_rw UioRw
 T utimbuf Utimbuf
 T utsname Utsname
+T uuid_string_t UuidStringT
 T uuid_t UuidT
