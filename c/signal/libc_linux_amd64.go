@@ -11,6 +11,76 @@ import (
 	"unsafe"
 )
 
+// Bits in `sa_flags'.
+const (
+	SA_NOCLDSTOP = 1
+	// Don't create zombie on child death.
+	SA_NOCLDWAIT = 2
+	// Invoke signal-catching function with
+	// three arguments instead of one.
+	SA_SIGINFO = 4
+)
+
+// Use signal stack by using `sa_restorer'.
+const SA_ONSTACK = 134217728
+
+const (
+	// Restart syscall on signal return.
+	SA_RESTART = 268435456
+	// Don't automatically block the signal when
+	// its handler is being executed.
+	SA_NODEFER = 1073741824
+)
+
+// Reset to SIG_DFL on entry to handler.
+const SA_RESETHAND = 2147483648
+
+// Historical no-op.
+const SA_INTERRUPT = 536870912
+
+// Some aliases for the SA_ constants.
+const (
+	SA_NOMASK  = 1073741824
+	SA_ONESHOT = 2147483648
+	SA_STACK   = 134217728
+)
+
+// Values for the HOW argument to `sigprocmask'.
+const (
+	SIG_BLOCK = 0
+	// Unblock signals.
+	SIG_UNBLOCK = 1
+	// Set the set of blocked signals.
+	SIG_SETMASK = 2
+)
+
+type SigactionT struct {
+	X__SigactionHandler _llcppg_anon_7
+	SaMask              SigsetT
+	SaFlags             c.Int
+	SaRestorer          llcppgCallback3
+}
+
+// Structure describing the action to be taken when a signal arrives.
+//
+// llgo:type C
+type llcppgCallback3 = func()
+
+// llgo:type C
+type llcppgCallback4 = func(_llcppg_param1 c.Int, _llcppg_param2 *SiginfoT, _llcppg_param3 unsafe.Pointer)
+
+type _llcppg_anon_7 struct {
+	_xgo_union [1]uint64
+}
+
+func (p *_llcppg_anon_7) XGof_ref_sa_handler() *X__SighandlerT {
+	return (*X__SighandlerT)(unsafe.Pointer(p))
+}
+
+func (p *_llcppg_anon_7) XGof_ref_sa_sigaction() *llcppgCallback4 {
+	return (*llcppgCallback4)(unsafe.Pointer(p))
+}
+
 type X_fpxreg struct {
 	Significand [4]uint16
 	Exponent    uint16
@@ -62,19 +132,19 @@ type Sigcontext struct {
 	Trapno  c.Ulong
 	Oldmask c.Ulong
 	Cr2     c.Ulong
-	_llcppg_anon_7
+	_llcppg_anon_8
 	X__Reserved1 [8]c.Ulong
 }
 
-type _llcppg_anon_7 struct {
+type _llcppg_anon_8 struct {
 	_xgo_union [1]uint64
 }
 
-func (p *_llcppg_anon_7) XGof_ref_fpstate() **X_fpstate {
+func (p *_llcppg_anon_8) XGof_ref_fpstate() **X_fpstate {
 	return (**X_fpstate)(unsafe.Pointer(p))
 }
 
-func (p *_llcppg_anon_7) XGof_ref___fpstate_word() *c.Ulong {
+func (p *_llcppg_anon_8) XGof_ref___fpstate_word() *c.Ulong {
 	return (*c.Ulong)(unsafe.Pointer(p))
 }
 
@@ -89,12 +159,101 @@ type SiginfoT struct {
 	X_sifields _llcppg_anon_5
 }
 
+// Values for `si_code'.  Positive values are reserved for kernel-generated
+// signals.
+const (
+	SI_ASYNCNL = -60
+	SI_TKILL   = -6
+	SI_SIGIO   = -5
+	SI_ASYNCIO = -4
+	SI_MESGQ   = -3
+	SI_TIMER   = -2
+	SI_QUEUE   = -1
+	SI_USER    = 0
+	// Send by kernel.
+	SI_KERNEL = 128
+)
+
+// `si_code' values for SIGILL signal.
+const (
+	ILL_ILLOPC = 1
+	ILL_ILLOPN = 2
+	ILL_ILLADR = 3
+	ILL_ILLTRP = 4
+	ILL_PRVOPC = 5
+	ILL_PRVREG = 6
+	ILL_COPROC = 7
+	// Internal stack error.
+	ILL_BADSTK = 8
+)
+
+// `si_code' values for SIGFPE signal.
+const (
+	FPE_INTDIV = 1
+	FPE_INTOVF = 2
+	FPE_FLTDIV = 3
+	FPE_FLTOVF = 4
+	FPE_FLTUND = 5
+	FPE_FLTRES = 6
+	FPE_FLTINV = 7
+	// Subscript out of range.
+	FPE_FLTSUB = 8
+)
+
+// `si_code' values for SIGSEGV signal.
+const (
+	SEGV_MAPERR = 1
+	// Invalid permissions for mapped object.
+	SEGV_ACCERR = 2
+)
+
+// `si_code' values for SIGBUS signal.
+const (
+	BUS_ADRALN    = 1
+	BUS_ADRERR    = 2
+	BUS_OBJERR    = 3
+	BUS_MCEERR_AR = 4
+	// Hardware memory error: action optional.
+	BUS_MCEERR_AO = 5
+)
+
+// `si_code' values for SIGCHLD signal.
+const (
+	CLD_EXITED  = 1
+	CLD_KILLED  = 2
+	CLD_DUMPED  = 3
+	CLD_TRAPPED = 4
+	CLD_STOPPED = 5
+	// Stopped child has continued.
+	CLD_CONTINUED = 6
+)
+
+// `si_code' values for SIGPOLL signal.
+const (
+	POLL_IN  = 1
+	POLL_OUT = 2
+	POLL_MSG = 3
+	POLL_ERR = 4
+	POLL_PRI = 5
+	// Device disconnected.
+	POLL_HUP = 6
+)
+
 type Sigevent struct {
 	SigevValue  SigvalT
 	SigevSigno  c.Int
 	SigevNotify c.Int
 	X_sigevUn   _llcppg_anon_6
 }
+
+// `sigev_notify' values.
+const (
+	SIGEV_SIGNAL = 0
+	SIGEV_NONE   = 1
+	SIGEV_THREAD = 2
+	// Send signal to specific thread.
+	SIGEV_THREAD_ID = 4
+)
 
 // Type for data associated with a signal.
 type SigvalT = Sigval
@@ -104,7 +263,7 @@ type _llcppg_anon_5 struct {
 }
 
 // llgo:type C
-type llcppgCallback2 = func(_llcppg_param1 SigvalT)
+type llcppgCallback5 = func(_llcppg_param1 SigvalT)
 
 type _llcppg_anon_6 struct {
 	_xgo_union [6]uint64
@@ -123,39 +282,39 @@ func (p *_llcppg_anon_5) XGof_ref__pad() *[28]c.Int {
 }
 
 // kill().
-type _llcppg_anon_23 struct {
+type _llcppg_anon_24 struct {
 	SiPid c.Int
 	SiUid c.Uint
 }
 
-func (p *_llcppg_anon_5) XGof_ref__kill() *_llcppg_anon_23 {
-	return (*_llcppg_anon_23)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__kill() *_llcppg_anon_24 {
+	return (*_llcppg_anon_24)(unsafe.Pointer(p))
 }
 
 // POSIX.1b timers.
-type _llcppg_anon_24 struct {
+type _llcppg_anon_25 struct {
 	SiTid     c.Int
 	SiOverrun c.Int
 	SiSigval  SigvalT
 }
 
-func (p *_llcppg_anon_5) XGof_ref__timer() *_llcppg_anon_24 {
-	return (*_llcppg_anon_24)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__timer() *_llcppg_anon_25 {
+	return (*_llcppg_anon_25)(unsafe.Pointer(p))
 }
 
 // POSIX.1b signals.
-type _llcppg_anon_25 struct {
+type _llcppg_anon_26 struct {
 	SiPid    c.Int
 	SiUid    c.Uint
 	SiSigval SigvalT
 }
 
-func (p *_llcppg_anon_5) XGof_ref__rt() *_llcppg_anon_25 {
-	return (*_llcppg_anon_25)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__rt() *_llcppg_anon_26 {
+	return (*_llcppg_anon_26)(unsafe.Pointer(p))
 }
 
 // SIGCHLD.
-type _llcppg_anon_26 struct {
+type _llcppg_anon_27 struct {
 	SiPid    c.Int
 	SiUid    c.Uint
 	SiStatus c.Int
@@ -163,45 +322,45 @@ type _llcppg_anon_26 struct {
 	SiStime  c.Long
 }
 
-func (p *_llcppg_anon_5) XGof_ref__sigchld() *_llcppg_anon_26 {
-	return (*_llcppg_anon_26)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__sigchld() *_llcppg_anon_27 {
+	return (*_llcppg_anon_27)(unsafe.Pointer(p))
 }
 
 // SIGILL, SIGFPE, SIGSEGV, SIGBUS.
-type _llcppg_anon_27 struct {
+type _llcppg_anon_28 struct {
 	SiAddr    unsafe.Pointer
 	SiAddrLsb int16
-	SiAddrBnd _llcppg_anon_28
+	SiAddrBnd _llcppg_anon_29
 }
 
-type _llcppg_anon_28 struct {
+type _llcppg_anon_29 struct {
 	X_lower unsafe.Pointer
 	X_upper unsafe.Pointer
 }
 
-func (p *_llcppg_anon_5) XGof_ref__sigfault() *_llcppg_anon_27 {
-	return (*_llcppg_anon_27)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__sigfault() *_llcppg_anon_28 {
+	return (*_llcppg_anon_28)(unsafe.Pointer(p))
 }
 
 // SIGPOLL.
-type _llcppg_anon_29 struct {
+type _llcppg_anon_30 struct {
 	SiBand c.Long
 	SiFd   c.Int
 }
 
-func (p *_llcppg_anon_5) XGof_ref__sigpoll() *_llcppg_anon_29 {
-	return (*_llcppg_anon_29)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__sigpoll() *_llcppg_anon_30 {
+	return (*_llcppg_anon_30)(unsafe.Pointer(p))
 }
 
 // SIGSYS.
-type _llcppg_anon_30 struct {
+type _llcppg_anon_31 struct {
 	X_callAddr unsafe.Pointer
 	X_syscall  c.Int
 	X_arch     c.Uint
 }
 
-func (p *_llcppg_anon_5) XGof_ref__sigsys() *_llcppg_anon_30 {
-	return (*_llcppg_anon_30)(unsafe.Pointer(p))
+func (p *_llcppg_anon_5) XGof_ref__sigsys() *_llcppg_anon_31 {
+	return (*_llcppg_anon_31)(unsafe.Pointer(p))
 }
 
 func (p *_llcppg_anon_6) XGof_ref__pad() *[12]c.Int {
@@ -212,13 +371,96 @@ func (p *_llcppg_anon_6) XGof_ref__tid() *c.Int {
 	return (*c.Int)(unsafe.Pointer(p))
 }
 
-type _llcppg_anon_31 struct {
-	X_function  llcppgCallback2
+type _llcppg_anon_32 struct {
+	X_function  llcppgCallback5
 	X_attribute c.Pointer
 }
 
-func (p *_llcppg_anon_6) XGof_ref__sigev_thread() *_llcppg_anon_31 {
-	return (*_llcppg_anon_31)(unsafe.Pointer(p))
+func (p *_llcppg_anon_6) XGof_ref__sigev_thread() *_llcppg_anon_32 {
+	return (*_llcppg_anon_32)(unsafe.Pointer(p))
+}
+
+// Signals.
+const (
+	SIGHUP = 1
+	// Interrupt (ANSI).
+	SIGINT = 2
+	// Quit (POSIX).
+	SIGQUIT = 3
+	// Illegal instruction (ANSI).
+	SIGILL = 4
+	// Trace trap (POSIX).
+	SIGTRAP = 5
+	// Abort (ANSI).
+	SIGABRT = 6
+	// IOT trap (4.2 BSD).
+	SIGIOT = 6
+	// BUS error (4.2 BSD).
+	SIGBUS = 7
+	// Floating-point exception (ANSI).
+	SIGFPE = 8
+	// Kill, unblockable (POSIX).
+	SIGKILL = 9
+	// User-defined signal 1 (POSIX).
+	SIGUSR1 = 10
+	// Segmentation violation (ANSI).
+	SIGSEGV = 11
+	// User-defined signal 2 (POSIX).
+	SIGUSR2 = 12
+	// Broken pipe (POSIX).
+	SIGPIPE = 13
+	// Alarm clock (POSIX).
+	SIGALRM = 14
+	// Termination (ANSI).
+	SIGTERM = 15
+	// Stack fault.
+	SIGSTKFLT = 16
+	// Child status has changed (POSIX).
+	SIGCHLD = 17
+	// Continue (POSIX).
+	SIGCONT = 18
+	// Stop, unblockable (POSIX).
+	SIGSTOP = 19
+	// Keyboard stop (POSIX).
+	SIGTSTP = 20
+	// Background read from tty (POSIX).
+	SIGTTIN = 21
+	// Background write to tty (POSIX).
+	SIGTTOU = 22
+	// Urgent condition on socket (4.2 BSD).
+	SIGURG = 23
+	// CPU limit exceeded (4.2 BSD).
+	SIGXCPU = 24
+	// File size limit exceeded (4.2 BSD).
+	SIGXFSZ = 25
+	// Virtual alarm clock (4.2 BSD).
+	SIGVTALRM = 26
+	// Profiling alarm clock (4.2 BSD).
+	SIGPROF = 27
+	// Window size change (4.3 BSD, Sun).
+	SIGWINCH = 28
+	// I/O now possible (4.2 BSD).
+	SIGIO = 29
+	// Power failure restart (System V).
+	SIGPWR = 30
+	// Bad system call.
+	SIGSYS    = 31
+	SIGUNUSED = 31
+)
+
+// llgo:link (*SigsetT).X__Sigismember C.__sigismember
+func (self *SigsetT) X__Sigismember(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*SigsetT).X__Sigaddset C.__sigaddset
+func (self *SigsetT) X__Sigaddset(_llcppg_param2 c.Int) c.Int {
+	return 0
+}
+
+// llgo:link (*SigsetT).X__Sigdelset C.__sigdelset
+func (self *SigsetT) X__Sigdelset(_llcppg_param2 c.Int) c.Int {
+	return 0
 }
 
 // Structure describing a signal stack (obsolete).
@@ -241,8 +483,18 @@ const NSIG = 65
 // llgo:type C
 type X__SighandlerT = func(_llcppg_param1 c.Int)
 
+// The X/Open definition of `signal' specifies the SVID semantic.  Use
+// the additional function `sysv_signal' when X/Open compatibility is
+// requested.
+//
+//go:linkname X__SysvSignal C.__sysv_signal
+func X__SysvSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
+
 //go:linkname NativeSignal C.signal
 func NativeSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
+
+//go:linkname NativeKill C.kill
+func NativeKill(__pid c.Int, __sig c.Int) c.Int
 
 // Send SIG to all processes in process group PGRP.
 // If PGRP is zero, send SIG to all processes in
@@ -341,6 +593,11 @@ func (self *SigsetT) Sigsuspend() c.Int {
 	return 0
 }
 
+// Get and/or set the action for signal SIG.
+//
+//go:linkname Sigaction C.sigaction
+func Sigaction(__sig c.Int, __act *SigactionT, __oact *SigactionT) c.Int
+
 // Put in SET all signals that are blocked and waiting to be delivered.
 //
 // llgo:link (*SigsetT).Sigpending C.sigpending
@@ -417,6 +674,16 @@ func (self *Sigaltstack) Sigaltstack(__oss *Sigaltstack) c.Int {
 	return 0
 }
 
+// Return number of available real-time signal with highest priority.
+//
+//go:linkname X__LibcCurrentSigrtmin C.__libc_current_sigrtmin
+func X__LibcCurrentSigrtmin() c.Int
+
+// Return number of available real-time signal with lowest priority.
+//
+//go:linkname X__LibcCurrentSigrtmax C.__libc_current_sigrtmax
+func X__LibcCurrentSigrtmax() c.Int
+
 // Create new per-process timer using CLOCK_ID.
 //
 //go:linkname TimerCreate C.timer_create
@@ -426,6 +693,17 @@ type SigsetT = X__SigsetT
 
 type X__SigsetT struct {
 	X__Val [16]c.Ulong
+}
+
+const LLGoPackage = "link"
+
+//llgo:type C
+type SignalHandler func(c.Int)
+
+func Signal(sig c.Int, handler SignalHandler) c.Int {
+	var action SigactionT
+	*action.X__SigactionHandler.XGof_ref_sa_handler() = handler
+	return Sigaction(sig, &action, nil)
 }
 
 type SigeventT = Sigevent

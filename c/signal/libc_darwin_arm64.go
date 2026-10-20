@@ -10,6 +10,12 @@ import (
 	"unsafe"
 )
 
+// llgo:type C
+type llcppgCallback17 = func(_llcppg_param1 c.Int)
+
+// llgo:type C
+type llcppgCallback16 = func(_llcppg_param1 c.Int)
+
 //go:linkname SysSigname C.sys_signame
 var SysSigname [32]*c.Char
 
@@ -20,7 +26,10 @@ var SysSiglist [32]*c.Char
 func Raise(_llcppg_param1 c.Int) c.Int
 
 //go:linkname BsdSignal C.bsd_signal
-func BsdSignal(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
+func BsdSignal(_llcppg_param1 c.Int, _llcppg_param2 llcppgCallback17) func(_llcppg_param1 c.Int)
+
+//go:linkname NativeKill C.kill
+func NativeKill(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
 //go:linkname Killpg C.killpg
 func Killpg(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
@@ -70,7 +79,7 @@ func Sigprocmask(_llcppg_param1 c.Int, _llcppg_param2 *c.Uint, _llcppg_param3 *c
 func Sigrelse(_llcppg_param1 c.Int) c.Int
 
 //go:linkname Sigset C.sigset
-func Sigset(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
+func Sigset(_llcppg_param1 c.Int, _llcppg_param2 llcppgCallback16) func(_llcppg_param1 c.Int)
 
 //go:linkname Sigsuspend C.sigsuspend
 func Sigsuspend(_llcppg_param1 *c.Uint) c.Int
@@ -89,6 +98,11 @@ func Sigsetmask(_llcppg_param1 c.Int) c.Int
 
 //go:linkname Sigvec C.sigvec
 func Sigvec(_llcppg_param1 c.Int, _llcppg_param2 *SigvecT, _llcppg_param3 *SigvecT) c.Int
+
+// List definitions after function declarations, or Reiser cpp gets upset.
+//
+//go:linkname X__Sigbits C._llcppg___sigbits
+func X__Sigbits(__signo c.Int) c.Int
 
 type X__DarwinSigaltstack struct {
 	SsSp    unsafe.Pointer
@@ -398,7 +412,7 @@ type SigactionT struct {
 }
 
 type SigvecT struct {
-	SvHandler llcppgCallback4
+	SvHandler llcppgCallback19
 	SvMask    c.Int
 	SvFlags   c.Int
 }
@@ -408,16 +422,19 @@ type SiginfoT = X__Siginfo
 // union for signal handlers
 //
 // llgo:type C
-type llcppgCallback6 = func(_llcppg_param1 c.Int, _llcppg_param2 *X__Siginfo, _llcppg_param3 unsafe.Pointer)
+type llcppgCallback21 = func(_llcppg_param1 c.Int, _llcppg_param2 *X__Siginfo, _llcppg_param3 unsafe.Pointer)
 
 // llgo:type C
-type llcppgCallback7 = func(_llcppg_param1 c.Int)
+type llcppgCallback22 = func(_llcppg_param1 c.Int)
 
 // 4.3 compatibility:
 // Signal vector "template" used in sigvec call.
 //
 // llgo:type C
-type llcppgCallback4 = func(_llcppg_param1 c.Int)
+type llcppgCallback19 = func(_llcppg_param1 c.Int)
+
+// llgo:type C
+type llcppgCallback18 = func(_llcppg_param1 c.Int)
 
 func (p *Sigval) XGof_ref_sival_int() *c.Int {
 	return (*c.Int)(unsafe.Pointer(p))
@@ -427,15 +444,28 @@ func (p *Sigval) XGof_ref_sival_ptr() *unsafe.Pointer {
 	return (*unsafe.Pointer)(unsafe.Pointer(p))
 }
 
-func (p *X__SigactionU) XGof_ref___sa_handler() *llcppgCallback7 {
-	return (*llcppgCallback7)(unsafe.Pointer(p))
+func (p *X__SigactionU) XGof_ref___sa_handler() *llcppgCallback22 {
+	return (*llcppgCallback22)(unsafe.Pointer(p))
 }
 
-func (p *X__SigactionU) XGof_ref___sa_sigaction() *llcppgCallback6 {
-	return (*llcppgCallback6)(unsafe.Pointer(p))
+func (p *X__SigactionU) XGof_ref___sa_sigaction() *llcppgCallback21 {
+	return (*llcppgCallback21)(unsafe.Pointer(p))
 }
 
 //go:linkname NativeSignal C.signal
-func NativeSignal(_llcppg_param1 c.Int, _llcppg_param2 func(_llcppg_param1 c.Int)) func(_llcppg_param1 c.Int)
+func NativeSignal(_llcppg_param1 c.Int, _llcppg_param2 llcppgCallback18) func(_llcppg_param1 c.Int)
 
 type SigsetT = c.Uint
+
+const LLGoPackage = "link"
+
+//llgo:type C
+type SignalHandler func(c.Int)
+
+func Signal(sig c.Int, handler SignalHandler) c.Int {
+	var action SigactionT
+	*action.X__SigactionU.XGof_ref___sa_handler() = handler
+	return Sigaction(sig, &action, nil)
+}
+
+const LLGoFiles = "$LIBC_CC_FLAGS: _libc_darwin_arm64.c"
