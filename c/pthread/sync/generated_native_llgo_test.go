@@ -35,12 +35,37 @@ func TestGeneratedSynchronizationLayouts(t *testing.T) {
 	}
 }
 func TestGeneratedMutex(t *testing.T) {
+	t.Run("attributes", func(t *testing.T) {
+		var attr MutexAttr
+		if result := attr.Init(); result != 0 {
+			t.Fatalf("mutexattr_init = %d", result)
+		}
+		defer func() {
+			if result := attr.Destroy(); result != 0 {
+				t.Errorf("mutexattr_destroy = %d", result)
+			}
+		}()
+		if result := attr.SetType(MUTEX_NORMAL); result != 0 {
+			t.Fatalf("mutexattr_settype = %d", result)
+		}
+		var mutex Mutex
+		if result := mutex.Init(&attr); result != 0 {
+			t.Fatalf("mutex_init with attributes = %d", result)
+		}
+		if result := mutex.Destroy(); result != 0 {
+			t.Fatalf("mutex_destroy with attributes = %d", result)
+		}
+	})
 	var mutex Mutex
-	if result := mutex.NativeInit(nil); result != 0 {
+	var _ interface {
+		Lock()
+		Unlock()
+	} = &mutex
+	if result := mutex.Init(nil); result != 0 {
 		t.Fatalf("mutex_init = %d", result)
 	}
 	defer func() {
-		if result := mutex.NativeDestroy(); result != 0 {
+		if result := mutex.Destroy(); result != 0 {
 			t.Errorf("mutex_destroy = %d", result)
 		}
 	}()
@@ -53,28 +78,34 @@ func TestGeneratedMutex(t *testing.T) {
 }
 func TestGeneratedCondition(t *testing.T) {
 	var cond Cond
-	if result := cond.NativeInit(nil); result != 0 {
+	if result := cond.Init(nil); result != 0 {
 		t.Fatalf("cond_init = %d", result)
 	}
 	defer func() {
-		if result := cond.NativeDestroy(); result != 0 {
+		if result := cond.Destroy(); result != 0 {
 			t.Errorf("cond_destroy = %d", result)
 		}
 	}()
-	if result := cond.NativeSignal(); result != 0 {
+	if result := cond.Signal(); result != 0 {
 		t.Fatalf("cond_signal = %d", result)
 	}
-	if result := cond.NativeBroadcast(); result != 0 {
+	if result := cond.Broadcast(); result != 0 {
 		t.Fatalf("cond_broadcast = %d", result)
 	}
 }
 func TestGeneratedRWLock(t *testing.T) {
 	var rw RWLock
-	if result := rw.NativeInit(nil); result != 0 {
+	var _ interface {
+		Lock()
+		Unlock()
+		RLock()
+		RUnlock()
+	} = &rw
+	if result := rw.Init(nil); result != 0 {
 		t.Fatalf("rwlock_init = %d", result)
 	}
 	defer func() {
-		if result := rw.NativeDestroy(); result != 0 {
+		if result := rw.Destroy(); result != 0 {
 			t.Errorf("rwlock_destroy = %d", result)
 		}
 	}()
