@@ -28,8 +28,8 @@ func Raise(_llcppg_param1 c.Int) c.Int
 //go:linkname BsdSignal C.bsd_signal
 func BsdSignal(_llcppg_param1 c.Int, _llcppg_param2 llcppgCallback17) func(_llcppg_param1 c.Int)
 
-//go:linkname NativeKill C.kill
-func NativeKill(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+//go:linkname Kill C.kill
+func Kill(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
 //go:linkname Killpg C.killpg
 func Killpg(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int

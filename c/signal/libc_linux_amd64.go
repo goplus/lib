@@ -493,8 +493,8 @@ func X__SysvSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
 //go:linkname NativeSignal C.signal
 func NativeSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
 
-//go:linkname NativeKill C.kill
-func NativeKill(__pid c.Int, __sig c.Int) c.Int
+//go:linkname Kill C.kill
+func Kill(__pid c.Int, __sig c.Int) c.Int
 
 // Send SIG to all processes in process group PGRP.
 // If PGRP is zero, send SIG to all processes in
