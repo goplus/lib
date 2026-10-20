@@ -46,7 +46,7 @@ jobs:
       with:
         repository: xgo-dev/llgo
         # Includes C-prefixed native variable bindings as well as stdcall.
-        ref: 9959a7f6dd1c36f205f2bc9da78463caf021b5d9
+        ref: dbce82ab63e3c165689027dfd244140212791b53
         path: .llgo
 
     - name: Set up LLGo dependencies
