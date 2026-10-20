@@ -1663,9 +1663,8 @@ func NativeGetaddrinfo(__name *uint8, __service *uint8, __req *AddrInfo, __pai *
 
 // NativeFree `addrinfo' structure AI including associated storage.
 //
-// llgo:link (*AddrInfo).NativeFree C.freeaddrinfo
-func (self *AddrInfo) NativeFree() {
-}
+//go:linkname Freeaddrinfo C.freeaddrinfo
+func Freeaddrinfo(self *AddrInfo)
 
 // Convert error return from getaddrinfo() to a string.
 //
@@ -1958,8 +1957,8 @@ const (
 // protocol PROTOCOL.  If PROTOCOL is zero, one is chosen automatically.
 // Returns a file descriptor for the new socket, or -1 for errors.
 //
-//go:linkname NativeSocket C.socket
-func NativeSocket(__domain c.Int, __type c.Int, __protocol c.Int) c.Int
+//go:linkname Socket C.socket
+func Socket(__domain c.Int, __type c.Int, __protocol c.Int) c.Int
 
 // Create two new sockets, of type TYPE in domain DOMAIN and using
 // protocol PROTOCOL, which are connected to each other, and put file
@@ -1987,8 +1986,8 @@ func Getsockname(__fd c.Int, __addr *SockAddr, __len *SocklenT) c.Int
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeConnect C.connect
-func NativeConnect(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
+//go:linkname Connect C.connect
+func Connect(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
 
 // Put the address of the peer connected to socket FD into *ADDR
 // (which is *LEN bytes long), and its actual length into *LEN.
@@ -2062,15 +2061,15 @@ func Getsockopt(__fd c.Int, __level c.Int, __optname c.Int, __optval unsafe.Poin
 // to *OPTVAL (which is OPTLEN bytes long).
 // Returns 0 on success, -1 for errors.
 //
-//go:linkname NativeSetsockopt C.setsockopt
-func NativeSetsockopt(__fd c.Int, __level c.Int, __optname c.Int, __optval unsafe.Pointer, __optlen SocklenT) c.Int
+//go:linkname SetSockOpt C.setsockopt
+func SetSockOpt(__fd c.Int, __level c.Int, __optname c.Int, __optval unsafe.Pointer, __optlen SocklenT) c.Int
 
 // Prepare to accept connections on socket FD.
 // N connection requests will be queued before further requests are refused.
 // Returns 0 on success, -1 for errors.
 //
-//go:linkname NativeListen C.listen
-func NativeListen(__fd c.Int, __n c.Int) c.Int
+//go:linkname Listen C.listen
+func Listen(__fd c.Int, __n c.Int) c.Int
 
 // Await a connection on socket FD.
 // When a connection arrives, open a new socket to communicate with it,

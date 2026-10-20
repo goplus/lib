@@ -40,17 +40,8 @@ const (
 	PAD2_SIZE = MAXSIZE - unsafe.Sizeof(byte(0)) - unsafe.Sizeof(byte(0)) - PAD1_SIZE - ALIGNSIZE
 )
 
-//go:linkname Socket C.socket
-func Socket(domain c.Int, typ c.Int, protocol c.Int) c.Int
-
 //go:linkname Bind C.bind
 func Bind(sockfd c.Int, addr *SockaddrIn, addrlen c.Uint) c.Int
-
-//go:linkname Connect C.connect
-func Connect(sockfd c.Int, addr *SockAddr, addrlen c.Uint) c.Int
-
-//go:linkname Listen C.listen
-func Listen(sockfd c.Int, backlog c.Int) c.Int
 
 //go:linkname Accept C.accept
 func Accept(sockfd c.Int, addr *SockaddrIn, addrlen *c.Uint) c.Int
@@ -70,9 +61,6 @@ func Send(c.Int, c.Pointer, uintptr, c.Int) c.Long
 //go:linkname Recv C.recv
 func Recv(c.Int, c.Pointer, uintptr, c.Int) c.Long
 
-//go:linkname SetSockOpt C.setsockopt
-func SetSockOpt(socket c.Int, level c.Int, optionName c.Int, optionValue c.Pointer, sockLen c.Uint) c.Int
-
 //go:linkname Ntohs C.ntohs
 func Ntohs(x uint16) uint16
 
@@ -87,6 +75,3 @@ func Htonl(x c.Uint) c.Uint
 
 //go:linkname Getaddrinfo C.getaddrinfo
 func Getaddrinfo(host *c.Char, port *c.Char, addrInfo *AddrInfo, result **AddrInfo) c.Int
-
-//go:linkname Freeaddrinfo C.freeaddrinfo
-func Freeaddrinfo(addrInfo *AddrInfo)

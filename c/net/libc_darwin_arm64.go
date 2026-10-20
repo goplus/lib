@@ -667,9 +667,8 @@ func Endprotoent()
 //go:linkname Endservent C.endservent
 func Endservent()
 
-// llgo:link (*AddrInfo).NativeFree C.freeaddrinfo
-func (self *AddrInfo) NativeFree() {
-}
+//go:linkname Freeaddrinfo C.freeaddrinfo
+func Freeaddrinfo(self *AddrInfo)
 
 //go:linkname GaiStrerror C.gai_strerror
 func GaiStrerror(_llcppg_param1 c.Int) *c.Char
@@ -2411,8 +2410,8 @@ func NativeAccept(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3
 //go:linkname NativeBind C.bind
 func NativeBind(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
 
-//go:linkname NativeConnect C.connect
-func NativeConnect(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
+//go:linkname Connect C.connect
+func Connect(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
 
 //go:linkname Getpeername C.getpeername
 func Getpeername(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 *SocklenT) c.Int
@@ -2423,8 +2422,8 @@ func Getsockname(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 
 //go:linkname Getsockopt C.getsockopt
 func Getsockopt(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 unsafe.Pointer, _llcppg_param5 *SocklenT) c.Int
 
-//go:linkname NativeListen C.listen
-func NativeListen(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
+//go:linkname Listen C.listen
+func Listen(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
 //go:linkname NativeRecv C.recv
 func NativeRecv(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT, _llcppg_param4 c.Int) SsizeT
@@ -2444,8 +2443,8 @@ func Sendmsg(_llcppg_param1 c.Int, _llcppg_param2 *Msghdr, _llcppg_param3 c.Int)
 //go:linkname Sendto C.sendto
 func Sendto(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT, _llcppg_param4 c.Int, _llcppg_param5 *SockAddr, _llcppg_param6 SocklenT) SsizeT
 
-//go:linkname NativeSetsockopt C.setsockopt
-func NativeSetsockopt(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 unsafe.Pointer, _llcppg_param5 SocklenT) c.Int
+//go:linkname SetSockOpt C.setsockopt
+func SetSockOpt(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 unsafe.Pointer, _llcppg_param5 SocklenT) c.Int
 
 //go:linkname Shutdown C.shutdown
 func Shutdown(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
@@ -2453,8 +2452,8 @@ func Shutdown(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 //go:linkname Sockatmark C.sockatmark
 func Sockatmark(_llcppg_param1 c.Int) c.Int
 
-//go:linkname NativeSocket C.socket
-func NativeSocket(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int) c.Int
+//go:linkname Socket C.socket
+func Socket(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int) c.Int
 
 //go:linkname Socketpair C.socketpair
 func Socketpair(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int, _llcppg_param4 *c.Int) c.Int
