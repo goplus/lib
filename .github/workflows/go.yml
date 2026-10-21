@@ -70,7 +70,7 @@ jobs:
         LLGO_BUILD_CACHE: 'off'
         LLGO_ROOT: ${{ github.workspace }}/.llgo
       run: |
-        "$RUNNER_TEMP/llgo" test -count=1 -v ./c ./c/math/rand ./c/net ./c/os ./c/setjmp ./c/time ./cpp/std
+        "$RUNNER_TEMP/llgo" test -count=1 -v ./c ./c/math/rand ./c/net ./c/os ./c/setjmp ./c/time ./cpp/std ./py
 
     # The Unix binding exposes libc++'s C++ ABI and is therefore exercised on
     # macOS. Linux LLVM packages use libstdc++; Windows is tested below through

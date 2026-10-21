@@ -233,14 +233,10 @@ func (handle *Handle) IsWritable() c.Int {
 }
 
 //go:linkname Pipe C.uv_pipe
-func Pipe(fds [2]File, readFlags c.Int, writeFlags c.Int) c.Int {
-	return 0
-}
+func Pipe(fds [2]File, readFlags c.Int, writeFlags c.Int) c.Int
 
 //go:linkname Socketpair C.uv_socketpair
-func Socketpair(_type c.Int, protocol c.Int, socketVector [2]OsSock, flag0 c.Int, flag1 c.Int) c.Int {
-	return 0
-}
+func Socketpair(_type c.Int, protocol c.Int, socketVector [2]OsSock, flag0 c.Int, flag1 c.Int) c.Int
 
 // ----------------------------------------------
 
@@ -335,9 +331,7 @@ func (stream *Stream) SetBlocking(blocking c.Int) c.Int {
 }
 
 //go:linkname StreamShutdown C.uv_shutdown
-func StreamShutdown(shutdown *Shutdown, stream *Stream, shutdownCb ShutdownCb) c.Int {
-	return 0
-}
+func StreamShutdown(shutdown *Shutdown, stream *Stream, shutdownCb ShutdownCb) c.Int
 
 // ----------------------------------------------
 
