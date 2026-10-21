@@ -45,7 +45,7 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: xgo-dev/llgo
-        # Includes C-prefixed native variable bindings as well as stdcall.
+        # Native variable support from xgo-dev/llgo#2882 (immutable compiler pin).
         ref: dbce82ab63e3c165689027dfd244140212791b53
         path: .llgo
 
