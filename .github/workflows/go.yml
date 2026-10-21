@@ -47,7 +47,7 @@ jobs:
       with:
         repository: xgo-dev/llgo
         # Test the minimum supported LLGo release (>= 1.0.8).
-        ref: v1.0.8
+        ref: c171abfa130108bc6451e01fcf15a8a3474eb0a7 # v1.0.8
         path: .llgo
 
     - name: Set up LLGo dependencies
@@ -58,7 +58,7 @@ jobs:
     - name: Build LLGo
       working-directory: .llgo
       run: |
-        # Use the LLVM binding version declared by the pinned compiler.
+        # Assert llvm-config matches the LLVM 22 required by LLGo v1.0.8.
         llvm_version="$(llvm-config --version)"
         test "${llvm_version%%.*}" = 22
         export CGO_CPPFLAGS="$(llvm-config --cflags)"
