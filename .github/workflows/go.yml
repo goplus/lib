@@ -45,8 +45,8 @@ jobs:
       uses: actions/checkout@v4
       with:
         repository: xgo-dev/llgo
-        # Native variable support from xgo-dev/llgo#2882 (immutable compiler pin).
-        ref: dbce82ab63e3c165689027dfd244140212791b53
+        # Test the minimum supported LLGo release (>= 1.0.8).
+        ref: v1.0.8
         path: .llgo
 
     - name: Set up LLGo dependencies
