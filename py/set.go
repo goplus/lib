@@ -28,7 +28,7 @@ import (
 // The constructor is also useful for copying a set (c=set(s)).
 //
 //go:linkname NewSet C.PySet_New
-func NewSet(iterable *Object) *Object { return nil }
+func NewSet(iterable *Object) *Object
 
 // Return the length of a set or frozenset object. Equivalent to len(anyset).
 // Set a SystemError if anyset is not a set, frozenset, or an instance of a

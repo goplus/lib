@@ -23,11 +23,11 @@ import _ "unsafe"
 
 const LLGoPackage = "decl"
 
-//go:linkname Stdin stdin
+//go:linkname Stdin C.stdin
 var Stdin FilePtr
 
-//go:linkname Stdout stdout
+//go:linkname Stdout C.stdout
 var Stdout FilePtr
 
-//go:linkname Stderr stderr
+//go:linkname Stderr C.stderr
 var Stderr FilePtr
