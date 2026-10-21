@@ -498,10 +498,10 @@ func OpenMemstream(__bufp **Char, __sizep *SizeT) *FILE
 
 // perror(3) external variables
 //
-//go:linkname SysNerr sys_nerr
+//go:linkname SysNerr C.sys_nerr
 var SysNerr Int
 
-//go:linkname SysErrlist sys_errlist
+//go:linkname SysErrlist C.sys_errlist
 var SysErrlist [0]*Char
 
 //go:linkname Asprintf C.asprintf
@@ -859,7 +859,7 @@ func Strtouq(__str *Char, __endptr **Char, __base Int) UlongLong
 
 // getsubopt(3) external variable
 //
-//go:linkname Suboptarg suboptarg
+//go:linkname Suboptarg C.suboptarg
 var Suboptarg *Char
 
 //go:linkname Strcoll C.strcoll
