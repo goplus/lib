@@ -99,11 +99,6 @@ func Sigsetmask(_llcppg_param1 c.Int) c.Int
 //go:linkname Sigvec C.sigvec
 func Sigvec(_llcppg_param1 c.Int, _llcppg_param2 *SigvecT, _llcppg_param3 *SigvecT) c.Int
 
-// List definitions after function declarations, or Reiser cpp gets upset.
-//
-//go:linkname X__Sigbits C._llcppg___sigbits
-func X__Sigbits(__signo c.Int) c.Int
-
 type X__DarwinSigaltstack struct {
 	SsSp    unsafe.Pointer
 	SsSize  c.Ulong
@@ -467,5 +462,3 @@ func Signal(sig c.Int, handler SignalHandler) c.Int {
 	*action.X__SigactionU.XGof_ref___sa_handler() = handler
 	return Sigaction(sig, &action, nil)
 }
-
-const LLGoFiles = "$LIBC_CC_FLAGS: _libc_darwin_arm64.c"

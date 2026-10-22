@@ -3,6 +3,7 @@
 package signal
 
 import (
+	"os"
 	"testing"
 	"unsafe"
 
@@ -76,7 +77,8 @@ func TestNativeSignalWrapper(t *testing.T) {
 			t.Errorf("restore original action = %d", result)
 		}
 	}()
-	handler := SignalHandler(func(c.Int) {})
+	deliveredSignal = 0
+	handler := SignalHandler(func(number c.Int) { deliveredSignal = number })
 	if result := Signal(nativeUserSignal, handler); result != 0 {
 		t.Fatalf("Signal = %d", result)
 	}
@@ -92,4 +94,14 @@ func TestNativeSignalWrapper(t *testing.T) {
 	if actual.SaMask != 0 || actual.SaFlags != 0 {
 		t.Fatalf("installed mask/flags = %d/%d, want 0/0", actual.SaMask, actual.SaFlags)
 	}
+	if result := Raise(nativeUserSignal); result != 0 {
+		t.Fatalf("raise = %d", result)
+	}
+	if deliveredSignal != nativeUserSignal {
+		t.Fatalf("delivered signal = %d, want %d", deliveredSignal, nativeUserSignal)
+	}
+	if result := Kill(c.Int(os.Getpid()), 0); result != 0 {
+		t.Fatalf("kill(self, 0) = %d", result)
+	}
+
 }

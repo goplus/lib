@@ -448,21 +448,6 @@ const (
 	SIGUNUSED = 31
 )
 
-// llgo:link (*SigsetT).X__Sigismember C.__sigismember
-func (self *SigsetT) X__Sigismember(_llcppg_param2 c.Int) c.Int {
-	return 0
-}
-
-// llgo:link (*SigsetT).X__Sigaddset C.__sigaddset
-func (self *SigsetT) X__Sigaddset(_llcppg_param2 c.Int) c.Int {
-	return 0
-}
-
-// llgo:link (*SigsetT).X__Sigdelset C.__sigdelset
-func (self *SigsetT) X__Sigdelset(_llcppg_param2 c.Int) c.Int {
-	return 0
-}
-
 // Structure describing a signal stack (obsolete).
 type SigstackT struct {
 	SsSp      unsafe.Pointer
@@ -482,13 +467,6 @@ const NSIG = 65
 //
 // llgo:type C
 type X__SighandlerT = func(_llcppg_param1 c.Int)
-
-// The X/Open definition of `signal' specifies the SVID semantic.  Use
-// the additional function `sysv_signal' when X/Open compatibility is
-// requested.
-//
-//go:linkname X__SysvSignal C.__sysv_signal
-func X__SysvSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
 
 //go:linkname NativeSignal C.signal
 func NativeSignal(__sig c.Int, __handler X__SighandlerT) X__SighandlerT
@@ -642,9 +620,6 @@ func (self *SigsetT) Sigtimedwait(__info *SiginfoT, __timeout *lltime.Timespec) 
 //go:linkname Sigqueue C.sigqueue
 func Sigqueue(__pid c.Int, __sig c.Int, __val Sigval) c.Int
 
-//go:linkname SysSiglist C.sys_siglist
-var SysSiglist [65]*c.Char
-
 // Restore the state saved in SCP.
 //
 // llgo:link (*Sigcontext).Sigreturn C.sigreturn
@@ -673,16 +648,6 @@ func Sigstack(__ss *SigstackT, __oss *SigstackT) c.Int
 func (self *Sigaltstack) Sigaltstack(__oss *Sigaltstack) c.Int {
 	return 0
 }
-
-// Return number of available real-time signal with highest priority.
-//
-//go:linkname X__LibcCurrentSigrtmin C.__libc_current_sigrtmin
-func X__LibcCurrentSigrtmin() c.Int
-
-// Return number of available real-time signal with lowest priority.
-//
-//go:linkname X__LibcCurrentSigrtmax C.__libc_current_sigrtmax
-func X__LibcCurrentSigrtmax() c.Int
 
 // Create new per-process timer using CLOCK_ID.
 //
