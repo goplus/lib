@@ -17,8 +17,10 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        go: ['1.20', '1.23']
+        # Go 1.20 checks downstream compatibility; stable tracks supported Go.
+        go: ['1.20', 'stable']
     env:
+      # Use setup-go's selected toolchain without automatic downloads or switches.
       GOTOOLCHAIN: local
     steps:
     - uses: actions/checkout@v4
