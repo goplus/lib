@@ -18,8 +18,8 @@ const X_ARPA_INET_H = 1
 // Convert Internet host address from numbers-and-dots notation in CP
 // into binary data in network byte order.
 //
-//go:linkname NativeInetAddr C.inet_addr
-func NativeInetAddr(__cp *c.Char) InAddrT
+//go:linkname InetAddr C.inet_addr
+func InetAddr(__cp *c.Char) InAddrT
 
 // Return the local host address part of the Internet address in IN.
 //
@@ -66,8 +66,8 @@ func InetPton(__af c.Int, __cp *c.Char, __buf unsafe.Pointer) c.Int
 // type AF in buffer starting at CP to presentation form and place
 // result in buffer of length LEN astarting at BUF.
 //
-//go:linkname NativeInetNtop C.inet_ntop
-func NativeInetNtop(__af c.Int, __cp unsafe.Pointer, __buf *c.Char, __len SocklenT) *c.Char
+//go:linkname InetNtop C.inet_ntop
+func InetNtop(__af c.Int, __cp unsafe.Pointer, __buf *c.Char, __len SocklenT) *c.Char
 
 // Convert Internet host address from numbers-and-dots notation in CP
 // into binary data and store the result in the structure INP.
@@ -730,11 +730,6 @@ type Linger struct {
 
 type SocklenT = X__SocklenT
 
-// llgo:link (*Msghdr).X__CmsgNxthdr C.__cmsg_nxthdr
-func (self *Msghdr) X__CmsgNxthdr(__cmsg *Cmsghdr) *Cmsghdr {
-	return nil
-}
-
 // Types of sockets.
 type X__SocketType c.Uint
 
@@ -1194,11 +1189,6 @@ type AddrInfo struct {
 	Next      *AddrInfo
 }
 
-// Function to get address of global `h_errno' variable.
-//
-//go:linkname X__HErrnoLocation C.__h_errno_location
-func X__HErrnoLocation() *c.Int
-
 // Print error indicated by `h_errno' variable on standard error.  STR
 // if non-null is printed before the error string.
 //
@@ -1250,8 +1240,8 @@ func Gethostbyaddr(__addr unsafe.Pointer, __len X__SocklenT, __type c.Int) *Host
 // This function is a possible cancellation point and therefore not
 // marked with __THROW.
 //
-//go:linkname NativeGethostbyname C.gethostbyname
-func NativeGethostbyname(__name *c.Char) *Hostent
+//go:linkname GetHostByName C.gethostbyname
+func GetHostByName(__name *c.Char) *Hostent
 
 // Return entry from host data base for host with NAME.  AF must be
 // set to the address type which is `AF_INET' for IPv4 or `AF_INET6'
@@ -1658,11 +1648,9 @@ func RresvportAf(__alport *c.Int, __af SaFamilyT) c.Int
 // This function is a possible cancellation point and therefore not
 // marked with __THROW.
 //
-//go:linkname NativeGetaddrinfo C.getaddrinfo
-func NativeGetaddrinfo(__name *c.Char, __service *c.Char, __req *AddrInfo, __pai **AddrInfo) c.Int
+//go:linkname Getaddrinfo C.getaddrinfo
+func Getaddrinfo(__name *c.Char, __service *c.Char, __req *AddrInfo, __pai **AddrInfo) c.Int
 
-// NativeFree `addrinfo' structure AI including associated storage.
-//
 //go:linkname Freeaddrinfo C.freeaddrinfo
 func Freeaddrinfo(self *AddrInfo)
 
@@ -1875,27 +1863,22 @@ var In6addrAny In6Addr
 //go:linkname In6addrLoopback C.in6addr_loopback
 var In6addrLoopback In6Addr
 
-//go:linkname NativeNtohl C.ntohl
-func NativeNtohl(__netlong Uint32T) Uint32T
+//go:linkname Ntohl C.ntohl
+func Ntohl(__netlong Uint32T) Uint32T
 
-//go:linkname NativeNtohs C.ntohs
-func NativeNtohs(__netshort Uint16T) Uint16T
+//go:linkname Ntohs C.ntohs
+func Ntohs(__netshort Uint16T) Uint16T
 
-//go:linkname NativeHtonl C.htonl
-func NativeHtonl(__hostlong Uint32T) Uint32T
+//go:linkname Htonl C.htonl
+func Htonl(__hostlong Uint32T) Uint32T
 
-//go:linkname NativeHtons C.htons
-func NativeHtons(__hostshort Uint16T) Uint16T
+//go:linkname Htons C.htons
+func Htons(__hostshort Uint16T) Uint16T
 
 // Bind socket to a privileged IP port.
 //
 //go:linkname Bindresvport C.bindresvport
 func Bindresvport(__sockfd c.Int, __sock_in *SockaddrIn) c.Int
-
-// The IPv6 version of this function.
-//
-//go:linkname Bindresvport6 C.bindresvport6
-func Bindresvport6(__sockfd c.Int, __sock_in *SockaddrIn6) c.Int
 
 const X_RPC_NETDB_H = 1
 
@@ -1970,8 +1953,8 @@ func Socketpair(__domain c.Int, __type c.Int, __protocol c.Int, __fds *c.Int) c.
 
 // Give the socket FD the local address ADDR (which is LEN bytes long).
 //
-//go:linkname NativeBind C.bind
-func NativeBind(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
+//go:linkname Bind C.bind
+func Bind(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
 
 // Put the local address of FD into *ADDR and its length in *LEN.
 //
@@ -1995,13 +1978,13 @@ func Connect(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
 //go:linkname Getpeername C.getpeername
 func Getpeername(__fd c.Int, __addr *SockAddr, __len *SocklenT) c.Int
 
-// NativeSend N bytes of BUF to socket FD.  Returns the number sent or -1.
+// Send N bytes of BUF to socket FD.  Returns the number sent or -1.
 //
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeSend C.send
-func NativeSend(__fd c.Int, __buf unsafe.Pointer, __n SizeT, __flags c.Int) SsizeT
+//go:linkname Send C.send
+func Send(__fd c.Int, __buf unsafe.Pointer, __n c.SizeT, __flags c.Int) SsizeT
 
 // Read N bytes into BUF from socket FD.
 // Returns the number read or -1 for errors.
@@ -2009,8 +1992,8 @@ func NativeSend(__fd c.Int, __buf unsafe.Pointer, __n SizeT, __flags c.Int) Ssiz
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeRecv C.recv
-func NativeRecv(__fd c.Int, __buf unsafe.Pointer, __n SizeT, __flags c.Int) SsizeT
+//go:linkname Recv C.recv
+func Recv(__fd c.Int, __buf unsafe.Pointer, __n c.SizeT, __flags c.Int) SsizeT
 
 // Send N bytes of BUF on socket FD to peer at address ADDR (which is
 // ADDR_LEN bytes long).  Returns the number sent, or -1 for errors.
@@ -2080,8 +2063,8 @@ func Listen(__fd c.Int, __n c.Int) c.Int
 // This function is a cancellation point and therefore not marked with
 // __THROW.
 //
-//go:linkname NativeAccept C.accept
-func NativeAccept(__fd c.Int, __addr *SockAddr, __addr_len *SocklenT) c.Int
+//go:linkname Accept C.accept
+func Accept(__fd c.Int, __addr *SockAddr, __addr_len *SocklenT) c.Int
 
 // Shut down all or part of the connection open on socket FD.
 // HOW determines what to shut down:
@@ -2114,3 +2097,11 @@ type SockaddrUn struct {
 	SunFamily SaFamilyT
 	SunPath   [108]c.Char
 }
+
+// Compatibility sizes follow this platform's native sockaddr_storage.
+const (
+	ALIGNSIZE = unsafe.Alignof(SockaddrStorage{})
+	MAXSIZE   = X_SS_SIZE
+	PAD1_SIZE = unsafe.Sizeof(SockaddrStorage{}.pad)
+	PAD2_SIZE = unsafe.Sizeof(SockaddrStorage{}) - unsafe.Offsetof(SockaddrStorage{}.align) - unsafe.Sizeof(SockaddrStorage{}.align)
+)

@@ -70,16 +70,16 @@ type X__DarwinSsizeT = c.Long
 // time()
 type X__DarwinTimeT = c.Long
 
-//go:linkname NativeInetAddr C.inet_addr
-func NativeInetAddr(_llcppg_param1 *c.Char) InAddrT
+//go:linkname InetAddr C.inet_addr
+func InetAddr(_llcppg_param1 *c.Char) InAddrT
 
 // llgo:link InAddr.InetNtoa C.inet_ntoa
 func (self InAddr) InetNtoa() *c.Char {
 	return nil
 }
 
-//go:linkname NativeInetNtop C.inet_ntop
-func NativeInetNtop(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 *c.Char, _llcppg_param4 SocklenT) *c.Char
+//go:linkname InetNtop C.inet_ntop
+func InetNtop(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 *c.Char, _llcppg_param4 SocklenT) *c.Char
 
 //go:linkname InetPton C.inet_pton
 func InetPton(_llcppg_param1 c.Int, _llcppg_param2 *c.Char, _llcppg_param3 unsafe.Pointer) c.Int
@@ -673,14 +673,14 @@ func Freeaddrinfo(self *AddrInfo)
 //go:linkname GaiStrerror C.gai_strerror
 func GaiStrerror(_llcppg_param1 c.Int) *c.Char
 
-//go:linkname NativeGetaddrinfo C.getaddrinfo
-func NativeGetaddrinfo(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char, _llcppg_param3 *AddrInfo, _llcppg_param4 **AddrInfo) c.Int
+//go:linkname Getaddrinfo C.getaddrinfo
+func Getaddrinfo(_llcppg_param1 *c.Char, _llcppg_param2 *c.Char, _llcppg_param3 *AddrInfo, _llcppg_param4 **AddrInfo) c.Int
 
 //go:linkname Gethostbyaddr C.gethostbyaddr
 func Gethostbyaddr(_llcppg_param1 unsafe.Pointer, _llcppg_param2 SocklenT, _llcppg_param3 c.Int) *Hostent
 
-//go:linkname NativeGethostbyname C.gethostbyname
-func NativeGethostbyname(_llcppg_param1 *c.Char) *Hostent
+//go:linkname GetHostByName C.gethostbyname
+func GetHostByName(_llcppg_param1 *c.Char) *Hostent
 
 //go:linkname Gethostent C.gethostent
 func Gethostent() *Hostent
@@ -2404,11 +2404,11 @@ type SaeConnidT = X__Uint32T
 // sockaddr endpoints
 type SaEndpointsT = SaEndpoints
 
-//go:linkname NativeAccept C.accept
-func NativeAccept(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 *SocklenT) c.Int
+//go:linkname Accept C.accept
+func Accept(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 *SocklenT) c.Int
 
-//go:linkname NativeBind C.bind
-func NativeBind(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
+//go:linkname Bind C.bind
+func Bind(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
 
 //go:linkname Connect C.connect
 func Connect(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
@@ -2425,8 +2425,8 @@ func Getsockopt(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int
 //go:linkname Listen C.listen
 func Listen(_llcppg_param1 c.Int, _llcppg_param2 c.Int) c.Int
 
-//go:linkname NativeRecv C.recv
-func NativeRecv(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT, _llcppg_param4 c.Int) SsizeT
+//go:linkname Recv C.recv
+func Recv(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 c.SizeT, _llcppg_param4 c.Int) SsizeT
 
 //go:linkname Recvfrom C.recvfrom
 func Recvfrom(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT, _llcppg_param4 c.Int, _llcppg_param5 *SockAddr, _llcppg_param6 *SocklenT) SsizeT
@@ -2434,8 +2434,8 @@ func Recvfrom(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param
 //go:linkname Recvmsg C.recvmsg
 func Recvmsg(_llcppg_param1 c.Int, _llcppg_param2 *Msghdr, _llcppg_param3 c.Int) SsizeT
 
-//go:linkname NativeSend C.send
-func NativeSend(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 SizeT, _llcppg_param4 c.Int) SsizeT
+//go:linkname Send C.send
+func Send(_llcppg_param1 c.Int, _llcppg_param2 unsafe.Pointer, _llcppg_param3 c.SizeT, _llcppg_param4 c.Int) SsizeT
 
 //go:linkname Sendmsg C.sendmsg
 func Sendmsg(_llcppg_param1 c.Int, _llcppg_param2 *Msghdr, _llcppg_param3 c.Int) SsizeT
@@ -2460,9 +2460,6 @@ func Socketpair(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 c.Int
 
 //go:linkname Sendfile C.sendfile
 func Sendfile(_llcppg_param1 c.Int, _llcppg_param2 c.Int, _llcppg_param3 OffT, _llcppg_param4 *OffT, _llcppg_param5 *SfHdtr, _llcppg_param6 c.Int) c.Int
-
-//go:linkname Pfctlinput C.pfctlinput
-func Pfctlinput(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr)
 
 //go:linkname Connectx C.connectx
 func Connectx(_llcppg_param1 c.Int, _llcppg_param2 *SaEndpointsT, _llcppg_param3 SaeAssocidT, _llcppg_param4 c.Uint, _llcppg_param5 *Iovec, _llcppg_param6 c.Uint, _llcppg_param7 *SizeT, _llcppg_param8 *SaeConnidT) c.Int
@@ -2496,3 +2493,11 @@ type SockaddrUn struct {
 }
 
 type Uint32T = c.Uint
+
+// Compatibility sizes follow this platform's native sockaddr_storage.
+const (
+	ALIGNSIZE = unsafe.Alignof(SockaddrStorage{})
+	MAXSIZE   = X_SS_MAXSIZE
+	PAD1_SIZE = unsafe.Sizeof(SockaddrStorage{}.pad1)
+	PAD2_SIZE = unsafe.Sizeof(SockaddrStorage{}.pad2)
+)

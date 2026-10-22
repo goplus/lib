@@ -18,12 +18,6 @@
 
 package net
 
-import (
-	"unsafe"
-
-	"github.com/goplus/lib/c"
-)
-
 // Keep the existing untyped constants usable with Socket's c.Int parameter.
 const (
 	SOCK_STREAM    = 1
@@ -32,46 +26,3 @@ const (
 	SOCK_RDM       = 4
 	SOCK_SEQPACKET = 5
 )
-
-const (
-	ALIGNSIZE = unsafe.Sizeof(c.LongLong(0))
-	MAXSIZE   = 128
-	PAD1_SIZE = ALIGNSIZE - unsafe.Sizeof(byte(0)) - unsafe.Sizeof(byte(0))
-	PAD2_SIZE = MAXSIZE - unsafe.Sizeof(byte(0)) - unsafe.Sizeof(byte(0)) - PAD1_SIZE - ALIGNSIZE
-)
-
-//go:linkname Bind C.bind
-func Bind(sockfd c.Int, addr *SockaddrIn, addrlen c.Uint) c.Int
-
-//go:linkname Accept C.accept
-func Accept(sockfd c.Int, addr *SockaddrIn, addrlen *c.Uint) c.Int
-
-//go:linkname GetHostByName C.gethostbyname
-func GetHostByName(name *c.Char) *Hostent
-
-//go:linkname InetNtop C.inet_ntop
-func InetNtop(af c.Int, src c.Pointer, dst *c.Char, size c.Uint) *c.Char
-
-//go:linkname InetAddr C.inet_addr
-func InetAddr(s *c.Char) c.Uint
-
-//go:linkname Send C.send
-func Send(c.Int, c.Pointer, uintptr, c.Int) c.Long
-
-//go:linkname Recv C.recv
-func Recv(c.Int, c.Pointer, uintptr, c.Int) c.Long
-
-//go:linkname Ntohs C.ntohs
-func Ntohs(x uint16) uint16
-
-//go:linkname Htons C.htons
-func Htons(x uint16) uint16
-
-//go:linkname Ntohl C.ntohl
-func Ntohl(x c.Uint) c.Uint
-
-//go:linkname Htonl C.htonl
-func Htonl(x c.Uint) c.Uint
-
-//go:linkname Getaddrinfo C.getaddrinfo
-func Getaddrinfo(host *c.Char, port *c.Char, addrInfo *AddrInfo, result **AddrInfo) c.Int
