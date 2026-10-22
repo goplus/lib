@@ -1954,7 +1954,7 @@ func Socketpair(__domain c.Int, __type c.Int, __protocol c.Int, __fds *c.Int) c.
 // Give the socket FD the local address ADDR (which is LEN bytes long).
 //
 //go:linkname Bind C.bind
-func Bind(__fd c.Int, __addr *SockAddr, __len SocklenT) c.Int
+func Bind(__fd c.Int, __addr *SockaddrIn, __len SocklenT) c.Int
 
 // Put the local address of FD into *ADDR and its length in *LEN.
 //
@@ -2064,7 +2064,7 @@ func Listen(__fd c.Int, __n c.Int) c.Int
 // __THROW.
 //
 //go:linkname Accept C.accept
-func Accept(__fd c.Int, __addr *SockAddr, __addr_len *SocklenT) c.Int
+func Accept(__fd c.Int, __addr *SockaddrIn, __addr_len *SocklenT) c.Int
 
 // Shut down all or part of the connection open on socket FD.
 // HOW determines what to shut down:

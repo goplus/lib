@@ -2405,10 +2405,10 @@ type SaeConnidT = X__Uint32T
 type SaEndpointsT = SaEndpoints
 
 //go:linkname Accept C.accept
-func Accept(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 *SocklenT) c.Int
+func Accept(_llcppg_param1 c.Int, _llcppg_param2 *SockaddrIn, _llcppg_param3 *SocklenT) c.Int
 
 //go:linkname Bind C.bind
-func Bind(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int
+func Bind(_llcppg_param1 c.Int, _llcppg_param2 *SockaddrIn, _llcppg_param3 SocklenT) c.Int
 
 //go:linkname Connect C.connect
 func Connect(_llcppg_param1 c.Int, _llcppg_param2 *SockAddr, _llcppg_param3 SocklenT) c.Int

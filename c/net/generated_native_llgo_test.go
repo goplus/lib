@@ -142,7 +142,7 @@ func TestGeneratedSocketIO(t *testing.T) {
 			t.Fatal("loopback interface is absent from if_nameindex")
 		}
 	})
-	t.Run("TCP loopback generic sockaddr", func(t *testing.T) {
+	t.Run("TCP loopback IPv4 compatibility", func(t *testing.T) {
 		listener := Socket(AF_INET, SOCK_STREAM, 0)
 		if listener < 0 {
 			t.Fatal("listener socket failed")
@@ -152,7 +152,7 @@ func TestGeneratedSocketIO(t *testing.T) {
 		if runtime.GOOS == "darwin" {
 			*(*uint8)(unsafe.Pointer(&address)) = uint8(unsafe.Sizeof(address))
 		}
-		if result := Bind(listener, (*SockAddr)(unsafe.Pointer(&address)), SocklenT(unsafe.Sizeof(address))); result != 0 {
+		if result := Bind(listener, &address, SocklenT(unsafe.Sizeof(address))); result != 0 {
 			t.Fatalf("bind = %d", result)
 		}
 		if result := Listen(listener, 1); result != 0 {
@@ -173,9 +173,9 @@ func TestGeneratedSocketIO(t *testing.T) {
 		if result := Connect(client, (*SockAddr)(unsafe.Pointer(&address)), length); result != 0 {
 			t.Fatalf("connect = %d", result)
 		}
-		var peer SockaddrStorage
+		var peer SockaddrIn
 		peerLength := SocklenT(unsafe.Sizeof(peer))
-		accepted := Accept(listener, (*SockAddr)(unsafe.Pointer(&peer)), &peerLength)
+		accepted := Accept(listener, &peer, &peerLength)
 		if accepted < 0 {
 			t.Fatalf("accept = %d", accepted)
 		}
