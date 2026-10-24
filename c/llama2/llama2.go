@@ -29,13 +29,13 @@ const (
 
 // -----------------------------------------------------------------------------
 
-// llgo:type C
+//llgo:cdecl
 type TokenIndex struct {
 	Str *c.Char
 	Id  c.Int
 }
 
-// llgo:type C
+//llgo:cdecl
 type Tokenizer struct {
 	Vocab          **c.Char
 	VocabScores    *c.Float
@@ -53,7 +53,7 @@ func FreeTokenizer(t *Tokenizer)
 
 // -----------------------------------------------------------------------------
 
-// llgo:type C
+//llgo:cdecl
 type Config struct {
 	Dim       c.Int // transformer dimension
 	HiddenDim c.Int // for ffn layers
@@ -64,7 +64,7 @@ type Config struct {
 	SeqLen    c.Int // max sequence length
 }
 
-// llgo:type C
+//llgo:cdecl
 type TransformerWeights struct {
 	// token embedding table
 	TokenEmbeddingTable *c.Float // (vocab_size, dim)
@@ -86,7 +86,7 @@ type TransformerWeights struct {
 	Wcls *c.Float
 }
 
-// llgo:type C
+//llgo:cdecl
 type RunState struct {
 	// current wave of activations
 	X      *c.Float // activation at current time stamp (dim,)
@@ -104,7 +104,7 @@ type RunState struct {
 	ValueCache *c.Float // (layer, seq_len, dim)
 }
 
-// llgo:type C
+//llgo:cdecl
 type Transformer struct {
 	Config  Config             // the hyperparameters of the architecture (the blueprint)
 	Weights TransformerWeights // the weights of the model
@@ -124,13 +124,13 @@ func FreeTransformer(t *Transformer)
 
 // -----------------------------------------------------------------------------
 
-// llgo:type C
+//llgo:cdecl
 type ProbIndex struct {
 	Prob  c.Float
 	Index c.Int
 } // struct used when sorting probabilities during top-p sampling
 
-// llgo:type C
+//llgo:cdecl
 type Sampler struct {
 	VocabSize   c.Int
 	Probindex   *ProbIndex // buffer used in top-p sampling

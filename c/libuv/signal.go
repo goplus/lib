@@ -16,7 +16,7 @@ type Signal struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type SignalCb func(handle *Signal, sigNum c.Int)
 
 // ----------------------------------------------

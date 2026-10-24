@@ -23,13 +23,13 @@ type Work struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type ThreadCb func(arg c.Pointer)
 
-//llgo:type C
+//llgo:cdecl
 type WorkCb func(req *Work)
 
-//llgo:type C
+//llgo:cdecl
 type AfterWorkCb func(req *Work, status c.Int)
 
 // ----------------------------------------------

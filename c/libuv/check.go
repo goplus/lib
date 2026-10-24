@@ -14,7 +14,7 @@ type Check struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type CheckCb func(Check *Check)
 
 //go:linkname InitCheck C.uv_check_init
