@@ -11,10 +11,10 @@ const (
 	LLGoPackage = "link"
 )
 
-//llgo:type C
+//llgo:cdecl
 type SignalHandler func(c.Int)
 
-//llgo:type C
+//llgo:cdecl
 type sigactiont struct {
 	handler SignalHandler
 	tramp   unsafe.Pointer

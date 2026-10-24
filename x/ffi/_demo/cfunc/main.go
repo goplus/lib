@@ -12,7 +12,7 @@ const (
 	LLGoFiles   = "../_wrap/wrap.c"
 )
 
-//llgo:type C
+//llgo:cdecl
 type Callback func(array) c.Int
 
 //go:linkname demo1 C.demo1
@@ -21,7 +21,7 @@ func demo1(array) c.Int
 //go:linkname demo2 C.demo2
 func demo2(fn Callback) c.Int
 
-//llgo:type C
+//llgo:cdecl
 type array struct {
 	x c.Int
 	y c.Int

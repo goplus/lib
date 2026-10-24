@@ -90,45 +90,45 @@ type KContext = c.Pointer
  * Type for C functions registered with Lua
  */
 
-// llgo:type C
+//llgo:cdecl
 type CFunction func(L *State) c.Int
 
 /*
  * Type for continuation functions
  */
 
-// llgo:type C
+//llgo:cdecl
 type KFunction func(L *State, status c.Int, ctx KContext) c.Int
 
 /*
  * Type for functions that read/write blocks when loading/dumping Lua chunks
  */
 
-// llgo:type C
+//llgo:cdecl
 type Reader func(L *State, ud c.Pointer, sz *c.Ulong) *c.Char
 
-// llgo:type C
+//llgo:cdecl
 type Writer func(L *State, p c.Pointer, sz c.Ulong, ud c.Pointer) c.Int
 
 /*
  * Type for memory-allocation functions
  */
 
-// llgo:type C
+//llgo:cdecl
 type Alloc func(ud c.Pointer, ptr c.Pointer, osize c.Ulong, nsize c.Ulong) c.Pointer
 
 /*
  * Type for warning functions
  */
 
-// llgo:type C
+//llgo:cdecl
 type WarnFunction func(ud c.Pointer, msg c.Char, tocont c.Int)
 
 /*
  * Functions to be called by the debugger in specific events
  */
 
-// llgo:type C
+//llgo:cdecl
 type Hook func(L *State, ar *Debug)
 
 /*

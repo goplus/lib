@@ -28,7 +28,7 @@ const (
 
 type Bool c.Int
 
-// llgo:type C
+//llgo:cdecl
 type JSON struct {
 	Unused [0]byte
 }

@@ -93,13 +93,13 @@ type Stat struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type FsCb func(req *Fs)
 
-// llgo:type C
+//llgo:cdecl
 type FsEventCb func(handle *FsEvent, filename *c.Char, events c.Int, status c.Int)
 
-// llgo:type C
+//llgo:cdecl
 type FsPollCb func(handle *FsPoll, status c.Int, events c.Int)
 
 // ----------------------------------------------

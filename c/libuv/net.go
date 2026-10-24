@@ -131,28 +131,28 @@ type Shutdown struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type CloseCb func(handle *Handle)
 
-// llgo:type C
+//llgo:cdecl
 type ConnectCb func(req *Connect, status c.Int)
 
-// llgo:type C
+//llgo:cdecl
 type UdpSendCb func(req *UdpSend, status c.Int)
 
-// llgo:type C
+//llgo:cdecl
 type UdpRecvCb func(handle *Udp, nread c.Long, buf *Buf, addr *net.SockAddr, flags c.Uint)
 
-// llgo:type C
+//llgo:cdecl
 type ReadCb func(stream *Stream, nread c.Long, buf *Buf)
 
-// llgo:type C
+//llgo:cdecl
 type WriteCb func(req *Write, status c.Int)
 
-// llgo:type C
+//llgo:cdecl
 type ConnectionCb func(server *Stream, status c.Int)
 
-// llgo:type C
+//llgo:cdecl
 type ShutdownCb func(req *Shutdown, status c.Int)
 
 // ----------------------------------------------

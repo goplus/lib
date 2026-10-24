@@ -26,12 +26,12 @@ import (
 // https://docs.python.org/3/c-api/module.html
 
 /*
-// llgo:type C
+//llgo:cdecl
 type ModuleDefBase struct {
 	Unused [8]byte // TODO(xsw)
 }
 
-// llgo:type C
+//llgo:cdecl
 type ModuleDef struct {
 	Base ModuleDefBase
 	// TODO(xsw)

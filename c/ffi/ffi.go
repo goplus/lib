@@ -117,7 +117,7 @@ ffi_prep_closure_loc (ffi_closure*,
       void *codeloc);
 */
 
-//llgo:type C
+//llgo:cdecl
 type ClosureFunc func(cif *Cif, ret unsafe.Pointer, args *unsafe.Pointer, userdata unsafe.Pointer)
 
 //go:linkname PreClosureLoc C.ffi_prep_closure_loc

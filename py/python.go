@@ -70,7 +70,7 @@ const (
 	// FuncTypeInput InputType = 345
 )
 
-// llgo:type C
+//llgo:cdecl
 type CompilerFlags struct {
 	CfFlags c.Int
 }

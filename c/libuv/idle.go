@@ -14,7 +14,7 @@ type Idle struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type IdleCb func(idle *Idle)
 
 //go:linkname InitIdle C.uv_idle_init

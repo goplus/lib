@@ -50,7 +50,7 @@ const (
 // generator
 type Gen struct{}
 
-// llgo:type C
+//llgo:cdecl
 type Coro = func(argc c.Int, argv *c.Pointer)
 
 //go:linkname GenYield C.neco_gen_yield

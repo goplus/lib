@@ -32,7 +32,8 @@ type Async struct {
 }
 
 // typedef void (*uv_async_cb)(uv_async_t* handle);
-// llgo:type C
+//
+//llgo:cdecl
 type AsyncCb func(*Async)
 
 // int uv_async_init(uv_loop_t*, uv_async_t* async, uv_async_cb async_cb);

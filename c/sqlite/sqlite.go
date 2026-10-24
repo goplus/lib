@@ -26,12 +26,12 @@ const (
 	LLGoPackage = "link: $(pkg-config --libs sqlite3); -lsqlite3"
 )
 
-// llgo:type C
+//llgo:cdecl
 type Sqlite3 struct {
 	Unused [8]byte
 }
 
-// llgo:type C
+//llgo:cdecl
 type Stmt struct {
 	Unused [8]byte
 }

@@ -112,31 +112,31 @@ type Buf struct {
 
 /* Function type */
 
-// llgo:type C
+//llgo:cdecl
 type MallocFunc func(size uintptr) c.Pointer
 
-// llgo:type C
+//llgo:cdecl
 type ReallocFunc func(ptr c.Pointer, size uintptr) c.Pointer
 
-// llgo:type C
+//llgo:cdecl
 type CallocFunc func(count uintptr, size uintptr) c.Pointer
 
-// llgo:type C
+//llgo:cdecl
 type FreeFunc func(ptr c.Pointer)
 
-// llgo:type C
+//llgo:cdecl
 type AllocCb func(handle *Handle, suggestedSize uintptr, buf *Buf)
 
-// llgo:type C
+//llgo:cdecl
 type GetaddrinfoCb func(req *GetAddrInfo, status c.Int, res *net.AddrInfo)
 
-// llgo:type C
+//llgo:cdecl
 type GetnameinfoCb func(req *GetNameInfo, status c.Int, hostname *c.Char, service *c.Char)
 
-// llgo:type C
+//llgo:cdecl
 type WalkCb func(handle *Handle, arg c.Pointer)
 
-// llgo:type C
+//llgo:cdecl
 type PollCb func(handle *Poll, status c.Int, events c.Int)
 
 // ----------------------------------------------

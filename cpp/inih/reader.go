@@ -25,7 +25,7 @@ import (
 
 // -----------------------------------------------------------------------------
 
-// llgo:type C
+//llgo:cdecl
 type Reader struct {
 	Unused [32]byte
 }
