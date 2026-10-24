@@ -14,6 +14,3 @@ type DIR struct {
 
 //go:linkname Opendir C.opendir
 func Opendir(name *c.Char) *DIR
-
-//go:linkname Closedir C.closedir
-func Closedir(dir *DIR) c.Int
