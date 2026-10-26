@@ -39,6 +39,6 @@ The `_demo` directory contains our demos (it start with `_` to prevent the `go` 
 To run the demos in directory `_demo`:
 
 ```sh
-cd <demo-directory>  # eg. cd _demo/sqlitedemo
+cd <demo-directory>
 llgo run .
 ```
