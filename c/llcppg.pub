@@ -1,32 +1,52 @@
 D github.com/goplus/lib/c/os
-D github.com/goplus/lib/c/time
-D github.com/goplus/lib/c/types
 D github.com/goplus/lib/c/pthread
 D github.com/goplus/lib/c/pthread/sync
+D github.com/goplus/lib/c/time
+D github.com/goplus/lib/c/types
 T FILE FILE
-T wchar_t WcharT
-T char8_t Char8T
+T _G_fpos_t X_GFposT
+T _IO_FILE X_IO_FILE
+T _IO_marker X_IO_marker
+T __compar_fn_t X__ComparFnT
+T __locale_data X__LocaleData
+T __locale_struct X__LocaleStruct
+T __locale_t X__LocaleT
+T __mbstate_t X__MbstateT
+T _malloc_zone_t X_mallocZoneT
 T char16_t Char16T
 T char32_t Char32T
-T size_t SizeT
-T ssize_t SsizeT
-T ptrdiff_t PtrdiffT
-T intptr_t IntptrT
-T uintptr_t UintptrT
-T int8_t Int8T
+T char8_t Char8T
+T cmsghdr Cmsghdr
+T cpu_set_t CpuSetT
+T div_t DivT
+T drand48_data Drand48Data
+T fpos_t FposT
+T iconv_t IconvT
+T imaxdiv_t ImaxdivT
 T int16_t Int16T
 T int32_t Int32T
 T int64_t Int64T
-T uint8_t Uint8T
+T int8_t Int8T
+T intmax_t IntmaxT
+T intptr_t IntptrT
+T iovec Iovec
+T lconv Lconv
+T ldiv_t LdivT
+T lldiv_t LldivT
+T locale_t LocaleT
+T malloc_zone_t MallocZoneT
+T msghdr Msghdr
+T option Option
+T ptrdiff_t PtrdiffT
+T random_data RandomData
+T rpcent Rpcent
+T size_t SizeT
+T ssize_t SsizeT
 T uint16_t Uint16T
 T uint32_t Uint32T
 T uint64_t Uint64T
-T intmax_t IntmaxT
+T uint8_t Uint8T
 T uintmax_t UintmaxT
-T div_t DivT
-T ldiv_t LdivT
-T lldiv_t LldivT
-T iconv_t IconvT
-T locale_t LocaleT
-T option Option
+T uintptr_t UintptrT
 T va_list VaList
+T wchar_t WcharT
