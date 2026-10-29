@@ -24,7 +24,6 @@ jobs:
         - macos-26
         - macos-26-intel
         - windows-2022
-        - windows-11-arm64
     env:
       # Use setup-go's selected toolchain without automatic downloads or switches.
       GOTOOLCHAIN: local
