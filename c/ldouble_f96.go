@@ -1,4 +1,4 @@
-//go:build 386 && (!windows || mingw)
+//go:build 386 && (!windows || !msvc)
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
@@ -21,10 +21,10 @@ package c
 // LongDouble is the x87 80-bit extended precision format on 32-bit x86,
 // stored in 12 bytes (10 significant bytes + 2 bytes padding) with 4-byte
 // alignment (i386 System V ABI and MinGW i386). Applies to linux/386,
-// the BSDs on 386, and windows/386 when built with -tags mingw.
+// the BSDs on 386, and windows/386 (MinGW, the default on Windows).
 //
-// Windows MSVC on 386 uses a plain 8-byte double; see LongDouble in
-// ldouble_float64.go.
+// Windows MSVC on 386 uses a plain 8-byte double; build with -tags msvc to
+// select it, see LongDouble in ldouble_f64.go.
 type LongDouble struct {
 	_    [0]uint32
 	Data [12]byte

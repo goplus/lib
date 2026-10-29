@@ -27,5 +27,10 @@ type (
 )
 
 type (
+	SizeT  Ulong
+	SsizeT Long
+)
+
+type (
 	WcharT int32
 )

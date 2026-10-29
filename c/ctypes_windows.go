@@ -26,5 +26,10 @@ type (
 )
 
 type (
+	SizeT  uintptr
+	SsizeT int
+)
+
+type (
 	WcharT uint16
 )

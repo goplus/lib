@@ -1,4 +1,4 @@
-//go:build (windows && !(mingw && (amd64 || 386))) || (darwin && arm64) || arm || mips || mipsle || ((ppc64 || ppc64le) && !linux)
+//go:build (windows && (arm64 || msvc)) || (darwin && arm64) || arm || mips || mipsle || ((ppc64 || ppc64le) && !linux)
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
@@ -19,13 +19,16 @@
 package c
 
 // LongDouble is identical to double on these targets (8 bytes, IEEE binary64):
-//   - Windows MSVC ABI (all architectures), and windows/arm64 (MSVC or MinGW)
+//   - windows/arm64 (MSVC or MinGW)
+//   - windows/amd64 and windows/386 when built with -tags msvc (MSVC ABI)
 //   - darwin/arm64 and ios/arm64
 //   - 32-bit ARM, MIPS o32
 //   - non-Linux ppc64 (AIX, FreeBSD, OpenBSD: 64-bit long double)
 //
-// Build with -tags mingw to select the MinGW x86 layout on windows/amd64
-// and windows/386 instead.
+// On windows/amd64 and windows/386 the default is the MinGW layout (the C
+// toolchain cgo uses on Windows, and what GitHub's windows runners provide),
+// where long double is the x87 80-bit format. Build with -tags msvc to select
+// the 8-byte MSVC layout instead.
 type LongDouble float64
 
 // LongDoubleSize is sizeof(long double) in bytes on this target.

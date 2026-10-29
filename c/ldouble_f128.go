@@ -1,4 +1,4 @@
-//go:build (amd64 && (!windows || mingw)) || (arm64 && !darwin && !windows) || riscv64 || loong64 || s390x || mips64 || mips64le || wasm || ((ppc64 || ppc64le) && linux)
+//go:build (amd64 && (!windows || !msvc)) || (arm64 && !darwin && !windows) || riscv64 || loong64 || s390x || mips64 || mips64le || wasm || ((ppc64 || ppc64le) && linux)
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
@@ -20,12 +20,16 @@ package c
 
 // LongDouble is an opaque 16-byte value on targets where sizeof(long double)
 // is 16. The underlying format depends on the target:
-//   - x86-64 on Linux/macOS/BSD and MinGW on Windows: x87 80-bit extended
-//     precision (10 significant bytes + 6 bytes padding)
+//   - x86-64 on Linux/macOS/BSD and MinGW on Windows (the default on
+//     windows/amd64): x87 80-bit extended precision (10 significant bytes +
+//     6 bytes padding)
 //   - arm64 on Linux/Android/BSD, riscv64, loong64, s390x, mips64/mips64le,
 //     wasm: IEEE binary128
 //   - linux ppc64/ppc64le: IBM double-double or IEEE binary128, depending on
 //     the toolchain
+//
+// Windows MSVC on amd64 uses a plain 8-byte double; build with -tags msvc to
+// select it, see LongDouble in ldouble_f64.go.
 //
 // The C ABI requires 16-byte alignment, which Go cannot express (Go caps
 // alignment at 8); the zero-size field below gives 8-byte alignment at most.

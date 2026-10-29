@@ -39,10 +39,7 @@ type (
 	Int  int32
 	Uint uint32
 
-	// Long and Ulong are defined in platform-specific files
-	// Windows (both 32-bit and 64-bit): int32/uint32
-	// Unix/Linux/macOS 32-bit: int32/uint32
-	// Unix/Linux/macOS 64-bit: int64/uint64
+	// Long, Ulong, SizeT, SsizeT are defined in platform-specific files
 
 	LongLong  int64
 	UlongLong uint64
@@ -55,9 +52,6 @@ type FILE struct {
 type integer interface {
 	~int | ~uint | ~uintptr | ~int32 | ~uint32 | ~int64 | ~uint64
 }
-
-type SizeT = Ulong
-type SsizeT = Long
 
 type PtrdiffT int
 type IntptrT int

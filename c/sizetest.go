@@ -90,6 +90,7 @@ func SizeTest(t *testing.T) {
 
 func assertSize(t *testing.T, name string, got uintptr, want C.size_t) {
 	if int(got) != int(want) {
+		t.Helper()
 		t.Errorf("Size of %s: got %v, want %v", name, got, want)
 	}
 }

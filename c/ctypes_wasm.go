@@ -24,3 +24,8 @@ type (
 	Long  int32
 	Ulong uint32
 )
+
+type (
+	SizeT  Ulong
+	SsizeT Long
+)
