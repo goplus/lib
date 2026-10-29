@@ -21,8 +21,17 @@ package c
 /*
 #include <stddef.h>     // size_t, ptrdiff_t, wchar_t
 #include <stdint.h>     // intptr_t, uintptr_t, intmax_t, uintmax_t
-#include <uchar.h>      // char16_t, char32_t, (C11/C17: char8_t 见下)
 #include <sys/types.h>  // ssize_t
+
+#if defined(__cplusplus) && __cplusplus >= 201103L
+// char16_t / char32_t are keywords
+#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
+// C23: keywords
+#elif defined(__has_include)
+#  if __has_include(<uchar.h>)
+#    include <uchar.h>
+#  endif
+#endif
 
 #define SizeChar    sizeof(char)
 #define SizeChar8T  sizeof(char8_t)
