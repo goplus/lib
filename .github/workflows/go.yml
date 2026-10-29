@@ -74,7 +74,6 @@ jobs:
         # LLGo 1.0.8's setup action uses apt-key and Python 3.12 packages.
         - ubuntu-24.04
         - macos-latest
-        - windows-2022
     steps:
     - uses: actions/checkout@v4
 

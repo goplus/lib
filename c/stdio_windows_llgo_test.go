@@ -14,7 +14,7 @@ func TestWindowsStandardStreams(t *testing.T) {
 	if c.Stdin == nil || c.Stdout == nil || c.Stderr == nil {
 		t.Fatalf("standard streams are not initialized: stdin=%p stdout=%p stderr=%p", c.Stdin, c.Stdout, c.Stderr)
 	}
-	if result := c.Fputs(c.CStr("Windows stdio binding test\n"), c.Stdout); result < 0 {
+	if result := c.Fputs(c.Str("Windows stdio binding test\n"), c.Stdout); result < 0 {
 		t.Fatalf("fputs returned %d", result)
 	}
 }

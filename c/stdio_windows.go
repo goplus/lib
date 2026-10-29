@@ -1,5 +1,4 @@
-//go:build windows
-// +build windows
+//go:build llgo && windows
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
