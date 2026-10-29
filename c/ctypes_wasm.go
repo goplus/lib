@@ -21,6 +21,11 @@ package c
 
 // For WebAssembly targets, Long is 32-bit per the spec
 type (
-	Long  = int32
-	Ulong = uint32
+	Long  int32
+	Ulong uint32
+)
+
+type (
+	SizeT  Ulong
+	SsizeT Long
 )

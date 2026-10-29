@@ -1,4 +1,4 @@
-//go:build (windows && !(mingw && (amd64 || 386))) || (darwin && arm64) || arm || mips || mipsle || ((ppc64 || ppc64le) && !linux)
+//go:build 386 && (!windows || !msvc)
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
@@ -18,15 +18,17 @@
 
 package c
 
-// LongDouble is identical to double on these targets (8 bytes, IEEE binary64):
-//   - Windows MSVC ABI (all architectures), and windows/arm64 (MSVC or MinGW)
-//   - darwin/arm64 and ios/arm64
-//   - 32-bit ARM, MIPS o32
-//   - non-Linux ppc64 (AIX, FreeBSD, OpenBSD: 64-bit long double)
+// LongDouble is the x87 80-bit extended precision format on 32-bit x86,
+// stored in 12 bytes (10 significant bytes + 2 bytes padding) with 4-byte
+// alignment (i386 System V ABI and MinGW i386). Applies to linux/386,
+// the BSDs on 386, and windows/386 (MinGW, the default on Windows).
 //
-// Build with -tags mingw to select the MinGW x86 layout on windows/amd64
-// and windows/386 instead.
-type LongDouble float64
+// Windows MSVC on 386 uses a plain 8-byte double; build with -tags msvc to
+// select it, see LongDouble in ldouble_f64.go.
+type LongDouble struct {
+	_    [0]uint32
+	Data [12]byte
+}
 
 // LongDoubleSize is sizeof(long double) in bytes on this target.
-const LongDoubleSize = 8
+const LongDoubleSize = 12

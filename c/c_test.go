@@ -1,3 +1,5 @@
+//go:build sizetest
+
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
  *
@@ -22,6 +24,10 @@ import (
 
 	"github.com/goplus/lib/c"
 )
+
+func TestSize(t *testing.T) {
+	c.SizeTest(t)
+}
 
 func TestLongDouble(t *testing.T) {
 	var ld c.LongDouble
