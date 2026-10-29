@@ -61,9 +61,10 @@ func SizeTest(t *testing.T) {
 	assertSize(t, "char", unsafe.Sizeof(Char(0)), C.SizeChar)
 	assertSize(t, "wchar_t", unsafe.Sizeof(WcharT(0)), C.SizeWcharT)
 
+	var ld LongDouble
 	assertSize(t, "float", unsafe.Sizeof(Float(0)), C.SizeFloat)
 	assertSize(t, "double", unsafe.Sizeof(Double(0)), C.SizeDouble)
-	assertSize(t, "long double", unsafe.Sizeof(LongDouble(0)), C.SizeLongDouble)
+	assertSize(t, "long double", unsafe.Sizeof(ld), C.SizeLongDouble)
 
 	assertSize(t, "void*", unsafe.Sizeof(Pointer(nil)), C.SizePointer)
 
