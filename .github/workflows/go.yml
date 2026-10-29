@@ -40,7 +40,7 @@ jobs:
       run: go build -v ./...
 
     - name: Test
-      run: go test ./...
+      run: go test -tags sizetest ./...
 
   go-test-386:
     name: go-test-386 (Go ${{ matrix.go }})
@@ -62,7 +62,7 @@ jobs:
     - name: Test
       run: |
         sudo apt-get install -y gcc-multilib
-        CGO_ENABLED=1 CC="gcc -m32" GOARCH=386 go test ./...
+        CGO_ENABLED=1 CC="gcc -m32" GOARCH=386 go test -tags sizetest ./...
 
   llgo-test:
     name: llgo-test (${{ matrix.os }})
