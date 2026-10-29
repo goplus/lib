@@ -22,10 +22,10 @@ package c
 
 // For 64-bit Unix/Linux/macOS, Long is 64-bit
 type (
-	Long  = int64
-	Ulong = uint64
+	Long  int64
+	Ulong uint64
 )
 
 type (
-	WcharT = int32
+	WcharT int32
 )

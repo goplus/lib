@@ -21,10 +21,10 @@ package c
 
 // For Windows (LLP64 model), Long is 32-bit, regardless of architecture
 type (
-	Long  = int32
-	Ulong = uint32
+	Long  int32
+	Ulong uint32
 )
 
 type (
-	WcharT = uint16
+	WcharT uint16
 )
