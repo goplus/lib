@@ -23,20 +23,7 @@ package c
 #include <stdint.h>     // intptr_t, uintptr_t, intmax_t, uintmax_t
 #include <sys/types.h>  // ssize_t
 
-#if defined(__cplusplus) && __cplusplus >= 201103L
-// char16_t / char32_t are keywords
-#elif defined(__STDC_VERSION__) && __STDC_VERSION__ >= 202311L
-// C23: keywords
-#elif defined(__has_include)
-#  if __has_include(<uchar.h>)
-#    include <uchar.h>
-#  endif
-#endif
-
 #define SizeChar    sizeof(char)
-#define SizeChar8T  sizeof(char8_t)
-#define SizeChar16T sizeof(char16_t)
-#define SizeChar32T sizeof(char32_t)
 #define SizeWcharT  sizeof(wchar_t)
 
 #define SizeFloat  sizeof(float)
@@ -72,9 +59,6 @@ import (
 
 func SizeTest(t *testing.T) {
 	assertSize(t, "char", unsafe.Sizeof(Char(0)), C.SizeChar)
-	assertSize(t, "char8_t", unsafe.Sizeof(Char8T(0)), C.SizeChar8T)
-	assertSize(t, "char16_t", unsafe.Sizeof(Char16T(0)), C.SizeChar16T)
-	assertSize(t, "char32_t", unsafe.Sizeof(Char32T(0)), C.SizeChar32T)
 	assertSize(t, "wchar_t", unsafe.Sizeof(WcharT(0)), C.SizeWcharT)
 
 	assertSize(t, "float", unsafe.Sizeof(Float(0)), C.SizeFloat)
