@@ -100,7 +100,7 @@ func Call(cif *Cif, fn unsafe.Pointer, rvalue unsafe.Pointer, avalue *unsafe.Poi
 
 // void *ffi_closure_alloc (size_t size, void **code);
 //
-//go:linkname ClosureAlloc C.llog_ffi_closure_alloc
+//go:linkname ClosureAlloc C.llgo_ffi_closure_alloc
 func ClosureAlloc(code *unsafe.Pointer) unsafe.Pointer
 
 // void ffi_closure_free (void *);
