@@ -1,3 +1,5 @@
+//go:build !((darwin && arm64 && !ios) || (linux && (amd64 || arm64) && !android))
+
 package signal
 
 import (
