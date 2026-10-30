@@ -1,5 +1,8 @@
-T time_t TimeT
-T tm Tm
+T __timer_t X__TimerT
 T clock_t ClockT
 T clockid_t ClockidT
+T itimerspec Itimerspec
+T time_t TimeT
+T timer_t TimerT
 T timespec Timespec
+T tm Tm
