@@ -32,8 +32,6 @@ type (
 	Double = float64
 
 	Pointer = unsafe.Pointer
-	VaList  = Pointer
-
 	FilePtr = *FILE
 
 	Int  int32
