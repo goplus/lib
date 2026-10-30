@@ -23,6 +23,22 @@ package c
 #include <stdint.h>     // intptr_t, uintptr_t, intmax_t, uintmax_t
 #include <sys/types.h>  // ssize_t
 
+#include <stdlib.h>
+#include <stdarg.h>
+#include <locale.h>
+
+#ifndef _WIN32
+#include <iconv.h>
+#include <getopt.h>
+
+#define SizeIconvT  sizeof(iconv_t)
+#define SizeOption  sizeof(struct option)
+#else
+
+#define SizeIconvT  sizeof(void*)
+#define SizeOption  0
+#endif
+
 #define SizeChar    sizeof(char)
 #define SizeWcharT  sizeof(wchar_t)
 
@@ -50,6 +66,12 @@ package c
 
 #define SizeIntmaxT  sizeof(intmax_t)
 #define SizeUintmaxT sizeof(uintmax_t)
+
+#define SizeDivT    sizeof(div_t)
+#define SizeLdivT   sizeof(ldiv_t)
+#define SizeLldivT  sizeof(lldiv_t)
+#define SizeLocaleT sizeof(locale_t)
+#define SizeVaList  sizeof(va_list)
 */
 import "C"
 import (
@@ -58,39 +80,49 @@ import (
 )
 
 func SizeTest(t *testing.T) {
-	assertSize(t, "char", unsafe.Sizeof(Char(0)), C.SizeChar)
-	assertSize(t, "wchar_t", unsafe.Sizeof(WcharT(0)), C.SizeWcharT)
+	assert(t, "sizeof(char)", unsafe.Sizeof(Char(0)), C.SizeChar)
+	assert(t, "sizeof(wchar_t)", unsafe.Sizeof(WcharT(0)), C.SizeWcharT)
 
 	var ld LongDouble
-	assertSize(t, "float", unsafe.Sizeof(Float(0)), C.SizeFloat)
-	assertSize(t, "double", unsafe.Sizeof(Double(0)), C.SizeDouble)
-	assertSize(t, "long double", unsafe.Sizeof(ld), C.SizeLongDouble)
+	assert(t, "sizeof(float)", unsafe.Sizeof(Float(0)), C.SizeFloat)
+	assert(t, "sizeof(double)", unsafe.Sizeof(Double(0)), C.SizeDouble)
+	assert(t, "sizeof(long double)", unsafe.Sizeof(ld), C.SizeLongDouble)
 
-	assertSize(t, "void*", unsafe.Sizeof(Pointer(nil)), C.SizePointer)
+	assert(t, "sizeof(void*)", unsafe.Sizeof(Pointer(nil)), C.SizePointer)
 
-	assertSize(t, "int", unsafe.Sizeof(Int(0)), C.SizeInt)
-	assertSize(t, "unsigned int", unsafe.Sizeof(Uint(0)), C.SizeUint)
+	assert(t, "sizeof(int)", unsafe.Sizeof(Int(0)), C.SizeInt)
+	assert(t, "sizeof(unsigned int)", unsafe.Sizeof(Uint(0)), C.SizeUint)
 
-	assertSize(t, "long", unsafe.Sizeof(Long(0)), C.SizeLong)
-	assertSize(t, "unsigned long", unsafe.Sizeof(Ulong(0)), C.SizeUlong)
+	assert(t, "sizeof(long)", unsafe.Sizeof(Long(0)), C.SizeLong)
+	assert(t, "sizeof(unsigned long)", unsafe.Sizeof(Ulong(0)), C.SizeUlong)
 
-	assertSize(t, "long long", unsafe.Sizeof(LongLong(0)), C.SizeLongLong)
-	assertSize(t, "unsigned long long", unsafe.Sizeof(UlongLong(0)), C.SizeUlongLong)
+	assert(t, "sizeof(long long)", unsafe.Sizeof(LongLong(0)), C.SizeLongLong)
+	assert(t, "sizeof(unsigned long long)", unsafe.Sizeof(UlongLong(0)), C.SizeUlongLong)
 
-	assertSize(t, "size_t", unsafe.Sizeof(SizeT(0)), C.SizeSizeT)
-	assertSize(t, "ssize_t", unsafe.Sizeof(SsizeT(0)), C.SizeSsizeT)
+	assert(t, "sizeof(size_t)", unsafe.Sizeof(SizeT(0)), C.SizeSizeT)
+	assert(t, "sizeof(ssize_t)", unsafe.Sizeof(SsizeT(0)), C.SizeSsizeT)
 
-	assertSize(t, "ptrdiff_t", unsafe.Sizeof(PtrdiffT(0)), C.SizePtrdiffT)
-	assertSize(t, "intptr_t", unsafe.Sizeof(IntptrT(0)), C.SizeIntptrT)
-	assertSize(t, "uintptr_t", unsafe.Sizeof(UintptrT(0)), C.SizeUintptrT)
+	assert(t, "sizeof(ptrdiff_t)", unsafe.Sizeof(PtrdiffT(0)), C.SizePtrdiffT)
+	assert(t, "sizeof(intptr_t)", unsafe.Sizeof(IntptrT(0)), C.SizeIntptrT)
+	assert(t, "sizeof(uintptr_t)", unsafe.Sizeof(UintptrT(0)), C.SizeUintptrT)
 
-	assertSize(t, "intmax_t", unsafe.Sizeof(IntmaxT(0)), C.SizeIntmaxT)
-	assertSize(t, "uintmax_t", unsafe.Sizeof(UintmaxT(0)), C.SizeUintmaxT)
+	assert(t, "sizeof(intmax_t)", unsafe.Sizeof(IntmaxT(0)), C.SizeIntmaxT)
+	assert(t, "sizeof(uintmax_t)", unsafe.Sizeof(UintmaxT(0)), C.SizeUintmaxT)
+
+	assert(t, "sizeof(div_t)", unsafe.Sizeof(DivT(0)), C.SizeDivT)
+	assert(t, "sizeof(ldiv_t)", unsafe.Sizeof(LdivT(0)), C.SizeLdivT)
+	assert(t, "sizeof(lldiv_t)", unsafe.Sizeof(LldivT(0)), C.SizeLldivT)
+	assert(t, "sizeof(iconv_t)", unsafe.Sizeof(IconvT(0)), C.SizeIconvT)
+	assert(t, "sizeof(locale_t)", unsafe.Sizeof(LocaleT(0)), C.SizeLocaleT)
+	if C.SizeOption != 0 {
+		assert(t, "sizeof(option)", unsafe.Sizeof(Option(0)), C.SizeOption)
+	}
+	assert(t, "sizeof(va_list)", unsafe.Sizeof(VaList(0)), C.SizeVaList)
 }
 
-func assertSize(t *testing.T, name string, got uintptr, want C.size_t) {
+func assert(t *testing.T, name string, got uintptr, want C.size_t) {
 	if int(got) != int(want) {
 		t.Helper()
-		t.Errorf("Size of %s: got %v, want %v", name, got, want)
+		t.Errorf("%s: got %v, want %v", name, got, want)
 	}
 }
