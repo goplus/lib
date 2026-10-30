@@ -30,7 +30,16 @@ func FD_SET(fd c.Int, fds *FdSet)
 //go:linkname FD_ISSET C.llgo_FD_ISSET
 func FD_ISSET(fd c.Int, fds *FdSet) c.Int
 
-//go:linkname Select C.select
-func Select(n c.Int, fdsRead, fdsWrite, fdsError *FdSet, timeout *Timeval) c.Int
-
 // -----------------------------------------------------------------------------
+
+// Check the first NFDS descriptors each in READFDS (if not NULL) for read
+// readiness, in WRITEFDS (if not NULL) for write readiness, and in EXCEPTFDS
+// (if not NULL) for exceptional conditions.  If TIMEOUT is not NULL, time out
+// after waiting the interval specified therein.  Returns the number of ready
+// descriptors, or -1 for errors.
+//
+// This function is a cancellation point and therefore not marked with
+// __THROW.
+//
+//go:linkname Select C.select
+func Select(__nfds c.Int, __readfds *FdSet, __writefds *FdSet, __exceptfds *FdSet, __timeout *Timeval) c.Int
