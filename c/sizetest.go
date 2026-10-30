@@ -109,15 +109,15 @@ func SizeTest(t *testing.T) {
 	assert(t, "sizeof(intmax_t)", unsafe.Sizeof(IntmaxT(0)), C.SizeIntmaxT)
 	assert(t, "sizeof(uintmax_t)", unsafe.Sizeof(UintmaxT(0)), C.SizeUintmaxT)
 
-	assert(t, "sizeof(div_t)", unsafe.Sizeof(DivT(0)), C.SizeDivT)
-	assert(t, "sizeof(ldiv_t)", unsafe.Sizeof(LdivT(0)), C.SizeLdivT)
-	assert(t, "sizeof(lldiv_t)", unsafe.Sizeof(LldivT(0)), C.SizeLldivT)
-	assert(t, "sizeof(iconv_t)", unsafe.Sizeof(IconvT(0)), C.SizeIconvT)
-	assert(t, "sizeof(locale_t)", unsafe.Sizeof(LocaleT(0)), C.SizeLocaleT)
+	assert(t, "sizeof(div_t)", unsafe.Sizeof(DivT{}), C.SizeDivT)
+	assert(t, "sizeof(ldiv_t)", unsafe.Sizeof(LdivT{}), C.SizeLdivT)
+	assert(t, "sizeof(lldiv_t)", unsafe.Sizeof(LldivT{}), C.SizeLldivT)
+	assert(t, "sizeof(iconv_t)", unsafe.Sizeof(IconvT(nil)), C.SizeIconvT)
+	assert(t, "sizeof(locale_t)", unsafe.Sizeof(LocaleT(nil)), C.SizeLocaleT)
 	if C.SizeOption != 0 {
 		assert(t, "sizeof(option)", unsafe.Sizeof(Option(0)), C.SizeOption)
 	}
-	assert(t, "sizeof(va_list)", unsafe.Sizeof(VaList(0)), C.SizeVaList)
+	assert(t, "sizeof(va_list)", unsafe.Sizeof(VaList(nil)), C.SizeVaList)
 }
 
 func assert(t *testing.T, name string, got uintptr, want C.size_t) {
