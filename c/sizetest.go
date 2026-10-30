@@ -115,7 +115,7 @@ func SizeTest(t *testing.T) {
 	assert(t, "sizeof(iconv_t)", unsafe.Sizeof(IconvT(nil)), C.SizeIconvT)
 	assert(t, "sizeof(locale_t)", unsafe.Sizeof(LocaleT(nil)), C.SizeLocaleT)
 	if C.SizeOption != 0 {
-		assert(t, "sizeof(option)", unsafe.Sizeof(Option(0)), C.SizeOption)
+		assert(t, "sizeof(option)", unsafe.Sizeof(Option{}), C.SizeOption)
 	}
 	assert(t, "sizeof(va_list)", unsafe.Sizeof(VaList(nil)), C.SizeVaList)
 }
