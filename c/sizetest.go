@@ -118,7 +118,9 @@ func SizeTest(t *testing.T) {
 	if C.SizeOption != 0 {
 		assert(t, "sizeof(option)", unsafe.Sizeof(Option{}), C.SizeOption)
 	}
-	assert(t, "sizeof(va_list)", unsafe.Sizeof(VaList(nil)), C.SizeVaList)
+
+	var va VaList
+	assert(t, "sizeof(va_list)", unsafe.Sizeof(va), C.SizeVaList)
 }
 
 func assert(t *testing.T, name string, got uintptr, want C.size_t) {
