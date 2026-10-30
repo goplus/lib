@@ -32,10 +32,12 @@ package c
 #include <getopt.h>
 
 #define SizeIconvT  sizeof(iconv_t)
+#define SizeLocaleT sizeof(locale_t)
 #define SizeOption  sizeof(struct option)
 #else
 
 #define SizeIconvT  sizeof(void*)
+#define SizeLocaleT sizeof(void*)
 #define SizeOption  0
 #endif
 
@@ -70,7 +72,6 @@ package c
 #define SizeDivT    sizeof(div_t)
 #define SizeLdivT   sizeof(ldiv_t)
 #define SizeLldivT  sizeof(lldiv_t)
-#define SizeLocaleT sizeof(locale_t)
 #define SizeVaList  sizeof(va_list)
 */
 import "C"
