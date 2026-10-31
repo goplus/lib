@@ -31,6 +31,8 @@ type (
 	Float  = float32
 	Double = float64
 
+	Float16 = uint16 // TODO(xsw): implement Float16
+
 	Pointer = unsafe.Pointer
 	FilePtr = *FILE
 
