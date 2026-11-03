@@ -1,3 +1,10 @@
-T pthread_t Thread
+D github.com/goplus/lib/c/os
+D github.com/goplus/lib/c/signal
+T _opaque_pthread_attr_t Attr
 T attr Attr
+T pthread_attr_t AttrT
+T pthread_jit_write_callback_t JitWriteCallbackT
 T pthread_key_t Key
+T pthread_override_s OverrideS
+T pthread_override_t OverrideT
+T pthread_t Thread
