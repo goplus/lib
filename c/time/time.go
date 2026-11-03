@@ -35,17 +35,8 @@ const (
 
 type TimeT C.time_t
 
-//go:linkname Time C.time
-func Time(timer *TimeT) TimeT
-
-//go:linkname Mktime C.mktime
-func Mktime(timer *Tm) TimeT
-
 //go:linkname Ctime C.ctime
 func Ctime(timer *TimeT) *c.Char
-
-//go:linkname Difftime C.difftime
-func Difftime(end, start TimeT) float64
 
 // -----------------------------------------------------------------------------
 
@@ -63,21 +54,12 @@ type Tm struct {
 	Zone   *c.Char
 }
 
-//go:linkname Gmtime C.gmtime
-func Gmtime(timer *TimeT) *Tm
-
-//go:linkname Localtime C.localtime
-func Localtime(timer *TimeT) *Tm
-
 //go:linkname Strftime C.strftime
 func Strftime(buf *c.Char, bufSize uintptr, format *c.Char, timeptr *Tm) uintptr
 
 // -----------------------------------------------------------------------------
 
 type ClockT C.clock_t
-
-//go:linkname Clock C.clock
-func Clock() ClockT
 
 // -----------------------------------------------------------------------------
 
@@ -121,14 +103,5 @@ type Timespec struct {
 	Sec  TimeT  // seconds
 	Nsec c.Long // and nanoseconds
 }
-
-//go:linkname ClockGettime C.clock_gettime
-func ClockGettime(clkId ClockidT, tp *Timespec) c.Int
-
-//go:linkname ClockSettime C.clock_settime
-func ClockSettime(clkId ClockidT, tp *Timespec) c.Int
-
-//go:linkname ClockGetres C.clock_getres
-func ClockGetres(clkId ClockidT, res *Timespec) c.Int
 
 // -----------------------------------------------------------------------------
