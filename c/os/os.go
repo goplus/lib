@@ -95,9 +95,6 @@ func Unsetenv(name *c.Char) c.Int
 
 // -----------------------------------------------------------------------------
 
-//go:linkname Fchdir C.fchdir
-func Fchdir(dirfd c.Int) c.Int
-
 //go:linkname Faccessat C.faccessat
 func Faccessat(dirfd c.Int, path *c.Char, mode c.Int, flags c.Int) c.Int
 
@@ -115,12 +112,6 @@ func Openat(dirfd c.Int, path *c.Char, flags c.Int, mode ModeT) c.Int
 //go:linkname Creat C.creat
 func Creat(path *c.Char, mode ModeT) c.Int
 
-//go:linkname Dup C.dup
-func Dup(fd c.Int) c.Int
-
-//go:linkname Dup2 C.dup2
-func Dup2(oldfd c.Int, newfd c.Int) c.Int
-
 //go:linkname Dup3 C.dup3
 func Dup3(oldfd c.Int, newfd c.Int, flags c.Int) c.Int
 
@@ -133,9 +124,6 @@ func Mknod(path *c.Char, mode ModeT, dev DevT) c.Int
 //go:linkname Lseek C.lseek
 func Lseek(fd c.Int, offset OffT, whence c.Int) OffT
 
-//go:linkname Fsync C.fsync
-func Fsync(fd c.Int) c.Int
-
 //go:linkname Ftruncate C.ftruncate
 func Ftruncate(fd c.Int, length OffT) c.Int
 
@@ -144,9 +132,6 @@ func Fchmod(fd c.Int, mode ModeT) c.Int
 
 //go:linkname Fchown C.fchown
 func Fchown(fd c.Int, owner UidT, group GidT) c.Int
-
-//go:linkname Isatty C.isatty
-func Isatty(fd c.Int) c.Int
 
 // -----------------------------------------------------------------------------
 
@@ -193,12 +178,6 @@ func Getppid() PidT
 // for errors; in many systems you cannot pass arguments or get return
 // values for all system calls (`pipe', `fork', and `getppid' typically
 // among them).
-
-// In Mach, all system calls take normal arguments and always return an
-// error code (zero for success).
-//
-//go:linkname Syscall C.syscall
-func Syscall(sysno c.Long, __llgo_va_list ...any) c.Long
 
 // If wait() returns due to a stopped or terminated child process, the process ID
 // of the child is returned to the calling process.  Otherwise, a value of -1 is

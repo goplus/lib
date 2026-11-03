@@ -23,8 +23,8 @@ import (
 )
 
 const (
-	LLGoFiles   = "_os/os.c"
-	LLGoPackage = "link"
+	llgoLegacyFilesDarwin = "_os/os.c"
+	LLGoPackage           = "link"
 )
 
 const (

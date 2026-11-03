@@ -27,12 +27,6 @@ func Getcwd(buffer c.Pointer, size uintptr) *c.Char
 //go:linkname Open C.open
 func Open(path *c.Char, flags c.Int, __llgo_va_list ...any) c.Int
 
-//go:linkname Fcntl C.fcntl
-func Fcntl(a c.Int, b c.Int, __llgo_va_list ...any) c.Int
-
-//go:linkname Close C.close
-func Close(fd c.Int) c.Int
-
 //go:linkname Read C.read
 func Read(fd c.Int, buf c.Pointer, count uintptr) int
 
