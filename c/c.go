@@ -23,7 +23,6 @@ import (
 type (
 	Void = [0]byte
 
-	Char    = int8
 	Char8T  = byte
 	Char16T = uint16
 	Char32T = uint32
