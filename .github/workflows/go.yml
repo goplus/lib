@@ -60,6 +60,7 @@ jobs:
 
     - name: Test
       run: |
+        sudo apt-get update
         sudo apt-get install -y gcc-multilib
         CGO_ENABLED=1 CC="gcc -m32" GOARCH=386 go test -tags sizetest ./...
 
