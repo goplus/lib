@@ -23,7 +23,7 @@ func cTypeTestValue(bytes c.Uint) uint64 {
 func TestCTypeABI(t *testing.T) {
 	value := cTypeTestValue(ctypes.SizeBytes())
 	if got := uint64(ctypes.EchoSize(c.SizeT(value))); got != value {
-		t.Errorf("size_t round trip: got %d, want %d", got, value)
+		t.Fatalf("size_t round trip: got %d, want %d", got, value)
 	}
 	if got := int64(ctypes.EchoSigned(c.SsizeT(-int64(value)))); got != -int64(value) {
 		t.Errorf("ssize_t round trip: got %d, want %d", got, -int64(value))
