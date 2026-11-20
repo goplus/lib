@@ -1,6 +1,6 @@
-//go:build (linux || darwin || freebsd || netbsd || openbsd || solaris) && (amd64 || arm64 || ppc64 || ppc64le || mips64 || mips64le || s390x || riscv64)
+//go:build (linux || darwin || freebsd || netbsd || openbsd || solaris) && (amd64 || arm64 || ppc64 || ppc64le || mips64 || mips64le || s390x || riscv64 || loong64)
 // +build linux darwin freebsd netbsd openbsd solaris
-// +build amd64 arm64 ppc64 ppc64le mips64 mips64le s390x riscv64
+// +build amd64 arm64 ppc64 ppc64le mips64 mips64le s390x riscv64 loong64
 
 /*
  * Copyright (c) 2024 The XGo Authors (xgo.dev). All rights reserved.
@@ -29,8 +29,4 @@ type (
 type (
 	SizeT  Ulong
 	SsizeT Long
-)
-
-type (
-	WcharT int32
 )

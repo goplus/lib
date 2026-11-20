@@ -38,7 +38,8 @@ type (
 	Int  int32
 	Uint uint32
 
-	// Long, Ulong, SizeT, SsizeT are defined in platform-specific files
+	// Long, Ulong, SizeT, SsizeT, PtrdiffT, IntptrT, UintptrT and WcharT
+	// are defined in platform-specific files.
 
 	LongLong  int64
 	UlongLong uint64
@@ -51,10 +52,6 @@ type FILE struct {
 type integer interface {
 	~int | ~uint | ~uintptr | ~int32 | ~uint32 | ~int64 | ~uint64
 }
-
-type PtrdiffT int
-type IntptrT int
-type UintptrT uintptr
 
 type Int8T = int8
 type Int16T = int16

@@ -1,4 +1,4 @@
-//go:build !linux || !arm64
+//go:build !(((arm || arm64) && !darwin && !windows) || ppc64 || ppc64le || riscv64 || s390x)
 
 /*
  * Copyright (c) 2026 The XGo Authors (xgo.dev). All rights reserved.
