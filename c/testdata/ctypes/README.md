@@ -11,8 +11,13 @@ llgo test -v -run TestCTypeABI ./c
 
 The test uses C's actual type widths, including Windows LLP64 (`size_t` is
 64-bit while `long` is 32-bit), and checks `char`/`wchar_t` signedness and
-`size_t` array storage. Its C source uses Windows `SSIZE_T` where POSIX
+`size_t` array storage using actual element addresses, without relying on
+`unsafe.Sizeof` constant folding. Its C source uses Windows `SSIZE_T` where POSIX
 `ssize_t` is unavailable.
+
+`TestWasmCTypes` and `TestNativeCScalarTypes` also check source selection and
+integer kinds across platforms on any Go CI host, including WASI with an
+irrelevant Emscripten Memory64 tag.
 
 The following commands run all four Wasm provider/profile paths with a current
 LLGo main. Set `LLGO_ROOT` to the matching LLGo checkout or installation; the

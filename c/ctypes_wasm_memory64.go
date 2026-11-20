@@ -7,15 +7,11 @@ package c
 
 // Emscripten Memory64 uses the wasm64 LP64 C data model.
 type (
-	Long  int64
-	Ulong uint64
-)
-
-type (
+	Long     int64
+	Ulong    uint64
 	SizeT    Ulong
 	SsizeT   Long
 	PtrdiffT Long
 	IntptrT  Long
 	UintptrT Ulong
-	WcharT   int32
 )

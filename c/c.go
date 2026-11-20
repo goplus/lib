@@ -38,7 +38,8 @@ type (
 	Int  int32
 	Uint uint32
 
-	// Long, Ulong, SizeT, SsizeT are defined in platform-specific files
+	// Long, Ulong, SizeT, SsizeT, PtrdiffT, IntptrT, UintptrT and WcharT
+	// are defined in platform-specific files.
 
 	LongLong  int64
 	UlongLong uint64

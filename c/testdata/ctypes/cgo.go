@@ -50,6 +50,6 @@ func EchoWchar(value c.WcharT) c.WcharT {
 	return c.WcharT(C.lib_ctypes_echo_wchar(C.wchar_t(value)))
 }
 
-func CheckWords(words *[2]c.SizeT) c.Int {
-	return c.Int(C.lib_ctypes_check_words((*C.size_t)(unsafe.Pointer(words))))
+func CheckWords(words *[2]c.SizeT, stride uintptr) c.Int {
+	return c.Int(C.lib_ctypes_check_words((*C.size_t)(unsafe.Pointer(words)), C.size_t(stride)))
 }

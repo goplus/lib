@@ -48,4 +48,4 @@ func EchoUintptr(c.UintptrT) c.UintptrT
 func EchoWchar(c.WcharT) c.WcharT
 
 //go:linkname CheckWords C.lib_ctypes_check_words
-func CheckWords(*[2]c.SizeT) c.Int
+func CheckWords(*[2]c.SizeT, uintptr) c.Int

@@ -1,6 +1,5 @@
-//go:build (wasip1 || js) && !llgo.wasm.emscripten.memory64
-// +build wasip1 js
-// +build !llgo.wasm.emscripten.memory64
+//go:build wasip1 || (js && wasm && !llgo.wasm.emscripten.memory64)
+// +build wasip1 js,wasm,!llgo.wasm.emscripten.memory64
 
 /*
  * Copyright (c) 2024 The XGo Authors (xgo.dev). All rights reserved.
@@ -22,15 +21,11 @@ package c
 
 // Memory32 WebAssembly targets use the wasm32 C data model.
 type (
-	Long  int32
-	Ulong uint32
-)
-
-type (
+	Long     int32
+	Ulong    uint32
 	SizeT    Ulong
 	SsizeT   Long
 	PtrdiffT Long
 	IntptrT  Long
 	UintptrT Ulong
-	WcharT   int32
 )

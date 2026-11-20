@@ -24,7 +24,8 @@ intptr_t lib_ctypes_echo_intptr(intptr_t value) { return value; }
 uintptr_t lib_ctypes_echo_uintptr(uintptr_t value) { return value; }
 wchar_t lib_ctypes_echo_wchar(wchar_t value) { return value; }
 
-int lib_ctypes_check_words(size_t *words) {
+int lib_ctypes_check_words(size_t *words, size_t stride) {
+  if (stride != sizeof(size_t)) return 0;
   size_t value = 7;
   if (sizeof(size_t) == 8) value += (uint64_t)1 << 40;
   if (words[0] != value || words[1] != value + 2) return 0;

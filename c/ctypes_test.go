@@ -25,36 +25,28 @@ func TestWasmCTypes(t *testing.T) {
 		{"Emscripten32", "js", "llgo.wasm.emscripten", types.Int32, types.Uint32},
 		{"Emscripten64", "js", "llgo.wasm.emscripten.memory64", types.Int64, types.Uint64},
 		{"WASI", "wasip1", "llgo.wasm.wasi", types.Int32, types.Uint32},
+		{"WASI ignores Emscripten Memory64 tag", "wasip1", "llgo.wasm.emscripten.memory64", types.Int32, types.Uint32},
 	} {
 		t.Run(test.name, func(t *testing.T) {
-			ctx := build.Default
-			ctx.GOOS, ctx.GOARCH, ctx.CgoEnabled = test.goos, "wasm", false
-			ctx.BuildTags = []string{"llgo", test.tag}
-			selected, err := ctx.ImportDir(".", 0)
-			if err != nil {
-				t.Fatal(err)
-			}
-			pkg := checkCTypes(t, selected, "wasm")
-			for name, want := range map[string]types.BasicKind{
+			checkCTypes(t, test.goos, "wasm", []string{"llgo", test.tag}, map[string]types.BasicKind{
 				"Long": test.signed, "Ulong": test.unsigned,
 				"SizeT": test.unsigned, "SsizeT": test.signed,
 				"PtrdiffT": test.signed, "IntptrT": test.signed, "UintptrT": test.unsigned,
 				"WcharT": types.Int32, "Char": types.Int8,
-			} {
-				obj := pkg.Scope().Lookup(name)
-				if obj == nil {
-					t.Fatalf("missing %s in %v", name, selected.GoFiles)
-				}
-				if got := obj.Type().Underlying(); got != types.Typ[want] {
-					t.Errorf("%s has underlying type %s, want %s", name, got, types.Typ[want])
-				}
-			}
+			})
 		})
 	}
 }
 
-func checkCTypes(t *testing.T, selected *build.Package, arch string) *types.Package {
+func checkCTypes(t *testing.T, goos, arch string, tags []string, wantTypes map[string]types.BasicKind) {
 	t.Helper()
+	ctx := build.Default
+	ctx.GOOS, ctx.GOARCH, ctx.CgoEnabled = goos, arch, false
+	ctx.BuildTags = tags
+	selected, err := ctx.ImportDir(".", 0)
+	if err != nil {
+		t.Fatal(err)
+	}
 	fset := token.NewFileSet()
 	var files []*ast.File
 	for _, name := range selected.GoFiles {
@@ -69,7 +61,15 @@ func checkCTypes(t *testing.T, selected *build.Package, arch string) *types.Pack
 	if err != nil {
 		t.Fatal(err)
 	}
-	return pkg
+	for name, want := range wantTypes {
+		obj := pkg.Scope().Lookup(name)
+		if obj == nil {
+			t.Fatalf("missing %s in %v", name, selected.GoFiles)
+		}
+		if got := obj.Type().Underlying(); got != types.Typ[want] {
+			t.Errorf("%s has underlying type %s, want %s", name, got, types.Typ[want])
+		}
+	}
 }
 
 func TestNativeCScalarTypes(t *testing.T) {
@@ -87,37 +87,52 @@ func TestNativeCScalarTypes(t *testing.T) {
 		{"linux", "ppc64le", types.Uint8, types.Int32},
 		{"linux", "s390x", types.Uint8, types.Int32},
 		{"linux", "mips", types.Int8, types.Int32},
+		{"linux", "mipsle", types.Int8, types.Int32},
 		{"linux", "mips64", types.Int8, types.Int32},
+		{"linux", "mips64le", types.Int8, types.Int32},
+		{"freebsd", "386", types.Int8, types.Int32},
+		{"freebsd", "amd64", types.Int8, types.Int32},
 		{"freebsd", "arm", types.Uint8, types.Uint32},
 		{"freebsd", "arm64", types.Uint8, types.Uint32},
 		{"freebsd", "riscv64", types.Uint8, types.Int32},
+		{"netbsd", "386", types.Int8, types.Int32},
+		{"netbsd", "amd64", types.Int8, types.Int32},
 		{"netbsd", "arm", types.Uint8, types.Int32},
 		{"netbsd", "arm64", types.Uint8, types.Int32},
+		{"openbsd", "386", types.Int8, types.Int32},
+		{"openbsd", "amd64", types.Int8, types.Int32},
 		{"openbsd", "arm", types.Uint8, types.Int32},
 		{"openbsd", "arm64", types.Uint8, types.Int32},
+		{"openbsd", "ppc64", types.Uint8, types.Int32},
+		{"openbsd", "riscv64", types.Uint8, types.Int32},
 		{"darwin", "amd64", types.Int8, types.Int32},
 		{"darwin", "arm64", types.Int8, types.Int32},
+		{"ios", "arm64", types.Int8, types.Int32},
+		{"android", "386", types.Int8, types.Int32},
+		{"android", "amd64", types.Int8, types.Int32},
+		{"android", "arm", types.Uint8, types.Uint32},
+		{"android", "arm64", types.Uint8, types.Uint32},
+		{"solaris", "amd64", types.Int8, types.Int32},
+		{"illumos", "amd64", types.Int8, types.Int32},
 		{"windows", "386", types.Int8, types.Uint16},
 		{"windows", "amd64", types.Int8, types.Uint16},
 		{"windows", "arm64", types.Int8, types.Uint16},
 	} {
 		t.Run(test.goos+"/"+test.arch, func(t *testing.T) {
-			ctx := build.Default
-			ctx.GOOS, ctx.GOARCH, ctx.CgoEnabled = test.goos, test.arch, false
-			ctx.BuildTags = nil
-			selected, err := ctx.ImportDir(".", 0)
-			if err != nil {
-				t.Fatal(err)
+			// Native Unix targets use ILP32 or LP64; Windows uses LLP64.
+			long, ulong := types.Int64, types.Uint64
+			if test.goos == "windows" || types.SizesFor("gc", test.arch).Sizeof(types.Typ[types.Uintptr]) == 4 {
+				long, ulong = types.Int32, types.Uint32
 			}
-			pkg := checkCTypes(t, selected, test.arch)
-			for name, want := range map[string]types.BasicKind{
+			size, ssize := ulong, long
+			if test.goos == "windows" {
+				size, ssize = types.Uintptr, types.Int
+			}
+			checkCTypes(t, test.goos, test.arch, nil, map[string]types.BasicKind{
 				"Char": test.char, "WcharT": test.wchar,
 				"PtrdiffT": types.Int, "IntptrT": types.Int, "UintptrT": types.Uintptr,
-			} {
-				if got := pkg.Scope().Lookup(name).Type().Underlying(); got != types.Typ[want] {
-					t.Errorf("%s has underlying type %s, want %s", name, got, types.Typ[want])
-				}
-			}
+				"Long": long, "Ulong": ulong, "SizeT": size, "SsizeT": ssize,
+			})
 		})
 	}
 }

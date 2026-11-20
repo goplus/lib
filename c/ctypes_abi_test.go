@@ -6,6 +6,7 @@ package c_test
 
 import (
 	"testing"
+	"unsafe"
 
 	"github.com/goplus/lib/c"
 	"github.com/goplus/lib/c/testdata/ctypes"
@@ -61,7 +62,10 @@ func TestCTypeABI(t *testing.T) {
 	}
 
 	words := [2]c.SizeT{c.SizeT(value), c.SizeT(value + 2)}
-	if ctypes.CheckWords(&words) != 1 || uint64(words[1]) != value+4 {
+	// Observe the generated storage stride, independently of unsafe.Sizeof's
+	// frontend constant folding. The C helper checks it before accessing memory.
+	stride := uintptr(unsafe.Pointer(&words[1])) - uintptr(unsafe.Pointer(&words[0]))
+	if ctypes.CheckWords(&words, stride) != 1 || uint64(words[1]) != value+4 {
 		t.Errorf("size_t array storage: got %v", words)
 	}
 }
